@@ -1,14 +1,18 @@
 #include "game.h"
 #include "surface.h"
 #include <cstdio> //printf
+#include "Texture.hpp"
 
 namespace Tmpl8
 {
+	Texture* t1;
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
+		t1 = new Texture{ 10,10,0xffffff };
+		t1->setChromaKey(0xffffff);
 	}
 	
 	// -----------------------------------------------------------
@@ -18,8 +22,8 @@ namespace Tmpl8
 	{
 	}
 
-	static Sprite rotatingGun(new Surface("assets/aagun.tga"), 36);
-	static int frame = 0;
+	
+
 
 	// -----------------------------------------------------------
 	// Main application tick function
@@ -28,13 +32,8 @@ namespace Tmpl8
 	{
 		// clear the graphics window
 		screen->Clear(0);
-		// print something in the graphics window
-		screen->Print("hello world", 2, 2, 0xffffff);
-		// print something to the text window
-		printf("this goes to the console window.\n");
-		// draw a sprite
-		rotatingGun.SetFrame(frame);
-		rotatingGun.Draw(screen, 100, 100);
-		if (++frame == 36) frame = 0;
+
+		t1->CopyTransparent(screen, 10, 10);
+
 	}
 };

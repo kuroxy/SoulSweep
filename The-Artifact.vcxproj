@@ -225,11 +225,13 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
+    <ClInclude Include="Texture.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
