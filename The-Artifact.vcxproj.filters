@@ -11,6 +11,7 @@
     <ClCompile Include="Texture.cpp">
       <Filter>template code</Filter>
     </ClCompile>
+    <ClCompile Include="IsoCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -23,6 +24,7 @@
     <ClInclude Include="Texture.hpp">
       <Filter>template code</Filter>
     </ClInclude>
+    <ClInclude Include="IsoCamera.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

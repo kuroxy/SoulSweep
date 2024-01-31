@@ -1,7 +1,9 @@
 #include "game.h"
 #include "surface.h"
 #include <cstdio> //printf
+
 #include "Texture.hpp"
+#include "IsoCamera.hpp"
 
 namespace Tmpl8
 {
@@ -11,8 +13,7 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		t1 = new Texture{ 10,10,0xffffff };
-		t1->setChromaKey(0xffffff);
+		t1 = new Texture{ 10,10, 0xffffff};
 	}
 	
 	// -----------------------------------------------------------
@@ -22,8 +23,8 @@ namespace Tmpl8
 	{
 	}
 
-	
 
+	IsoCamera* a = new IsoCamera(10, 10, 10); 
 
 	// -----------------------------------------------------------
 	// Main application tick function
@@ -33,7 +34,9 @@ namespace Tmpl8
 		// clear the graphics window
 		screen->Clear(0);
 
-		t1->CopyTransparent(screen, 10, 10);
+
+
+		t1->CopyToSurface(screen, 10, 10);
 
 	}
 };
