@@ -4,6 +4,8 @@
 
 using namespace Tmpl8;
 
+namespace IsoEngine{
+
 IsoCamera::IsoCamera(int screenWidth, int screenHeight, int tileWidth)
 	: m_position{ 0 }
 	, m_cameraWidth{ screenWidth }
@@ -51,7 +53,6 @@ Tmpl8::vec2 IsoCamera::isometricToWorld(const Tmpl8::vec2& isometricSpace) const
 
 	return Tmpl8::vec2(worldX, worldY);
 }
-
 
 
 void IsoCamera::setPosition(const Tmpl8::vec2& pos)
@@ -117,10 +118,9 @@ void IsoCamera::renderToSurface(Tmpl8::Surface* surface, int scale, int xOffset,
 			}
 		}
 	}
-
-	printf("%i-%i,%i-%i", xMin,xMax,yMin,yMax);
-
 }
+
+
 
 void IsoCamera::blitTexture(Texture* texture, int x, int y)
 {
@@ -150,3 +150,5 @@ void IsoCamera::renderTextureIsometric(Texture* texture, const Tmpl8::vec2& IsoS
 	vec2 worldSpace = isometricToWorld(IsoSpace);
 	renderTextureIsometric(texture, worldSpace);
 }
+
+};

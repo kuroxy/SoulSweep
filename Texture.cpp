@@ -1,6 +1,10 @@
 #include "Texture.hpp"
 #include "FreeImage.h"
 
+
+namespace IsoEngine
+{
+
 Texture::Texture(const std::string& filename)
 {
 	const char* filecstr = filename.c_str();
@@ -164,3 +168,5 @@ void Texture::CopyOpaque(Tmpl8::Surface* surface, int x, int y) const
 		}
 	}
 }
+
+};

@@ -8,10 +8,12 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>template code</Filter>
+    <ClCompile Include="IsoCamera.cpp">
+      <Filter>IsoEngine</Filter>
     </ClCompile>
-    <ClCompile Include="IsoCamera.cpp" />
+    <ClCompile Include="Texture.cpp">
+      <Filter>IsoEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -21,14 +23,19 @@
     <ClInclude Include="template.h">
       <Filter>template code</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.hpp">
-      <Filter>template code</Filter>
+    <ClInclude Include="IsoCamera.hpp">
+      <Filter>IsoEngine</Filter>
     </ClInclude>
-    <ClInclude Include="IsoCamera.hpp" />
+    <ClInclude Include="Texture.hpp">
+      <Filter>IsoEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
       <UniqueIdentifier>{bf32dd6e-4be7-4889-8ac6-49e7ee163c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IsoEngine">
+      <UniqueIdentifier>{bc82d526-93a5-42ca-a295-e4ae87444366}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
