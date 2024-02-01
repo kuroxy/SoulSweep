@@ -1,6 +1,7 @@
 #include "Texture.hpp"
 #include "FreeImage.h"
-
+#include "surface.h"
+#include "template.h"
 
 namespace IsoEngine
 {
@@ -165,6 +166,45 @@ void Texture::CopyOpaque(Tmpl8::Surface* surface, int x, int y) const
 				dst += dstwidth;
 				src += m_width;
 			}
+		}
+	}
+}
+
+void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency)
+{
+	Tmpl8::Pixel* src = surface->GetBuffer();
+	Tmpl8::Pixel* dst = surface->GetBuffer();
+
+	int dstWidth = surface->GetWidth();
+	int dstHeight = surface->GetHeight();
+
+	// boundry checking
+	if (xDst > dstWidth || yDst > dstHeight)
+		return;
+
+	if (xDst + (x2-x1) < 0 || yDst + (y2 - y1) < 0)
+		return;
+
+	// clipping offscreen stuff
+	int xMin = Tmpl8::Max<int>(xDst, 0);
+	int xMax = Tmpl8::Min<int>(xDst + (x2 - x1), dstWidth);
+
+	int yMin = Tmpl8::Max<int>(yDst, 0);
+	int yMax = Tmpl8::Min<int>(yDst + (y2 - y1), dstHeight);
+
+	// iew
+	for (int y = 0; y < yMax - yMin; y++)
+	{
+		for (int x = 0; x < xMax - xMin; x++)
+		{
+			Tmpl8::Pixel c = src[y * (x2 - x1) + x]; // should be safe because it was clipped down
+
+			if (!(c & 0xff000000) && useTransparency)
+				continue;
+
+			dst[yDst * dstWidth + xDst] = c;
+			
+
 		}
 	}
 }

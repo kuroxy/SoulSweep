@@ -23,11 +23,13 @@ public:
 	// copies texture to surface(with transparency if chromakey is set) !!this should be normally used!!
 	void CopyToSurface(Tmpl8::Surface* surface, int x, int y) const;
 
-	// copies texture to surface with transparency
+	// copies texture to surface with transparency // maybe getting removed
 	void CopyTransparent(Tmpl8::Surface* surface, int x, int y) const;
 
-	// copies every pixel to surface even if chromakeyed
+	// copies every pixel to surface even if chromakeyed // maybe getting removed
 	void CopyOpaque(Tmpl8::Surface* surface, int x, int y) const;
+
+	void PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency = true);
 
 
 private:

@@ -1,6 +1,8 @@
 #include "IsoCamera.hpp"
 #include "Texture.hpp"
+#include "SpriteSheet.hpp"
 #include <cstdio> //printf
+
 
 using namespace Tmpl8;
 
@@ -149,6 +151,19 @@ void IsoCamera::renderTextureIsometric(Texture* texture, const Tmpl8::vec2& IsoS
 {
 	vec2 worldSpace = isometricToWorld(IsoSpace);
 	renderTextureIsometric(texture, worldSpace);
+}
+
+void IsoCamera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int x, int y, const Tmpl8::vec2& worldSpace)
+{
+	vec2 local = worldToIsometric(worldSpace);
+
+	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, (int)local.x, (int)local.y);
+}
+
+void IsoCamera::renderSpriteIsometric(SpriteSheet* spriteSheet, int x, int y, const Tmpl8::vec2& isoSpace)
+{
+	vec2 worldSpace = isometricToWorld(isoSpace);
+	renderSpriteWorldSpace(spriteSheet, x, y, worldSpace);
 }
 
 };

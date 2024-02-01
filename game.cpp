@@ -7,13 +7,13 @@
 
 namespace Tmpl8
 {
-	Texture* t1;
+	IsoEngine::Texture* t1;
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
 	void Game::Init()
 	{
-		t1 = new Texture{ 10,10, 0xffffff};
+		t1 = new IsoEngine::Texture{ 10,10, 0xffffff};
 	}
 	
 	// -----------------------------------------------------------
@@ -24,7 +24,7 @@ namespace Tmpl8
 	}
 
 
-	IsoCamera* a = new IsoCamera(10, 10, 10); 
+	IsoEngine::IsoCamera* a = new IsoEngine::IsoCamera(10, 10, 10);
 
 	// -----------------------------------------------------------
 	// Main application tick function

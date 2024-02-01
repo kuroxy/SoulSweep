@@ -8,7 +8,7 @@ namespace IsoEngine {
 
 	//forward declaration
 	class Texture;
-
+	class SpriteSheet;
 
 	class IsoCamera
 	{
@@ -30,10 +30,15 @@ namespace IsoEngine {
 		void blitTexture(Texture* texture, int x, int y);
 
 		void renderTextureWorldSpace(Texture* texture, float xWorldSpace, float yWorldSpace);
-		void renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& WorldSpace);
+		void renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& worldSpace);
 
 		void renderTextureIsometric(Texture* texture, float xIsoSpace, float yIsoSpace);
-		void renderTextureIsometric(Texture* texture, const Tmpl8::vec2& IsoSpace);
+		void renderTextureIsometric(Texture* texture, const Tmpl8::vec2& isoSpace);
+
+
+		void renderSpriteWorldSpace(SpriteSheet* spriteSheet,int x, int y, const Tmpl8::vec2& worldSpace);
+
+		void renderSpriteIsometric(SpriteSheet* spriteSheet, int x, int y, const Tmpl8::vec2& isoSpace);
 
 
 	private:

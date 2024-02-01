@@ -222,15 +222,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="IsoCamera.cpp" />
+    <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetManager.hpp" />
     <ClInclude Include="game.h" />
     <ClInclude Include="IsoCamera.hpp" />
+    <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="Texture.hpp" />
