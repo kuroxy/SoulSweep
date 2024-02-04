@@ -222,9 +222,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SoulSweep.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="IsoCamera.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -232,12 +234,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.hpp" />
+    <ClInclude Include="Config.hpp" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="IsoCamera.hpp" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="Texture.hpp" />
+    <ClInclude Include="SoulSweep.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />

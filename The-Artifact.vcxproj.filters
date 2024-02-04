@@ -8,17 +8,23 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
-    <ClCompile Include="IsoCamera.cpp">
-      <Filter>IsoEngine</Filter>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="SpriteSheet.cpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SoulSweep.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>SoulSweep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,25 +35,35 @@
     <ClInclude Include="template.h">
       <Filter>template code</Filter>
     </ClInclude>
-    <ClInclude Include="IsoCamera.hpp">
-      <Filter>IsoEngine</Filter>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture.hpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="AssetManager.hpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="SpriteSheet.hpp">
-      <Filter>IsoEngine</Filter>
+      <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="SoulSweep.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
       <UniqueIdentifier>{bf32dd6e-4be7-4889-8ac6-49e7ee163c40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="IsoEngine">
+    <Filter Include="Engine">
       <UniqueIdentifier>{bc82d526-93a5-42ca-a295-e4ae87444366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SoulSweep">
+      <UniqueIdentifier>{4bb3b7e9-c930-4e76-9dc9-d4bd4aae19c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 #include <cassert>
 
 
-IsoEngine::SpriteSheet::SpriteSheet(std::shared_ptr<Texture> fullTexture, int spriteWidth, int spriteHeight)
+Engine::SpriteSheet::SpriteSheet(std::shared_ptr<Texture> fullTexture, int spriteWidth, int spriteHeight)
 	: m_sheet{ fullTexture }
 	, m_cellWidth{ spriteWidth }
 	, m_cellHeight{ spriteHeight}
@@ -11,27 +11,27 @@ IsoEngine::SpriteSheet::SpriteSheet(std::shared_ptr<Texture> fullTexture, int sp
 {
 }
 
-int IsoEngine::SpriteSheet::getSpriteWidth() const
+int Engine::SpriteSheet::getSpriteWidth() const
 {
 	return m_cellWidth;
 }
 
-int IsoEngine::SpriteSheet::getSpriteHeight() const
+int Engine::SpriteSheet::getSpriteHeight() const
 {
 	return m_cellHeight;
 }
 
-int IsoEngine::SpriteSheet::getColumns() const
+int Engine::SpriteSheet::getColumns() const
 {
 	return m_columns;
 }
 
-int IsoEngine::SpriteSheet::getRows() const
+int Engine::SpriteSheet::getRows() const
 {
 	return m_rows;
 }
 
-void IsoEngine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency) const
+void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency) const
 {
 	assert(x < 0 || x > m_columns);
 	assert(y < 0 || y > m_rows);

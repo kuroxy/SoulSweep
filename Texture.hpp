@@ -3,7 +3,7 @@
 #include <string>
 #include "surface.h"
 
-namespace IsoEngine {
+namespace Engine {
 
 
 class Texture

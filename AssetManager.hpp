@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-namespace IsoEngine
+namespace Engine
 {
 
 	class AssetManager

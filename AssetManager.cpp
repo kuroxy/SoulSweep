@@ -1,7 +1,7 @@
 #include "AssetManager.hpp"
 #include <cstdio>
 
-namespace IsoEngine
+namespace Engine
 {
 	std::shared_ptr<Texture> AssetManager::getTexture(std::string filename)
 	{

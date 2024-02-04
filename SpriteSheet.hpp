@@ -2,7 +2,7 @@
 #include "Texture.hpp"
 #include <memory>
 
-namespace IsoEngine
+namespace Engine
 {
 
 	class SpriteSheet
@@ -17,7 +17,7 @@ namespace IsoEngine
 		int getRows() const; 
 		
 
-		void IsoEngine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency=true) const;
+		void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency=true) const;
 
 	private:
 		// why shared? Because AssetManager manages assets so it should hold a weak ptr to even this texture.

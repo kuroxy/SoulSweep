@@ -3,7 +3,7 @@
 #include "surface.h"
 #include "template.h"
 
-namespace IsoEngine
+namespace Engine
 {
 
 Texture::Texture(const std::string& filename)
