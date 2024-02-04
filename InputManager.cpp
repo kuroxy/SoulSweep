@@ -11,8 +11,8 @@ bool InputManager::isActionDown(const std::string& actionName) const
 	if (action != m_actionDown.end())
 		return action->second;
 
-	assert(false && "Key not found!");  // Assertion message
-	return false;  // Default value if the key is not found
+	assert(false && "Key not found!"); 
+	return false; 
 }
 
 bool InputManager::isActionUp(const std::string& actionName) const
@@ -22,8 +22,19 @@ bool InputManager::isActionUp(const std::string& actionName) const
 	if (action != m_actionUp.end())
 		return action->second;
 
-	assert(false && "Key not found!");  // Assertion message
-	return false;  // Default value if the key is not found
+	assert(false && "Key not found!"); 
+	return false; 
+}
+
+bool InputManager::isActionPressed(const std::string& actionName) const
+{
+	auto action = m_actionPressed.find(actionName);
+
+	if (action != m_actionPressed.end())
+		return action->second;
+
+	assert(false && "Key not found!");
+	return false;
 }
 
 void InputManager::addKeyMap(std::string actionName, int SDL_Scancode)
@@ -31,6 +42,7 @@ void InputManager::addKeyMap(std::string actionName, int SDL_Scancode)
 	m_keyMapping.insert({ SDL_Scancode,actionName });
 	m_actionDown[actionName] = false;
 	m_actionUp[actionName] = false;
+	m_actionPressed[actionName] = false;
 
 }
 
@@ -39,6 +51,7 @@ void InputManager::addMouseMap(std::string actionName, int SDL_MouseButton)
 	m_mouseMapping.insert({ SDL_MouseButton,actionName });
 	m_actionDown[actionName] = false;
 	m_actionUp[actionName] = false;
+	m_actionPressed[actionName] = false;
 }
 
 void InputManager::handleMouseUp(int button)
@@ -48,6 +61,7 @@ void InputManager::handleMouseUp(int button)
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
 		m_actionUp[it->second] = true;
+		m_actionPressed[it->second] = false;
 	}
 }
 
@@ -58,6 +72,7 @@ void InputManager::handleMouseDown(int button)
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
 		m_actionDown[it->second] = true;
+		m_actionPressed[it->second] = true;
 	}
 }
 
@@ -68,6 +83,7 @@ void InputManager::handleKeyUp(int key)
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
 		m_actionUp[it->second] = true;
+		m_actionPressed[it->second] = false;
 	}
 }
 
@@ -78,6 +94,7 @@ void InputManager::handleKeyDown(int key)
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
 		m_actionDown[it->second] = true;
+		m_actionPressed[it->second] = true;
 	}
 }
 

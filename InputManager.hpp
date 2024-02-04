@@ -11,6 +11,7 @@ namespace Engine {
 
 		bool isActionDown(const std::string& actionName) const;
 		bool isActionUp(const std::string& actionName) const;
+		bool isActionPressed(const std::string& actionName) const;
 
 		void addKeyMap(std::string actionName, int SDL_Scancode); //https://wiki.libsdl.org/SDL2/SDLScancodeLookup
 		void addMouseMap(std::string actionName, int SDL_MouseButton); //https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent
@@ -28,6 +29,8 @@ namespace Engine {
 
 		std::unordered_map<std::string, bool> m_actionDown;
 		std::unordered_map<std::string, bool> m_actionUp;
+
+		std::unordered_map<std::string, bool> m_actionPressed;
 
 	};
 
