@@ -22,14 +22,14 @@ void Player::setPosition(const Tmpl8::vec2& pos)
 	m_position = pos;
 }
 
-void Player::move(float deltaTime)
+void Player::move(const Tmpl8::vec2& direction, float deltaTime)
 {
-	float length = m_direction.length();
+	float length = direction.length();
 	if (length == 0)
 		return;
 
-	m_position.x += m_direction.x / length * deltaTime * m_playerSpeed;
-	m_position.y += m_direction.y / length * deltaTime * m_playerSpeed;
+	m_position.x += direction.x / length * deltaTime * m_playerSpeed;
+	m_position.y += direction.y / length * deltaTime * m_playerSpeed;
 }
 
 

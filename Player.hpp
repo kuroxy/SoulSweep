@@ -13,9 +13,8 @@ public:
 	Player(const Tmpl8::vec2& pos, float radius);
 
 	const Tmpl8::vec2& getPosition() const;
-	void setPosition(const Tmpl8::vec2& pos); 
-
-	void move(float deltaTime);
+	void setPosition(const Tmpl8::vec2& pos);
+	void move(const Tmpl8::vec2& direction, float deltaTime);
 
 	float getRadius() const;
 
