@@ -222,6 +222,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SoulSweep.cpp" />
     <ClCompile Include="AssetManager.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="surface.h" />

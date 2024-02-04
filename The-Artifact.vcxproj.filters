@@ -26,6 +26,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -54,6 +57,9 @@
       <Filter>SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="Config.hpp" />
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

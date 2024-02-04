@@ -47,16 +47,4 @@ namespace Tmpl8
 
 
 	}
-	void Game::MouseUp(int button)
-	{
-	}
-	void Game::MouseDown(int button)
-	{
-	}
-	void Game::KeyUp(int key)
-	{
-	}
-	void Game::KeyDown(int key)
-	{
-	}
 };

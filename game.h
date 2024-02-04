@@ -1,7 +1,6 @@
 #pragma once
-#include "AssetManager.hpp"
-#include "Camera.hpp"
-#include "Player.hpp"
+#include "InputManager.hpp"
+
 
 namespace Tmpl8 {
 
@@ -16,12 +15,13 @@ public:
 
 	void MouseMove(int x, int y) { mouseX = x, mouseY = y; }
 
-	void MouseUp(int button);
-	void MouseDown(int button);
-	void KeyUp(int key);
-	void KeyDown(int key);
+	void MouseUp(int button) { im.handleMouseUp(button); }
+	void MouseDown(int button) { im.handleMouseDown(button); }
+	void KeyUp(int key) { im.handleKeyUp(key); }
+	void KeyDown(int key) { im.handleKeyDown(key); }
 private:
 	Surface* screen;
+	Engine::InputManager im;
 	int mouseX;
 	int mouseY;
 };
