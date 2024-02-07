@@ -17,7 +17,9 @@ namespace Engine
 		int getRows() const; 
 		
 
-		void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency=true) const;
+		void drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency=true) const;
+
+		void drawSprite(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool useTransparency = true) const;
 
 	private:
 		// why shared? Because AssetManager manages assets so it should hold a weak ptr to even this texture.

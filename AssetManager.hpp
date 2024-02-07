@@ -15,7 +15,7 @@ namespace Engine
 		AssetManager() = default;
 
 		std::shared_ptr<Texture> getTexture(std::string filename);
-		std::shared_ptr<SpriteSheet> getSpriteSheet(std::string filename, int spriteWidth, int spriteHeight);
+		std::shared_ptr<SpriteSheet> getSpriteSheet(std::string filename, int spriteWidth, int spriteHeight, Tmpl8::Pixel chroma=0);
 
 
 	private:

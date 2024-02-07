@@ -2,7 +2,7 @@
 
 namespace Config
 {
-	float playerSpeed = 100.f;
+	constexpr float playerSpeed = 50.f;
 
 
 }

@@ -123,25 +123,52 @@ void Camera::blitTexture(Texture* texture, int x, int y)
 
 void Camera::renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& WorldSpace)
 {
-	int localSpaceX = WorldSpace.x - m_position.x;
-	int localSpaceY = WorldSpace.y - m_position.y;
+	float localSpaceX = WorldSpace.x - m_position.x;
+	float localSpaceY = WorldSpace.y - m_position.y;
 
-	texture->CopyToSurface(m_cameraBuffer.get(), localSpaceX, localSpaceY);
+	texture->CopyToSurface(m_cameraBuffer.get(), (int)localSpaceX, (int)localSpaceY);
 }
 
-void Camera::drawCircle(int x, int y, float radius, Tmpl8::Pixel c, const int segments)
+void Camera::drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
+{
+	m_cameraBuffer->Line((float)x1, (float)y1, (float)x2, (float)y2, color);
+}
+
+void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
+{
+	vec2 local = worldToLocal(position1);
+	vec2 local2 = worldToLocal(position2);
+
+	m_cameraBuffer->Line(local.x, local.y, local2.x, local2.y, color);
+}
+
+void Camera::drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
+{
+	m_cameraBuffer->Box((int)x1, (int)y1, (int)x2, (int)y2, color);
+}
+
+void Camera::drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
+{
+	vec2 local = worldToLocal(position1);
+	vec2 local2 = worldToLocal(position2);
+	m_cameraBuffer->Box((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, color);
+}
+
+
+
+void Camera::drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments)
 {
 	float step = 2 * Tmpl8::PI / segments;
 
 	for (int i = 0; i < segments; i++)
 	{
 		// Calculate start point of the line segment
-		float x1 = x + radius * cos(i * step);
-		float y1 = y + radius * sin(i * step);
+		float x1 = radius * (float)cos(i * step) + x;
+		float y1 = radius * (float)sin(i * step) + y;
 
 		// Calculate end point of the line segment
-		float x2 = x + radius * cos((i + 1) * step);
-		float y2 = y + radius * sin((i + 1) * step);
+		float x2 = radius * (float)cos((i + 1) * step) + x;
+		float y2 = radius * (float)sin((i + 1) * step) + y;
 
 		// Draw the line segment
 		m_cameraBuffer->Line(x1, y1, x2, y2, c);
@@ -155,14 +182,22 @@ void Camera::drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, T
 }
 
 
+
 void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int x, int y, const Tmpl8::vec2& worldSpace)
+{
+	float localSpaceX = worldSpace.x - m_position.x;
+	float localSpaceY = worldSpace.y - m_position.y;;
+
+	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, (int)localSpaceX, (int)localSpaceY);
+}
+
+void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace)
 {
 	int localSpaceX = worldSpace.x - m_position.x;
 	int localSpaceY = worldSpace.y - m_position.y;;
 
-	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, localSpaceX, localSpaceY);
+	spritesheet->drawSprite(m_cameraBuffer.get(), spriteIndex, localSpaceX, localSpaceY);
 }
-
 
 
 };

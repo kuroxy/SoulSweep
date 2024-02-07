@@ -33,15 +33,21 @@ int Engine::SpriteSheet::getRows() const
 
 void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency) const
 {
-	assert(x < 0 || x > m_columns);
-	assert(y < 0 || y > m_rows);
+	assert(!(x < 0 || x > m_columns));
+	assert(!(y < 0 || y > m_rows));
 
 	int spriteX = x * m_cellWidth;
 	int spriteY = y * m_cellHeight;
 
-	m_sheet->PartialCopyToSurface(surface, xDst, yDst, spriteX, spriteY, spriteX + m_cellWidth, spriteX + m_cellHeight, useTransparency);
+	m_sheet->PartialCopyToSurface(surface, xDst, yDst, spriteX, spriteY, spriteX + m_cellWidth, spriteY + m_cellHeight, useTransparency);
 }
 
+void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool useTransparency) const
+{
+	int x = spriteIndex % m_rows;
+	int y = spriteIndex / m_columns;
 
+	drawSprite(surface, x, y, xDst, yDst, useTransparency);
+}
 
 

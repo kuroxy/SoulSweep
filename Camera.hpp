@@ -36,10 +36,21 @@ namespace Engine {
 
 		void renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& worldSpace);
 
-		void drawCircle(int x, int y, float radius, Tmpl8::Pixel c, const int segments = 50);
+		void drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
+		void drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
+
+		void drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
+		void drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
+
+		void drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments = 50);
 		void drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, Tmpl8::Pixel c, const int segments = 50);
 		
+		
+
+
 		void renderSpriteWorldSpace(SpriteSheet* spriteSheet,int x, int y, const Tmpl8::vec2& worldSpace);
+
+		void renderSpriteWorldSpace(SpriteSheet* spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace);
 
 		// if ever want to go back to isometric 
 

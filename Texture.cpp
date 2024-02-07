@@ -172,7 +172,7 @@ void Texture::CopyOpaque(Tmpl8::Surface* surface, int x, int y) const
 
 void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency)
 {
-	Tmpl8::Pixel* src = surface->GetBuffer();
+	Tmpl8::Pixel* src = m_buffer.get();
 	Tmpl8::Pixel* dst = surface->GetBuffer();
 
 	int dstWidth = surface->GetWidth();
@@ -197,15 +197,16 @@ void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, 
 	{
 		for (int x = 0; x < xMax - xMin; x++)
 		{
-			Tmpl8::Pixel c = src[y * (x2 - x1) + x]; // should be safe because it was clipped down
+			Tmpl8::Pixel c = src[(y1+y) * m_width + x + x1]; // should be safe because it was clipped down
 
 			if (!(c & 0xff000000) && useTransparency)
 				continue;
 
-			dst[yDst * dstWidth + xDst] = c;
+			dst[(y + yDst) * dstWidth + xDst + x] = c;
 			
 
 		}
+
 	}
 }
 

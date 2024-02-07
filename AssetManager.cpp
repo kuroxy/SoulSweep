@@ -14,13 +14,13 @@ namespace Engine
 				return tex;
 			}
 
-			printf("Texture:\"%s\" was unloaded", filename.c_str());
+			printf("Texture:\"%s\" was unloaded\n", filename.c_str());
 		}
 
 		return loadTexture(filename);
 	}
 
-	std::shared_ptr<SpriteSheet> AssetManager::getSpriteSheet(std::string filename, int spriteWidth, int spriteHeight)
+	std::shared_ptr<SpriteSheet> AssetManager::getSpriteSheet(std::string filename, int spriteWidth, int spriteHeight, Tmpl8::Pixel chroma)
 	{
 		auto sheet = m_spriteSheets.find(filename);
 
@@ -31,7 +31,7 @@ namespace Engine
 				return spriteSheet;
 			}
 
-			printf("SpriteSheet:\"%s\" was unloaded", filename.c_str());
+			printf("SpriteSheet:\"%s\" was unloaded\n", filename.c_str());
 		}
 
 		return loadSpriteSheet(filename, spriteWidth, spriteHeight);
@@ -41,7 +41,7 @@ namespace Engine
 	{
 		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(filename);
 		m_textures[filename] = newTexture; // this is ok because it gets converted to a weak_ptr
-		printf("Texture:\"%s\" is loaded", filename.c_str());
+		printf("Texture:\"%s\" is loaded\n", filename.c_str());
 		return newTexture;
 	}
 
@@ -49,7 +49,7 @@ namespace Engine
 	{
 		std::shared_ptr<SpriteSheet> newSpriteSheet = std::make_shared<SpriteSheet>(getTexture(filename), spriteWidth, spriteHeight);
 		m_spriteSheets[filename] = newSpriteSheet; // this is ok because it gets converted to a weak_ptr
-		printf("SpriteSheet:\"%s\" is loaded", filename.c_str());
+		printf("SpriteSheet:\"%s\" is loaded\n", filename.c_str());
 		return newSpriteSheet;
 	}
 

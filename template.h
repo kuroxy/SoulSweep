@@ -95,8 +95,8 @@ public:
 	float& operator [] ( const int idx ) { return cell[idx]; }
 	float length() const { return sqrtf( x * x + y * y ); }
 	float sqrLentgh() const { return x * x + y * y; }
-	vec2 normalized() const { float r = 1.0f / length(); return vec2( x * r, y * r ); }
-	void normalize() { float r = 1.0f / length(); x *= r; y *= r; }
+	vec2 normalized() const { float l = length(); if (l == 0) return vec2(0); float r = 1.0f / l; return vec2(x * r, y * r); }
+	void normalize() { float l = length(); if (l != 0) { float r = 1.0f / l; x *= r; y *= r; } }
 	static vec2 normalize( vec2 v ) { return v.normalized(); }
 	float dot( const vec2& operand ) const { return x * operand.x + y * operand.y; }
 };
