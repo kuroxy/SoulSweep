@@ -90,6 +90,8 @@ void Surface::Clear( Pixel a_Color )
 	for ( int i = 0; i < s; i++ ) m_Buffer[i] = a_Color;
 }
 
+
+
 void Surface::Centre( char* a_String, int y1, Pixel color )
 {
 	int x = (m_Width - (int)strlen( a_String ) * 6) / 2;
@@ -152,7 +154,7 @@ void Surface::Line( float x1, float y1, float x2, float y2, Pixel c )
 {
 	// clip (Cohen-Sutherland, https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)
 	const float xmin = 0, ymin = 0, xmax = ScreenWidth - 1, ymax = ScreenHeight - 1;
-	int c0 = LineOutCode( x1, y1, xmin, xmax, ymin, ymax ), c1 = LineOutCode( x2, y2, xmin, xmax, ymin, ymax);
+	int c0 = LineOutCode(x1, y1, xmin, xmax, ymin, ymax), c1 = LineOutCode(x2, y2, xmin, xmax, ymin, ymax);
 	bool accept = false;
 	while (1) 
 	{

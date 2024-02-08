@@ -19,8 +19,11 @@ public:
 
 	void draw(Engine::Camera& c, bool debug = false) const;
 
+	bool doesTileCollide(int x, int y) const;
 
-	
+	bool lineSegmentCollide(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) const;
+
+	bool lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2, Engine::Camera& c) const; // visual to view what LineSegmentCollision does. Should normally not be used.
 
 private:
 	std::shared_ptr<Engine::SpriteSheet> m_spriteSheet{ nullptr };

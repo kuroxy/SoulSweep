@@ -33,12 +33,12 @@ const Tmpl8::vec2 Camera::getPosition() const
 
 Tmpl8::vec2 Camera::worldToLocal(const Tmpl8::vec2& worldSpace) const
 {
-	return Tmpl8::vec2(worldSpace.x - m_position.x, worldSpace.y-m_position.y);
+	return Tmpl8::vec2((int)(worldSpace.x - m_position.x), (int)(worldSpace.y-m_position.y));
 }
 
 Tmpl8::vec2 Camera::localToWorld(const Tmpl8::vec2& localSpace) const
 {
-	return Tmpl8::vec2(localSpace.x + m_position.x, localSpace.y + m_position.y);
+	return Tmpl8::vec2((float)(int)localSpace.x + m_position.x, (float)(int)localSpace.y + m_position.y);
 }
 
 
@@ -131,7 +131,7 @@ void Camera::renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& WorldS
 
 void Camera::drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
 {
-	m_cameraBuffer->Line((float)x1, (float)y1, (float)x2, (float)y2, color);
+	m_cameraBuffer->Line(x1, y1, x2, y2, color);
 }
 
 void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
@@ -139,7 +139,7 @@ void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2&
 	vec2 local = worldToLocal(position1);
 	vec2 local2 = worldToLocal(position2);
 
-	m_cameraBuffer->Line(local.x, local.y, local2.x, local2.y, color);
+	m_cameraBuffer->Line((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, color);
 }
 
 void Camera::drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
@@ -158,7 +158,7 @@ void Camera::drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& 
 
 void Camera::drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments)
 {
-	float step = 2 * Tmpl8::PI / segments;
+	float step = 2 * Tmpl8::PI / (float)segments;
 
 	for (int i = 0; i < segments; i++)
 	{
@@ -185,16 +185,16 @@ void Camera::drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, T
 
 void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int x, int y, const Tmpl8::vec2& worldSpace)
 {
-	float localSpaceX = worldSpace.x - m_position.x;
-	float localSpaceY = worldSpace.y - m_position.y;;
+	int localSpaceX = (int)worldSpace.x - (int)m_position.x;
+	int localSpaceY = (int)worldSpace.y - (int)m_position.y;
 
-	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, (int)localSpaceX, (int)localSpaceY);
+	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, localSpaceX, localSpaceY);
 }
 
 void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace)
 {
-	int localSpaceX = worldSpace.x - m_position.x;
-	int localSpaceY = worldSpace.y - m_position.y;;
+	int localSpaceX = (int)worldSpace.x - (int)m_position.x;
+	int localSpaceY = (int)worldSpace.y - (int)m_position.y;
 
 	spritesheet->drawSprite(m_cameraBuffer.get(), spriteIndex, localSpaceX, localSpaceY);
 }

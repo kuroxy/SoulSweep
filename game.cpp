@@ -30,10 +30,15 @@ namespace Tmpl8
 
 	void Game::Init()
 	{
-		im.addKeyMap("forward", SDL_SCANCODE_W);
-		im.addKeyMap("backward", SDL_SCANCODE_S);
+		im.addKeyMap("up", SDL_SCANCODE_W);
+		im.addKeyMap("down", SDL_SCANCODE_S);
 		im.addKeyMap("left", SDL_SCANCODE_A);
 		im.addKeyMap("right", SDL_SCANCODE_D);
+
+		im.addKeyMap("debugup", SDL_SCANCODE_UP);
+		im.addKeyMap("debugdown", SDL_SCANCODE_DOWN);
+		im.addKeyMap("debugleft", SDL_SCANCODE_LEFT);
+		im.addKeyMap("debugright", SDL_SCANCODE_RIGHT);
 
 		//im.addMouseMap("left", SDL_BUTTON_LEFT);
 
@@ -48,7 +53,7 @@ namespace Tmpl8
 		mainSheet = std::make_shared<Engine::SpriteSheet>(sheetTexture, 31, 31);
 
 		tm = new Tilemap(mainSheet, 50, 50, 31, 31);
-		tm->setTile(4, 4, 2, false);
+		tm->setTile(5, 5, 0, true);
 	}
 
 	void Game::Shutdown()
@@ -69,9 +74,9 @@ namespace Tmpl8
 		//update / movement
 
 		vec2 dir{ 0 };
-		if (im.isActionPressed("forward"))
+		if (im.isActionPressed("up"))
 			dir.y -= 1.f;
-		if (im.isActionPressed("backward"))
+		if (im.isActionPressed("down"))
 			dir.y += 1.f;
 		if (im.isActionPressed("left"))
 			dir.x -= 1.f;
@@ -80,6 +85,20 @@ namespace Tmpl8
 
 		mainPlayer.move(dir, clampedDT);
 		
+
+		dir = vec2(0);
+		if (im.isActionPressed("debugup"))
+			dir.y -= 1.f;
+		if (im.isActionPressed("debugdown"))
+			dir.y += 1.f;
+		if (im.isActionPressed("debugleft"))
+			dir.x -= 1.f;
+		if (im.isActionPressed("debugright"))
+			dir.x += 1.f;
+
+		mainCamera.setPosition(mainCamera.getPosition() + dir * 20 * clampedDT);
+
+
 		for (auto& soul : souls)
 		{
 			soul.actionSelection(mainPlayer.getPosition());
@@ -92,9 +111,10 @@ namespace Tmpl8
 		tm->draw(mainCamera, true);
 		mainPlayer.draw(mainCamera, true);
 
+		tm->lineSegmentCollideDebug(mainPlayer.getPosition(), vec2(mouseX, mouseY), mainCamera);
 		for (auto& soul : souls)
 		{
-			soul.draw(mainCamera);
+			soul.draw(mainCamera, true);
 		}
 
 		mainCamera.renderToSurface(screen);

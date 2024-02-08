@@ -197,12 +197,15 @@ void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, 
 	{
 		for (int x = 0; x < xMax - xMin; x++)
 		{
-			Tmpl8::Pixel c = src[(y1+y) * m_width + x + x1]; // should be safe because it was clipped down
+			int srcPixelX = x1 + x - xDst + xMin;
+			int srcPixelY = y1 + y - yDst + yMin;
+
+			Tmpl8::Pixel c = src[srcPixelY * m_width + srcPixelX]; // should be safe because it was clipped down
 
 			if (!(c & 0xff000000) && useTransparency)
 				continue;
 
-			dst[(y + yDst) * dstWidth + xDst + x] = c;
+			dst[(y + yMin) * dstWidth + xMin + x] = c;
 			
 
 		}

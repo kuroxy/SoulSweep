@@ -56,7 +56,7 @@ public:
 	void Centre( char* a_String, int y1, Pixel color );
 	void Print( char* a_String, int x1, int y1, Pixel color );
 	void Clear( Pixel a_Color );
-	void Line( float x1, float y1, float x2, float y2, Pixel color );
+	void Line(float x1, float y1, float x2, float y2, Pixel c);
 	void Plot( int x, int y, Pixel c );
 	void LoadImage( char* a_File );
 	void CopyTo( Surface* a_Dst, int a_X, int a_Y );
