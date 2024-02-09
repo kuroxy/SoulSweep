@@ -38,6 +38,9 @@
     <ClCompile Include="Tilemap.cpp">
       <Filter>SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="aabb.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Tilemap.hpp">
       <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="aabb.hpp">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
