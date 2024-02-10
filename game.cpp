@@ -7,7 +7,7 @@
 #include "Soul.hpp"
 #include <SDL.h>
 #include "Tilemap.hpp"
-
+#include "aabb.hpp"
 
 namespace Tmpl8
 {
@@ -24,7 +24,7 @@ namespace Tmpl8
 
 	Tilemap* tm;
 
-	Player mainPlayer{ {0}, 10 };
+	Player mainPlayer{ {0.f}, 60.f, 20.f,20.f };
 
 	std::vector<Soul> souls;
 
@@ -39,6 +39,8 @@ namespace Tmpl8
 		im.addKeyMap("debugdown", SDL_SCANCODE_DOWN);
 		im.addKeyMap("debugleft", SDL_SCANCODE_LEFT);
 		im.addKeyMap("debugright", SDL_SCANCODE_RIGHT);
+
+		im.addMouseMap("leftmouse", SDL_BUTTON_LEFT);
 
 		//im.addMouseMap("left", SDL_BUTTON_LEFT);
 
@@ -73,20 +75,11 @@ namespace Tmpl8
 
 		//update / movement
 
-		vec2 dir{ 0 };
-		if (im.isActionPressed("up"))
-			dir.y -= 1.f;
-		if (im.isActionPressed("down"))
-			dir.y += 1.f;
-		if (im.isActionPressed("left"))
-			dir.x -= 1.f;
-		if (im.isActionPressed("right"))
-			dir.x += 1.f;
+		mainPlayer.handleInput(im);
 
-		mainPlayer.move(dir, clampedDT);
-		
+		mainPlayer.update(clampedDT, *tm);
 
-		dir = vec2(0);
+		vec2 dir = vec2(0);
 		if (im.isActionPressed("debugup"))
 			dir.y -= 1.f;
 		if (im.isActionPressed("debugdown"))
@@ -96,8 +89,14 @@ namespace Tmpl8
 		if (im.isActionPressed("debugright"))
 			dir.x += 1.f;
 
-		mainCamera.setPosition(mainCamera.getPosition() + dir * 20 * clampedDT);
+		mainCamera.setPosition(mainCamera.getPosition() + dir * 100 * clampedDT);
 
+
+		if (im.isActionPressed("leftmouse"))
+		{
+			vec2 grid = tm->worldToGrid(mainCamera.localToWorld(vec2(mouseX, mouseY)));
+			tm->setTile(grid.x, grid.y, 2, true);
+		}
 
 		for (auto& soul : souls)
 		{
@@ -108,13 +107,13 @@ namespace Tmpl8
 		// rendering
 		mainCamera.Fill(0);
 
-		tm->draw(mainCamera, true);
+		tm->draw(mainCamera);
 		mainPlayer.draw(mainCamera, true);
 
-		tm->lineSegmentCollideDebug(mainPlayer.getPosition(), vec2(mouseX, mouseY), mainCamera);
+	
 		for (auto& soul : souls)
 		{
-			soul.draw(mainCamera, true);
+			soul.draw(mainCamera, false);
 		}
 
 		mainCamera.renderToSurface(screen);

@@ -38,7 +38,7 @@ void Soul::actionSelection(Tmpl8::vec2 fleepos)
 	// prio 3: flee from player if soul has seen the player activate their vacuum (if in view)
 	// prio 4: wander+separation
 	
-	applyForce(flee(fleepos));
+	//applyForce(flee(fleepos));
 	applyForce(wander());
 
 }
@@ -67,7 +67,7 @@ Tmpl8::vec2 Soul::flee(Tmpl8::vec2 pos)
 
 void Soul::draw(Engine::Camera& c, bool debug)
 {
-	c.drawCircleWorldSpace(m_position, m_debugSize, 0x00ffff, 50);
+	c.drawCircleWorldSpace(m_position, m_debugSize, 0x00ffff, 10);
 
 	c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff);
 
