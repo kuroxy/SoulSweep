@@ -1,47 +1,71 @@
 #include "Player.hpp"
-#include "Config.hpp"
 #include "Camera.hpp"
+#include "Tilemap.hpp"
+#include "InputManager.hpp"
 
 using namespace Tmpl8;
 
-Player::Player(const Tmpl8::vec2& pos, float radius)
-	: m_position{ pos }
-	, m_direction{ 0 }
-	, m_collisionRadius{ radius }
-	, m_playerSpeed{ Config::playerSpeed }
+
+
+
+void Player::handleInput(const Engine::InputManager& im)
 {
+	m_direction = vec2(0);
+	if (im.isActionPressed("up"))
+		m_direction.y -= 1.f;
+	if (im.isActionPressed("down"))
+		m_direction.y += 1.f;
+	if (im.isActionPressed("left"))
+		m_direction.x -= 1.f;
+	if (im.isActionPressed("right"))
+		m_direction.x += 1.f;
+
+
 }
 
-const Tmpl8::vec2& Player::getPosition() const
+void Player::move(float deltaTime)
 {
-	return m_position;
-}
-
-void Player::setPosition(const Tmpl8::vec2& pos)
-{
-	m_position = pos;
-}
-
-void Player::move(const Tmpl8::vec2& direction, float deltaTime)
-{
-	float length = direction.length();
+	float length = m_direction.length();
 	if (length == 0)
 		return;
 
-	m_position.x += direction.x / length * deltaTime * m_playerSpeed;
-	m_position.y += direction.y / length * deltaTime * m_playerSpeed;
+	m_position.x += m_direction.x / length * deltaTime * m_playerSpeed;
+	m_position.y += m_direction.y / length * deltaTime * m_playerSpeed;
+	updateAABB();
 }
 
-
-float Player::getRadius() const
+void Player::update(float deltaTime, const Tilemap& tilemap)
 {
-	return m_collisionRadius;
+	move(deltaTime);
+
+	if (tilemap.boxCollide(m_collisionBox))
+	{
+		// there is a collisions
+		m_position+= tilemap.resolveBoxCollision(m_collisionBox, m_direction);
+		updateAABB();
+	}
+
+	if (tilemap.boxCollide(m_collisionBox)) // double collision check
+	{
+		m_position += tilemap.resolveBoxCollision(m_collisionBox, m_direction);
+		updateAABB();
+	}
+
 }
+
+
+
 
 void Player::draw(Engine::Camera& camera, bool debug)
 {
 	if (debug)
-		camera.drawCircleWorldSpace(m_position, m_collisionRadius, 0xff00ff, 20);
-
+		m_collisionBox.draw(camera, 0xff00ff);
+		
 	//draw sprite stuff
+}
+
+void Player::updateAABB()
+{
+	m_collisionBox.min = m_position;
+	m_collisionBox.max = m_position + vec2(m_width, m_height);
 }
