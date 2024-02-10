@@ -1,4 +1,7 @@
 #include "Tilemap.hpp"
+#include "Camera.hpp"
+#include "aabb.hpp"
+#include "Surface.h"
 #include <cmath>
 
 Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
@@ -38,6 +41,10 @@ void Tilemap::setTile(int x, int y, int tilemapIndex, bool collider)
 	m_mapCollision[index] = collider;
 }
 
+const Tmpl8::vec2& Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
+{
+	return Tmpl8::vec2((worldSpace.x-m_offset.x)/m_tileWidth, (worldSpace.y - m_offset.y) / m_tileWidth);
+}
 
 
 void Tilemap::draw(Engine::Camera& c, bool debug) const
@@ -139,6 +146,27 @@ bool Tilemap::lineSegmentCollide(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 	return false;
 }
 
+bool Tilemap::boxCollide(const Engine::AABB& box) const
+{
+	int minX = (box.min.x - m_offset.x) / m_tileWidth;
+	int minY = (box.min.y - m_offset.y) / m_tileWidth;
+
+	int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
+	int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+
+	for (int y = minY; y < maxY; y++)
+	{
+		for (int x = minX; x < maxX; x++)
+		{
+			if (doesTileCollide(x, y))
+				return true;
+		}
+	}
+
+
+	return false;
+}
+
 bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2, Engine::Camera& c) const
 {
 	// https://github.com/OneLoneCoder/Javidx9/blob/master/PixelGameEngine/SmallerProjects/OneLoneCoder_PGE_RayCastDDA.cpp
@@ -182,10 +210,12 @@ bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& 
 	float fDistance = 0.0f;
 	while (fDistance < fMaxDistance) {
 		Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileWidth, (int)vMapCheck.y * m_tileWidth) + m_offset;
-		c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0xff0000);
+		c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0x00ff00);
 
 		if (doesTileCollide((int)vMapCheck.x, (int)vMapCheck.y))
 		{
+			Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileWidth, (int)vMapCheck.y * m_tileWidth) + m_offset;
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0xff0000);
 			c.drawLineWorldSpace(p1, p2, 0xff0000);
 			return true;
 		}
@@ -208,4 +238,124 @@ bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& 
 	}
 	c.drawLineWorldSpace(p1, p2, 0x00ff00);
 	return false;
+}
+
+bool Tilemap::boxCollideDebug(const Engine::AABB& box, Engine::Camera& c) const
+{
+	int minX = (box.min.x - m_offset.x) / m_tileWidth;
+	int minY = (box.min.y - m_offset.y) / m_tileWidth;
+
+	int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
+	int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+
+	for (int y = minY; y < maxY; y++)
+	{
+		for (int x = minX; x < maxX; x++)
+		{
+			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileWidth, y * m_tileWidth) + m_offset;
+			if (doesTileCollide(x, y))
+			{
+
+				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0xff0000);
+				return true;
+			}
+
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0x00ff00);
+
+		}
+	}
+
+
+	return false;
+}
+
+// this function can definitely be made better
+Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::vec2 dir) const 
+{
+	{
+		Tmpl8::vec2 change{ 0 };
+
+		int minX = (box.min.x - m_offset.x) / m_tileWidth;
+		int minY = (box.min.y - m_offset.y) / m_tileWidth;
+
+		int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
+		int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+
+		for (int y = minY; y < maxY; y++)
+		{
+			for (int x = minX; x < maxX; x++)
+			{
+				if (doesTileCollide(x, y))
+				{
+					Tmpl8::vec2 min = Tmpl8::vec2(x * m_tileWidth + m_offset.x, y * m_tileWidth + m_offset.y);
+					Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(m_tileWidth - 1));
+
+
+					if (std::abs(dir.x) > std::abs(dir.y))
+					{
+
+						if (dir.x > 0)// we are going to the right so this means max.x = tile.min.
+						{
+							change.x = tileBox.min.x - box.width() - box.min.x-1;
+
+						}
+						else// we are going to the left so this means min.x = tile.max.x
+						{
+							change.x = tileBox.max.x - box.min.x+1;
+						}
+					}
+					else if (std::abs(dir.x) < std::abs(dir.y))
+					{
+
+						if (dir.y > 0)// we are going down so this means max.y = tile.min.y
+						{
+							change.y = tileBox.min.y - box.height() - box.min.y-1;
+
+						}
+						else// we are going up so this means min.y = tile.max.y
+						{
+							change.y = tileBox.max.y - box.min.y+1;
+						}
+					}
+					else
+					{
+						Tmpl8::vec2 centerdist = tileBox.center() - box.center();
+
+						if (centerdist.y * centerdist.y > centerdist.x * centerdist.x)
+						{
+							if (centerdist.y > 0) //top collision
+							{ 
+								change.y = tileBox.min.y - box.height() - box.min.y - 1;
+							}
+							else
+							{
+								change.y = tileBox.max.y - box.min.y + 1;
+							}
+
+						}
+						else
+						{
+							if (centerdist.x > 0) //top collision
+							{
+								change.x = tileBox.min.x - box.width() - box.min.x - 1;
+
+							}
+							else
+							{
+								change.x = tileBox.max.x - box.min.x + 1;
+							}
+						}
+
+						// now they are the same so probably checking based on center
+					}
+
+					return change;
+				}
+
+			}
+		}
+
+
+		return change;
+	}
 }
