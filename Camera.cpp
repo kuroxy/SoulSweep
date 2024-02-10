@@ -2,7 +2,7 @@
 #include "Texture.hpp"
 #include "SpriteSheet.hpp"
 #include <cstdio> //printf
-
+#include <cmath>
 
 using namespace Tmpl8;
 
@@ -33,7 +33,7 @@ const Tmpl8::vec2 Camera::getPosition() const
 
 Tmpl8::vec2 Camera::worldToLocal(const Tmpl8::vec2& worldSpace) const
 {
-	return Tmpl8::vec2((int)(worldSpace.x - m_position.x), (int)(worldSpace.y-m_position.y));
+	return Tmpl8::vec2(std::floor(worldSpace.x - m_position.x), std::floor(worldSpace.y-m_position.y));
 }
 
 Tmpl8::vec2 Camera::localToWorld(const Tmpl8::vec2& localSpace) const
@@ -131,7 +131,7 @@ void Camera::renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& WorldS
 
 void Camera::drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
 {
-	m_cameraBuffer->Line(x1, y1, x2, y2, color);
+	m_cameraBuffer->Line((float)x1, (float)y1, (float)x2, (float)y2, color);
 }
 
 void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
@@ -139,7 +139,7 @@ void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2&
 	vec2 local = worldToLocal(position1);
 	vec2 local2 = worldToLocal(position2);
 
-	m_cameraBuffer->Line((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, color);
+	m_cameraBuffer->Line(local.x, local.y, local2.x, local2.y, color);
 }
 
 void Camera::drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)

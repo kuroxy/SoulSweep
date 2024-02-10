@@ -102,12 +102,12 @@ void InputManager::setMousePos(int x, int y, const Camera& c)
 {
 	m_mouseX = x;
 	m_mouseY = y;
-	m_mouseWorld = c.localToWorld(Tmpl8::vec2(m_mouseX, m_mouseY));
+	m_mouseWorld = c.localToWorld(Tmpl8::vec2((float)m_mouseX, (float)m_mouseY));
 }
 
 void InputManager::update(const Camera& c)
 {
-	m_mouseWorld = c.localToWorld(Tmpl8::vec2(m_mouseX, m_mouseY)); // safety because camera can move without that mouseMove event is called, because the mouse didn't move. However the world mouse has.
+	m_mouseWorld = c.localToWorld(Tmpl8::vec2((float)m_mouseX, (float)m_mouseY)); // safety because camera can move without that mouseMove event is called, because the mouse didn't move. However the world mouse has.
 
 	for (auto& action : m_actionDown) {
 		action.second = false;
