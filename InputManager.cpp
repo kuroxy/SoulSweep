@@ -1,4 +1,5 @@
 #include "InputManager.hpp"
+#include "Camera.hpp"
 #include <cstdio>
 
 namespace Engine
@@ -97,8 +98,17 @@ void InputManager::handleKeyDown(int key)
 	}
 }
 
-void InputManager::clear()
+void InputManager::setMousePos(int x, int y, const Camera& c)
 {
+	m_mouseX = x;
+	m_mouseY = y;
+	m_mouseWorld = c.localToWorld(Tmpl8::vec2(m_mouseX, m_mouseY));
+}
+
+void InputManager::update(const Camera& c)
+{
+	m_mouseWorld = c.localToWorld(Tmpl8::vec2(m_mouseX, m_mouseY)); // safety because camera can move without that mouseMove event is called, because the mouse didn't move. However the world mouse has.
+
 	for (auto& action : m_actionDown) {
 		action.second = false;
 	}
@@ -107,7 +117,6 @@ void InputManager::clear()
 		action.second = false;
 	}
 }
-
 
 }
 

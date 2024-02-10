@@ -16,9 +16,6 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 
 
-	//Engine::AssetManager am;
-	Engine::Camera mainCamera{ ScreenWidth,ScreenHeight };
-
 	std::shared_ptr<Engine::Texture> sheetTexture;
 	std::shared_ptr<Engine::SpriteSheet> mainSheet;
 
@@ -30,6 +27,8 @@ namespace Tmpl8
 
 	void Game::Init()
 	{
+		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);
+
 		im.addKeyMap("up", SDL_SCANCODE_W);
 		im.addKeyMap("down", SDL_SCANCODE_S);
 		im.addKeyMap("left", SDL_SCANCODE_A);
@@ -94,7 +93,7 @@ namespace Tmpl8
 
 		if (im.isActionPressed("leftmouse"))
 		{
-			vec2 grid = tm->worldToGrid(mainCamera.localToWorld(vec2(mouseX, mouseY)));
+			vec2 grid = tm->worldToGrid(im.getWorldMouse());
 			tm->setTile(grid.x, grid.y, 2, true);
 		}
 
@@ -120,6 +119,6 @@ namespace Tmpl8
 
 
 
-		im.clear();
+		im.update(mainCamera);
 	}
 };
