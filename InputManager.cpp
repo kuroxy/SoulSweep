@@ -1,6 +1,5 @@
 #include "InputManager.hpp"
-#include <cassert>
-
+#include <cstdio>
 
 namespace Engine
 {
@@ -11,7 +10,7 @@ bool InputManager::isActionDown(const std::string& actionName) const
 	if (action != m_actionDown.end())
 		return action->second;
 
-	assert(false && "Key not found!"); 
+	printf("'%s', action not found!\n", actionName.c_str());
 	return false; 
 }
 
@@ -22,7 +21,7 @@ bool InputManager::isActionUp(const std::string& actionName) const
 	if (action != m_actionUp.end())
 		return action->second;
 
-	assert(false && "Key not found!"); 
+	printf("'%s', action not found!\n", actionName.c_str());
 	return false; 
 }
 
@@ -33,7 +32,7 @@ bool InputManager::isActionPressed(const std::string& actionName) const
 	if (action != m_actionPressed.end())
 		return action->second;
 
-	assert(false && "Key not found!");
+	printf("'%s', action not found!\n", actionName.c_str());
 	return false;
 }
 
