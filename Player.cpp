@@ -20,6 +20,8 @@ void Player::handleInput(const Engine::InputManager& im)
 	if (im.isActionPressed("right"))
 		m_direction.x += 1.f;
 
+	m_vacuumEnabled = im.isActionPressed("vacuum");
+	m_vacuumDirection = (im.getWorldMouse() - m_position).normalized();
 
 }
 
@@ -54,18 +56,37 @@ void Player::update(float deltaTime, const Tilemap& tilemap)
 }
 
 
+const Tmpl8::vec2& Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
+{
+	vec2 difference = m_position-pos;
+	vec2 forceDirection = difference.normalized();
+	float length = difference.length();
+
+	// reversed bc it is soul->player instead of player->soul
+	if (m_vacuumEnabled == false || forceDirection.dot(-m_vacuumDirection) < m_vacuumCone || length > m_maxVacuumDistance)
+	{
+		return vec2(0);
+	}
+
+	// using linear for now easiest.
+	return forceDirection * (m_maxVacuumForce * (length - m_maxVacuumDistance) / -m_maxVacuumDistance);
+
+}
 
 
 void Player::draw(Engine::Camera& camera, bool debug)
 {
 	if (debug)
 		m_collisionBox.draw(camera, 0xff00ff);
-		
+	
+	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : 0xff0000;
+	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
 	//draw sprite stuff
 }
 
 void Player::updateAABB()
 {
-	m_collisionBox.min = m_position;
-	m_collisionBox.max = m_position + vec2(m_width, m_height);
+	vec2 half = vec2(m_width / 2, m_height / 2);
+	m_collisionBox.min = m_position - half;
+	m_collisionBox.max = m_position + half;
 }

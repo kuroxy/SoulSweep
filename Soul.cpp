@@ -1,6 +1,6 @@
 #include "Soul.hpp"
 #include "Camera.hpp"
-
+#include "Player.hpp"
 
 Soul::Soul(const Tmpl8::vec2& pos)
 	: m_position{ pos }
@@ -21,7 +21,7 @@ void Soul::update(float dt)
 {
 
 	m_velocity += m_acceleration* dt;
-	m_velocity = m_velocity.normalized() * Tmpl8::Min<float>(m_maxForce, m_velocity.length());
+	m_velocity = m_velocity.normalized() * Tmpl8::Min<float>(m_maxSpeed, m_velocity.length());
 	
 	m_position += m_velocity* dt;
 	if (m_velocity.x != 0.f && m_velocity.y != 0.f)
@@ -43,13 +43,20 @@ void Soul::actionSelection(Tmpl8::vec2 fleepos)
 
 }
 
+void Soul::vacuum(const Player& player)
+{
+	Tmpl8::vec2 force = player.calculateVacuumForce(m_position);
+
+	m_acceleration += Tmpl8::vec2(force.x / m_mass, force.y / m_mass); // we ignore the max force restriction
+}
+
 Tmpl8::vec2 Soul::wander()
 {
 	float random = (Rand(2.f) - 1) / 2;
 	m_currentWanderAngle -= random* m_wanderRate;
 	
 
-	return (m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2(cos(m_currentWanderAngle), sin(m_currentWanderAngle))* m_wanderingStrength).normalized()*m_maxForce;
+	return (m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2((float)cos(m_currentWanderAngle), (float)sin(m_currentWanderAngle))* m_wanderingStrength).normalized()*m_maxForce;
 }
 
 Tmpl8::vec2 Soul::seek(Tmpl8::vec2 pos)
@@ -75,7 +82,7 @@ void Soul::draw(Engine::Camera& c, bool debug)
 	{
 		c.drawCircleWorldSpace(m_position + m_orientation * (2 * m_wanderingStrength), m_wanderingStrength, 0xff00ff, 20);
 
-		c.drawCircleWorldSpace(m_position + m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2(cos(m_currentWanderAngle), sin(m_currentWanderAngle)) * m_wanderingStrength, 2.f, 0xffffff, 10);
+		c.drawCircleWorldSpace(m_position + m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2((float)cos(m_currentWanderAngle), (float)sin(m_currentWanderAngle)) * m_wanderingStrength, 2.f, 0xffffff, 10);
 	}
 
 }

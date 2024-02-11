@@ -7,6 +7,7 @@ namespace Engine
 	class Camera;
 }
 
+class Player;
 
 
 class Soul
@@ -18,6 +19,8 @@ public:
 	void update(float dt);
 
 	void actionSelection(Tmpl8::vec2 fleepos);
+	void vacuum(const Player& player);
+
 	Tmpl8::vec2 wander();
 	Tmpl8::vec2 seek(Tmpl8::vec2 pos);
 	Tmpl8::vec2 flee(Tmpl8::vec2 pos);
@@ -34,7 +37,7 @@ private:
 
 	float m_mass{ 1.f };
 	float m_maxForce{ 20.f };
-	float m_maxSpeed{ 50.f };
+	float m_maxSpeed{ 1000.f };
 
 	float m_debugSize{ 10.f };
 

@@ -33,6 +33,8 @@ namespace Tmpl8
 		im.addKeyMap("down", SDL_SCANCODE_S);
 		im.addKeyMap("left", SDL_SCANCODE_A);
 		im.addKeyMap("right", SDL_SCANCODE_D);
+		im.addKeyMap("vacuum", SDL_SCANCODE_F);
+		im.addMouseMap("vacuum", SDL_BUTTON_LEFT);
 
 		im.addKeyMap("debugup", SDL_SCANCODE_UP);
 		im.addKeyMap("debugdown", SDL_SCANCODE_DOWN);
@@ -54,7 +56,7 @@ namespace Tmpl8
 		mainSheet = std::make_shared<Engine::SpriteSheet>(sheetTexture, 31, 31);
 
 		tm = new Tilemap(mainSheet, 50, 50, 31, 31);
-		tm->setTile(5, 5, 0, true);
+		tm->setTile(5, 5, 2, true);
 	}
 
 	void Game::Shutdown()
@@ -91,23 +93,30 @@ namespace Tmpl8
 		mainCamera.setPosition(mainCamera.getPosition() + dir * 100 * clampedDT);
 
 
-		if (im.isActionPressed("leftmouse"))
+		/*if (im.isActionPressed("leftmouse"))
 		{
 			vec2 grid = tm->worldToGrid(im.getWorldMouse());
 			tm->setTile(grid.x, grid.y, 2, true);
-		}
+		}*/
 
 		for (auto& soul : souls)
 		{
-			soul.actionSelection(mainPlayer.getPosition());
+			//soul.actionSelection(mainPlayer.getPosition());
+			soul.vacuum(mainPlayer);
 			soul.update(clampedDT);
 		}
 
 		// rendering
 		mainCamera.Fill(0);
 
+		
+
+		
+
 		tm->draw(mainCamera);
 		mainPlayer.draw(mainCamera, true);
+
+		vec2 a = im.getWorldMouse();
 
 	
 		for (auto& soul : souls)
