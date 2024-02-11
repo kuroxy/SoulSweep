@@ -3,16 +3,19 @@
 #include "aabb.hpp"
 #include "Surface.h"
 #include <cmath>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
 
-Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, int tileWidth, int tileHeight)
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight)
 	: m_spriteSheet{spriteSheet}
 	, m_offset{0}
 	, m_mapSprite{ new int[mapWidth* mapHeight] }
 	, m_mapCollision{ new bool[mapWidth*mapHeight]}
 	, m_mapWidth{ mapWidth }
 	, m_mapHeight{ mapHeight }
-	, m_tileWidth{ tileWidth }
-	, m_tileHeight{ tileHeight }
+	, m_tileSize{ spriteSheet->getSpriteWidth()}
 {
 	for (int i = 0; i < m_mapWidth * m_mapHeight; i++)
 	{
@@ -20,6 +23,62 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 		m_mapSprite[i] = 0;
 		m_mapCollision[i] = false;
 		
+	}
+	
+
+}
+
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision)
+	: m_spriteSheet{ spriteSheet }
+{
+	// big function
+	std::ifstream file(fileMap);
+	std::ifstream fileCol(fileCollision);
+	if (!file.is_open() || !fileCol.is_open()) {
+		std::cerr << "Error opening file!" << std::endl;
+	}
+
+	int lines = 0;
+	std::vector<int> mapData;
+	std::vector<int> colData;
+
+	std::string line;
+	while (std::getline(file, line)) {
+		lines++;
+		std::vector<int> row;
+		std::stringstream ss(line);
+
+		std::string cell;
+		while (std::getline(ss, cell, ',')) {
+			mapData.push_back(std::stoi(cell));
+		}
+
+	}
+
+	while (std::getline(fileCol, line)) {
+		std::stringstream ss(line);
+
+		std::string cell;
+		while (std::getline(ss, cell, ',')) {
+			colData.push_back(std::stoi(cell));
+		}
+	}
+	file.close();
+	fileCol.close();
+
+	
+	m_mapSprite = new int[mapData.size()];
+	m_mapCollision = new bool[mapData.size()];
+	m_mapWidth = mapData.size() / lines;
+	m_mapHeight = lines;
+	m_tileSize = spriteSheet->getSpriteWidth();
+
+	for (int i = 0; i < m_mapWidth * m_mapHeight; i++)
+	{
+
+		m_mapSprite[i] = mapData[i];
+		m_mapCollision[i] = colData[i]!=-1;
+
 	}
 }
 
@@ -43,7 +102,7 @@ void Tilemap::setTile(int x, int y, int tilemapIndex, bool collider)
 
 const Tmpl8::vec2& Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
 {
-	return Tmpl8::vec2((worldSpace.x-m_offset.x)/m_tileWidth, (worldSpace.y - m_offset.y) / m_tileWidth);
+	return Tmpl8::vec2((worldSpace.x-m_offset.x)/m_tileSize, (worldSpace.y - m_offset.y) / m_tileSize);
 }
 
 
@@ -53,7 +112,7 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 	{
 		for (int x = 0; x < m_mapWidth; x++)
 		{
-			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileWidth + m_offset.x, y * m_tileHeight + m_offset.y);
+			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
 			if (m_mapSprite[y * m_mapWidth + x] == 1)
 				int i = 3;
 
@@ -63,7 +122,7 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 
 			if (debug && m_mapCollision[y * m_mapWidth + x])
 			{
-				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(m_tileWidth-1), (int)(m_tileHeight-1)), 0xff0000);
+				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(m_tileSize-1), (int)(m_tileSize -1)), 0xff0000);
 			}
 		}
 	}
@@ -85,8 +144,8 @@ bool Tilemap::lineSegmentCollide(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 		// not written by me
 
 	Tmpl8::vec2 lineStart = (p1 - m_offset);
-	lineStart.x /= m_tileWidth;
-	lineStart.y /= m_tileWidth;
+	lineStart.x /= m_tileSize;
+	lineStart.y /= m_tileSize;
 
 	Tmpl8::vec2 dir = (p2 - p1).normalized();
 
@@ -118,7 +177,7 @@ bool Tilemap::lineSegmentCollide(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 	}
 
 	int i = 0;
-	float fMaxDistance = (p2 - p1).length() / m_tileWidth;
+	float fMaxDistance = (p2 - p1).length() / m_tileSize;
 	float fDistance = 0.0f;
 	while (fDistance < fMaxDistance) {
 
@@ -148,11 +207,11 @@ bool Tilemap::lineSegmentCollide(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 
 bool Tilemap::boxCollide(const Engine::AABB& box) const
 {
-	int minX = (box.min.x - m_offset.x) / m_tileWidth;
-	int minY = (box.min.y - m_offset.y) / m_tileWidth;
+	int minX = (box.min.x - m_offset.x) / m_tileSize;
+	int minY = (box.min.y - m_offset.y) / m_tileSize;
 
-	int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
-	int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+	int maxX = ceil((box.max.x - m_offset.x) / m_tileSize);
+	int maxY = ceil((box.max.y - m_offset.y) / m_tileSize);
 
 	for (int y = minY; y < maxY; y++)
 	{
@@ -173,8 +232,8 @@ bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& 
 	// not written by me
 
 	Tmpl8::vec2 lineStart = (p1 - m_offset);
-	lineStart.x /= m_tileWidth;
-	lineStart.y /= m_tileWidth;
+	lineStart.x /= m_tileSize;
+	lineStart.y /= m_tileSize;
 
 	Tmpl8::vec2 dir = (p2 - p1).normalized();
 
@@ -206,16 +265,16 @@ bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& 
 	}
 
 	int i = 0;
-	float fMaxDistance = (p2 - p1).length() / m_tileWidth;
+	float fMaxDistance = (p2 - p1).length() / m_tileSize;
 	float fDistance = 0.0f;
 	while (fDistance < fMaxDistance) {
-		Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileWidth, (int)vMapCheck.y * m_tileWidth) + m_offset;
-		c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0x00ff00);
+		Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileSize, (int)vMapCheck.y * m_tileSize) + m_offset;
+		c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1, m_tileSize - 1), 0x00ff00);
 
 		if (doesTileCollide((int)vMapCheck.x, (int)vMapCheck.y))
 		{
-			Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileWidth, (int)vMapCheck.y * m_tileWidth) + m_offset;
-			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0xff0000);
+			Tmpl8::vec2 drawpos = Tmpl8::vec2((int)vMapCheck.x * m_tileSize, (int)vMapCheck.y * m_tileSize) + m_offset;
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1, m_tileSize - 1), 0xff0000);
 			c.drawLineWorldSpace(p1, p2, 0xff0000);
 			return true;
 		}
@@ -242,25 +301,25 @@ bool Tilemap::lineSegmentCollideDebug(const Tmpl8::vec2& p1, const Tmpl8::vec2& 
 
 bool Tilemap::boxCollideDebug(const Engine::AABB& box, Engine::Camera& c) const
 {
-	int minX = (box.min.x - m_offset.x) / m_tileWidth;
-	int minY = (box.min.y - m_offset.y) / m_tileWidth;
+	int minX = (box.min.x - m_offset.x) / m_tileSize;
+	int minY = (box.min.y - m_offset.y) / m_tileSize;
 
-	int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
-	int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+	int maxX = ceil((box.max.x - m_offset.x) / m_tileSize);
+	int maxY = ceil((box.max.y - m_offset.y) / m_tileSize);
 
 	for (int y = minY; y < maxY; y++)
 	{
 		for (int x = minX; x < maxX; x++)
 		{
-			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileWidth, y * m_tileWidth) + m_offset;
+			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize, y * m_tileSize) + m_offset;
 			if (doesTileCollide(x, y))
 			{
 
-				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0xff0000);
+				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1, m_tileSize - 1), 0xff0000);
 				return true;
 			}
 
-			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileWidth - 1, m_tileHeight - 1), 0x00ff00);
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1, m_tileSize - 1), 0x00ff00);
 
 		}
 	}
@@ -275,11 +334,11 @@ Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::v
 	{
 		Tmpl8::vec2 change{ 0 };
 
-		int minX = (box.min.x - m_offset.x) / m_tileWidth;
-		int minY = (box.min.y - m_offset.y) / m_tileWidth;
+		int minX = (box.min.x - m_offset.x) / m_tileSize;
+		int minY = (box.min.y - m_offset.y) / m_tileSize;
 
-		int maxX = ceil((box.max.x - m_offset.x) / m_tileWidth);
-		int maxY = ceil((box.max.y - m_offset.y) / m_tileWidth);
+		int maxX = ceil((box.max.x - m_offset.x) / m_tileSize);
+		int maxY = ceil((box.max.y - m_offset.y) / m_tileSize);
 
 		for (int y = minY; y < maxY; y++)
 		{
@@ -287,8 +346,8 @@ Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::v
 			{
 				if (doesTileCollide(x, y))
 				{
-					Tmpl8::vec2 min = Tmpl8::vec2(x * m_tileWidth + m_offset.x, y * m_tileWidth + m_offset.y);
-					Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(m_tileWidth - 1));
+					Tmpl8::vec2 min = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
+					Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(m_tileSize - 1));
 
 
 					if (std::abs(dir.x) > std::abs(dir.y))

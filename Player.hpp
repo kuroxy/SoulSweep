@@ -39,8 +39,8 @@ public:
 	void move(float deltaTime);
 	void update(float deltaTime, const Tilemap& tilemap);
 
+	bool vacuumRange(const Tmpl8::vec2 pos) const;
 	const Tmpl8::vec2& calculateVacuumForce(const Tmpl8::vec2 pos) const;
-
 
 	void draw(Engine::Camera& camera, bool debug=false);
 

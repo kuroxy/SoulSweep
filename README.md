@@ -1,4 +1,4 @@
-# The Artifact
+# Soul Sweep
 
 Assets:
-https://scrabling.itch.io/pixel-isometric-tiles
+https://cainos.itch.io/pixel-art-top-down-basic

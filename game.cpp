@@ -21,12 +21,14 @@ namespace Tmpl8
 
 	Tilemap* tm;
 
-	Player mainPlayer{ {0.f}, 60.f, 20.f,20.f };
+	Player mainPlayer{ {100.f,100.f}, 60.f, 20.f,20.f };
 
 	std::vector<Soul> souls;
 
 	void Game::Init()
 	{
+		
+
 		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);
 
 		im.addKeyMap("up", SDL_SCANCODE_W);
@@ -47,16 +49,16 @@ namespace Tmpl8
 
 		for (int i = 0; i < 10; i++)
 		{
-			souls.push_back(Soul(Tmpl8::vec2(Rand(100)+100, Rand(100) + 100)));
+			souls.push_back(Soul(Tmpl8::vec2(Rand(100)+100, Rand(100) + 100), mainPlayer, *tm));
 		}
 
-		sheetTexture = std::make_shared<Engine::Texture>("assets/Tilesheet/bicubic.png");
+		sheetTexture = std::make_shared<Engine::Texture>("assets/large.png");
 		sheetTexture->setChromaKey(0xff00ff);
 
-		mainSheet = std::make_shared<Engine::SpriteSheet>(sheetTexture, 31, 31);
+		mainSheet = std::make_shared<Engine::SpriteSheet>(sheetTexture, 32, 32);
 
-		tm = new Tilemap(mainSheet, 50, 50, 31, 31);
-		tm->setTile(5, 5, 2, true);
+
+		tm = new Tilemap(mainSheet, "assets/map/mapLayer1.csv", "assets/map/mapLayer2.csv");
 	}
 
 	void Game::Shutdown()
@@ -101,19 +103,18 @@ namespace Tmpl8
 
 		for (auto& soul : souls)
 		{
-			//soul.actionSelection(mainPlayer.getPosition());
-			soul.vacuum(mainPlayer);
+			soul.actionSelection();
 			soul.update(clampedDT);
 		}
 
 		// rendering
-		mainCamera.Fill(0);
+		mainCamera.Fill(0x72751b);
 
 		
 
 		
 
-		tm->draw(mainCamera);
+		tm->draw(mainCamera, true);
 		mainPlayer.draw(mainCamera, true);
 
 		vec2 a = im.getWorldMouse();
@@ -121,7 +122,7 @@ namespace Tmpl8
 	
 		for (auto& soul : souls)
 		{
-			soul.draw(mainCamera, false);
+			soul.draw(mainCamera, true);
 		}
 
 		mainCamera.renderToSurface(screen);

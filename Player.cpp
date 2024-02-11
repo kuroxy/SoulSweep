@@ -56,6 +56,12 @@ void Player::update(float deltaTime, const Tilemap& tilemap)
 }
 
 
+bool Player::vacuumRange(const Tmpl8::vec2 pos) const
+{
+	vec2 difference = pos - m_position;
+	return (difference.normalized().dot(m_vacuumDirection) > m_vacuumCone && difference.length() < m_maxVacuumDistance);
+}
+
 const Tmpl8::vec2& Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 {
 	vec2 difference = m_position-pos;

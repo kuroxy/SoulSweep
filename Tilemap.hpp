@@ -2,7 +2,7 @@
 #include <memory>
 #include "SpriteSheet.hpp"
 #include "template.h"
-
+#include <string>
 
 // forward declaration
 namespace Engine
@@ -16,7 +16,14 @@ namespace Engine
 class Tilemap
 {
 public:
-	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, int tileWidth, int tileHeight);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision);
+
+	~Tilemap()
+	{
+		delete[] m_mapSprite;
+		delete[] m_mapCollision;
+	}
 
 	const Tmpl8::vec2& getPos() const;
 	void setPosition(const Tmpl8::vec2 newPos);
@@ -52,7 +59,6 @@ private:
 	int m_mapWidth;
 	int m_mapHeight;
 
-	int m_tileWidth;
-	int m_tileHeight;
+	int m_tileSize;
 
 };
