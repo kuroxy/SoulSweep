@@ -16,9 +16,9 @@ void Soul::applyForce(const Tmpl8::vec2& force)
 void Soul::update(float dt)
 {
 	bool vacuumed = vacuumUpdate();
-	
-	float maxVel = vacuumed ? m_maxSpeedVacuumed : m_maxSpeed;
 
+
+	float maxVel = vacuumed ? m_maxSpeedVacuumed : m_maxSpeed;
 
 	m_velocity += m_acceleration* dt;
 	m_velocity = m_velocity.normalized() * Tmpl8::Min<float>(maxVel, m_velocity.length());
@@ -45,7 +45,7 @@ void Soul::actionSelection()
 
 bool Soul::vacuumUpdate()
 {
-	Tmpl8::vec2 force = m_playerRef.calculateVacuumForce(m_position);
+	Tmpl8::vec2 force = m_playerPtr->calculateVacuumForce(m_position);
 	
 	m_acceleration += Tmpl8::vec2(force.x / m_mass, force.y / m_mass); // we ignore the max force restriction
 
@@ -77,7 +77,7 @@ Tmpl8::vec2 Soul::flee(Tmpl8::vec2 pos)
 
 void Soul::draw(Engine::Camera& c, bool debug)
 {
-	c.drawCircleWorldSpace(m_position, m_debugSize, 0x00ffff, 10); // body
+	c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
 
 	c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff); // direction line
 

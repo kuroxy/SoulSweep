@@ -7,7 +7,7 @@
 #include "Soul.hpp"
 #include <SDL.h>
 #include "Tilemap.hpp"
-#include "aabb.hpp"
+#include "SoulManager.hpp"
 
 namespace Tmpl8
 {
@@ -23,7 +23,7 @@ namespace Tmpl8
 
 	Player mainPlayer{ {100.f,100.f}, 60.f, 20.f,20.f };
 
-	std::vector<Soul> souls;
+	SoulManager* soulManager;
 
 	void Game::Init()
 	{
@@ -47,10 +47,7 @@ namespace Tmpl8
 
 		//im.addMouseMap("left", SDL_BUTTON_LEFT);
 
-		for (int i = 0; i < 10; i++)
-		{
-			souls.push_back(Soul(Tmpl8::vec2(Rand(100)+100, Rand(100) + 100), mainPlayer, *tm));
-		}
+		
 
 		sheetTexture = std::make_shared<Engine::Texture>("assets/large.png");
 		sheetTexture->setChromaKey(0xff00ff);
@@ -59,6 +56,13 @@ namespace Tmpl8
 
 
 		tm = new Tilemap(mainSheet, "assets/map/mapLayer1.csv", "assets/map/mapLayer2.csv");
+		soulManager = new SoulManager(&mainPlayer, tm);
+
+		for (int i = 0; i < 10; i++)
+		{
+			soulManager->spawnSoul(Tmpl8::vec2(Rand(100.f) + 100.f, Rand(100.f) + 100.f));
+		}
+
 	}
 
 	void Game::Shutdown()
@@ -101,11 +105,7 @@ namespace Tmpl8
 			tm->setTile(grid.x, grid.y, 2, true);
 		}*/
 
-		for (auto& soul : souls)
-		{
-			soul.actionSelection();
-			soul.update(clampedDT);
-		}
+		soulManager->updateSouls(clampedDT);
 
 		// rendering
 		mainCamera.Fill(0x72751b);
@@ -115,15 +115,13 @@ namespace Tmpl8
 		
 
 		tm->draw(mainCamera, true);
+
 		mainPlayer.draw(mainCamera, true);
 
 		vec2 a = im.getWorldMouse();
 
 	
-		for (auto& soul : souls)
-		{
-			soul.draw(mainCamera, true);
-		}
+		soulManager->renderSouls(mainCamera);
 
 		mainCamera.renderToSurface(screen);
 

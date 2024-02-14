@@ -83,7 +83,11 @@ const Tmpl8::vec2& Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 void Player::draw(Engine::Camera& camera, bool debug)
 {
 	if (debug)
+	{
 		m_collisionBox.draw(camera, 0xff00ff);
+		camera.drawCircleWorldSpace(m_position, m_collectRadius, 0xffffff);
+	}
+		
 	
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : 0xff0000;
 	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);

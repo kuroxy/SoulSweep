@@ -22,11 +22,16 @@ public:
 		, m_width{ width }
 		, m_height{ height }
 	{
+		updateAABB();
 	}
 
 
 	const Tmpl8::vec2& getPosition() const { return m_position; }
 	void setPosition(const Tmpl8::vec2& pos) { m_position = pos; updateAABB(); }
+
+	bool canCollectSoul() const { return m_currentSouls < m_maxSouls; }
+	void collectSoul() { m_currentSouls = Tmpl8::Min<int>(m_currentSouls + 1, m_maxSouls); }
+	float getCollectRadius() const { return m_collectRadius; }
 
 	const Engine::AABB& getAABB() const { return m_collisionBox; }
 	float getWidth() const { return m_width; }
@@ -58,6 +63,10 @@ private:
 	bool m_vacuumEnabled = false;
 	Tmpl8::vec2 m_vacuumDirection{ 1,0 };
 	float m_vacuumCone = .86f; // cone angle you can calculate by cos(angle) 
+
+	float m_collectRadius{ 12 };
+	int m_maxSouls{ 5 };
+	int m_currentSouls{ 0 };
 
 	float m_maxVacuumForce = 1500.f;
 	float m_maxVacuumDistance = 150.f;

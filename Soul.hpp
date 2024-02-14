@@ -9,20 +9,20 @@ namespace Engine
 	class Camera;
 }
 
-class Player;
-
 
 class Soul
 {
 public:
-	Soul(const Tmpl8::vec2& pos, const Player& player, const Tilemap& tilemap)
+	Soul(const Tmpl8::vec2& pos, const Player* player, const Tilemap* tilemap)
 		: m_position{ pos }
-		, m_playerRef{ player }
-		, m_tileMapRef{ tilemap }
+		, m_playerPtr{ player }
+		, m_tileMapPtr{ tilemap }
 	{
 	}
 
 	const Tmpl8::vec2 getPosition() const { return m_position; };
+
+	float getCollectRadius() const { return m_collectRadius; }
 
 	void applyForce(const Tmpl8::vec2& force); // maybe can be private
 
@@ -51,15 +51,15 @@ private:
 	float m_maxSpeed{ 40.f };
 	float m_maxSpeedVacuumed{ 1000.f };
 
-	float m_debugSize{ 10.f };
+	float m_collectRadius{ 10.f };
 
 	// wander
 	float m_wanderingStrength{ 100.f };
 	float m_currentWanderAngle{ 0.f };
 	float m_wanderRate{ .3f };
 
-	const Player& m_playerRef; // this <-- is it ok?
-	const Tilemap& m_tileMapRef;
+	const Player* m_playerPtr; 
+	const Tilemap* m_tileMapPtr;
 
 
 

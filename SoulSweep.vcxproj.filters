@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="aabb.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheet.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="template.cpp">
+      <Filter>Tmpl8</Filter>
+    </ClCompile>
+    <ClCompile Include="surface.cpp">
+      <Filter>Tmpl8</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="Soul.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="SoulManager.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="aabb.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheet.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="template.h">
+      <Filter>Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="surface.h">
+      <Filter>Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Soul.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="SoulManager.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="_readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{43161c7d-34b5-48e8-92e7-6587ce2d2329}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SoulSweep">
+      <UniqueIdentifier>{6c54b4fd-c324-4215-88f8-0bad6fe92ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tmpl8">
+      <UniqueIdentifier>{ef39ef9c-ecfe-4d4b-8918-c91d15563dab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

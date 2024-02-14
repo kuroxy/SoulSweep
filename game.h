@@ -24,8 +24,10 @@ public:
 	void KeyDown(int key) { im.handleKeyDown(key); }
 private:
 	Surface* screen;
+
 	Engine::InputManager im;
 	Engine::Camera mainCamera{ ScreenWidth, ScreenHeight};
+
 };
 
 }; // namespace Tmpl8

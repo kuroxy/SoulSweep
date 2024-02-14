@@ -69,7 +69,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string f
 	
 	m_mapSprite = new int[mapData.size()];
 	m_mapCollision = new bool[mapData.size()];
-	m_mapWidth = mapData.size() / lines;
+	m_mapWidth = (int)mapData.size() / lines;
 	m_mapHeight = lines;
 	m_tileSize = spriteSheet->getSpriteWidth();
 

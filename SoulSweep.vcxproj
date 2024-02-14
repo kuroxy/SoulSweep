@@ -231,6 +231,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Soul.cpp" />
+    <ClCompile Include="SoulManager.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Soul.hpp" />
+    <ClInclude Include="SoulManager.hpp" />
     <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
