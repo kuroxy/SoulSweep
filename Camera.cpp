@@ -53,6 +53,12 @@ void Camera::Fill(Tmpl8::Pixel c)
 	m_cameraBuffer->Clear(c);
 }
 
+void Camera::drawText(const std::string str, int x1, int y1, Tmpl8::Pixel color)
+{
+	m_cameraBuffer->Print(str.c_str(), x1, y1, color);
+}
+
+
 void Camera::renderToSurface(Tmpl8::Surface* surface, int scale, int xOffset, int yOffset) const
 {
 	if (scale <= 0)

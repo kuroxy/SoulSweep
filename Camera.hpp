@@ -2,7 +2,7 @@
 #include <memory>
 #include "template.h"
 #include "surface.h"
-
+#include <string>
 
 namespace Engine {
 
@@ -26,6 +26,8 @@ namespace Engine {
 		void setPosition(const Tmpl8::vec2& pos);
 
 		void Fill(Tmpl8::Pixel c);
+
+		void drawText(const std::string str, int x, int y, Tmpl8::Pixel color);
 
 
 		//Scaling before translationk, scale must be positive

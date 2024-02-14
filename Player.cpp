@@ -2,6 +2,8 @@
 #include "Camera.hpp"
 #include "Tilemap.hpp"
 #include "InputManager.hpp"
+#include <format>
+#include <string>
 
 using namespace Tmpl8;
 
@@ -62,7 +64,7 @@ bool Player::vacuumRange(const Tmpl8::vec2 pos) const
 	return (difference.normalized().dot(m_vacuumDirection) > m_vacuumCone && difference.length() < m_maxVacuumDistance);
 }
 
-const Tmpl8::vec2& Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
+const Tmpl8::vec2 Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 {
 	vec2 difference = m_position-pos;
 	vec2 forceDirection = difference.normalized();
@@ -91,7 +93,8 @@ void Player::draw(Engine::Camera& camera, bool debug)
 	
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : 0xff0000;
 	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
-	//draw sprite stuff
+	
+	camera.drawText(std::format("Souls: {} / {}", m_currentSouls, m_maxSouls), 10, 10, 0x00ffff);
 }
 
 void Player::updateAABB()
