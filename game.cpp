@@ -52,7 +52,7 @@ namespace Tmpl8
 		sheetTexture = std::make_shared<Engine::Texture>("assets/large.png");
 		sheetTexture->setChromaKey(0xff00ff);
 
-		mainSheet = std::make_shared<Engine::SpriteSheet>(sheetTexture, 32, 32);
+		mainSheet = std::make_shared<Engine::SpriteSheet>("assets/large.png", 32, 32, 0xff00ff);
 
 
 		tm = new Tilemap(mainSheet, "assets/map/mapLayer1.csv", "assets/map/mapLayer2.csv");
@@ -118,7 +118,6 @@ namespace Tmpl8
 
 		mainPlayer.draw(mainCamera, true);
 
-		vec2 a = im.getWorldMouse();
 
 	
 		soulManager->renderSouls(mainCamera);

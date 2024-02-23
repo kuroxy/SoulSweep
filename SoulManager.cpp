@@ -38,6 +38,8 @@ void SoulManager::updateSouls(float dt)
 
 void SoulManager::renderSouls(Engine::Camera& cam)
 {
+	
+
 	for (auto& soul : m_souls)
 	{
 		soul.draw(cam, true);

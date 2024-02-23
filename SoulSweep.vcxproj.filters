@@ -44,6 +44,9 @@
     <ClCompile Include="SoulManager.cpp">
       <Filter>SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="SoulSweep.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aabb.hpp">
@@ -84,6 +87,9 @@
     </ClInclude>
     <ClInclude Include="game.h" />
     <ClInclude Include="SoulManager.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="SoulSweep.hpp">
       <Filter>SoulSweep</Filter>
     </ClInclude>
   </ItemGroup>

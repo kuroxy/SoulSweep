@@ -2,14 +2,6 @@
 #include <cassert>
 
 
-Engine::SpriteSheet::SpriteSheet(std::shared_ptr<Texture> fullTexture, int spriteWidth, int spriteHeight)
-	: m_sheet{ fullTexture }
-	, m_cellWidth{ spriteWidth }
-	, m_cellHeight{ spriteHeight}
-	, m_columns{ m_sheet->getWidth() / spriteWidth }
-	, m_rows{ m_sheet->getHeight() / spriteHeight }
-{
-}
 
 int Engine::SpriteSheet::getSpriteWidth() const
 {
@@ -44,6 +36,7 @@ void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int 
 
 void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool useTransparency) const
 {
+	if (m_rows == 0 || m_columns == 0) return;
 	int x = spriteIndex % m_rows;
 	int y = spriteIndex / m_columns;
 

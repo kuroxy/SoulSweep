@@ -50,8 +50,8 @@ public:
 	void draw(Engine::Camera& camera, bool debug=false);
 
 private:
-	Tmpl8::vec2 m_position;
-	Tmpl8::vec2 m_direction; // last movedirection
+	Tmpl8::vec2 m_position{ 0 };
+	Tmpl8::vec2 m_direction{ 0 }; // last movedirection
 	float m_playerSpeed;
 	float m_width;
 	float m_height;
