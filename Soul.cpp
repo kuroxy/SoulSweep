@@ -13,9 +13,9 @@ void Soul::applyForce(const Tmpl8::vec2& force)
 
 
 
-void Soul::update(float dt)
+void Soul::update(float dt, const Player& player)
 {
-	bool vacuumed = vacuumUpdate();
+	bool vacuumed = vacuumUpdate(player);
 
 
 	float maxVel = vacuumed ? m_maxSpeedVacuumed : m_maxSpeed;
@@ -43,9 +43,9 @@ void Soul::actionSelection()
 
 }
 
-bool Soul::vacuumUpdate()
+bool Soul::vacuumUpdate(const Player& player)
 {
-	Tmpl8::vec2 force = m_playerPtr->calculateVacuumForce(m_position);
+	Tmpl8::vec2 force = player.calculateVacuumForce(m_position);
 	
 	m_acceleration += Tmpl8::vec2(force.x / m_mass, force.y / m_mass); // we ignore the max force restriction
 

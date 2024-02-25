@@ -7,7 +7,7 @@
 #include "Soul.hpp"
 #include <SDL.h>
 #include "Tilemap.hpp"
-#include "SoulManager.hpp"
+#include "SoulSweep.hpp"
 
 namespace Tmpl8
 {
@@ -16,14 +16,8 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 
 
-	std::shared_ptr<Engine::Texture> sheetTexture;
-	std::shared_ptr<Engine::SpriteSheet> mainSheet;
-
-	Tilemap* tm;
-
-	Player mainPlayer{ {100.f,100.f}, 60.f, 20.f,20.f };
-
-	SoulManager* soulManager;
+	
+	SoulSweep game = SoulSweep();
 
 	void Game::Init()
 	{
@@ -49,19 +43,8 @@ namespace Tmpl8
 
 		
 
-		sheetTexture = std::make_shared<Engine::Texture>("assets/large.png");
-		sheetTexture->setChromaKey(0xff00ff);
+		game.Initialize();
 
-		mainSheet = std::make_shared<Engine::SpriteSheet>("assets/large.png", 32, 32, 0xff00ff);
-
-
-		tm = new Tilemap(mainSheet, "assets/map/mapLayer1.csv", "assets/map/mapLayer2.csv");
-		soulManager = new SoulManager(&mainPlayer, tm);
-
-		for (int i = 0; i < 10; i++)
-		{
-			soulManager->spawnSoul(Tmpl8::vec2(Rand(100.f) + 100.f, Rand(100.f) + 100.f));
-		}
 
 	}
 
@@ -80,12 +63,6 @@ namespace Tmpl8
 		
 		float clampedDT = Min(deltaTime / 1000, .032f); // slowest is 30fps clamping solves more lag spike issues
 
-		//update / movement
-
-		mainPlayer.handleInput(im);
-
-		mainPlayer.update(clampedDT, *tm);
-
 		vec2 dir = vec2(0);
 		if (im.isActionPressed("debugup"))
 			dir.y -= 1.f;
@@ -99,33 +76,20 @@ namespace Tmpl8
 		mainCamera.setPosition(mainCamera.getPosition() + dir * 100 * clampedDT);
 
 
-		/*if (im.isActionPressed("leftmouse"))
-		{
-			vec2 grid = tm->worldToGrid(im.getWorldMouse());
-			tm->setTile(grid.x, grid.y, 2, true);
-		}*/
+		game.update(clampedDT, im);
 
-		soulManager->updateSouls(clampedDT);
 
 		// rendering
 		mainCamera.Fill(0x72751b);
 
 		
 
+		game.render(mainCamera);
+		mainCamera.renderToSurface(screen);
+	
 		
 
-		tm->draw(mainCamera, true);
-
-		mainPlayer.draw(mainCamera, true);
-
-
-	
-		soulManager->renderSouls(mainCamera);
-
-		mainCamera.renderToSurface(screen);
-
-
-
+		// update inputmanager for next keypresses
 		im.update(mainCamera);
 	}
 };

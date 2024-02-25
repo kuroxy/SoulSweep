@@ -12,14 +12,14 @@ namespace Config
 
 	constexpr Tmpl8::Pixel TERRAIN_CHROMA = 0xff00ff; // 0 for no chroma
 
-	// The csv for the map (just the namename like file is "assets/map/thismap.csv" then just "thismap")
+	// The csv for the map (just the namename like file is "assets/map/thismapL1.csv" then just "thismap")
 	constexpr std::string_view MAP_NAME = "map1";
 
 
 
 	// -- Player -- 
-	// the speed that the player goes in px/s
-	constexpr float PLAYER_SPEED = 60.f;
+	// the speed that the player goes in px/s 
+	constexpr float PLAYER_SPEED = 60.f; // TODO: player speed slows on having more souls
 
 	constexpr float PLAYER_SIZE = 20.f; // currently only a square player
 

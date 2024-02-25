@@ -13,10 +13,8 @@ namespace Engine
 class Soul
 {
 public:
-	Soul(const Tmpl8::vec2& pos, const Player* player, const Tilemap* tilemap)
+	Soul(const Tmpl8::vec2& pos)
 		: m_position{ pos }
-		, m_playerPtr{ player }
-		, m_tileMapPtr{ tilemap }
 	{
 	}
 
@@ -26,7 +24,7 @@ public:
 
 	void applyForce(const Tmpl8::vec2& force); // maybe can be private
 
-	void update(float dt);
+	void update(float dt, const Player& player);
 
 	void actionSelection();
 
@@ -38,7 +36,7 @@ private:
 	Tmpl8::vec2 wander();
 	Tmpl8::vec2 seek(Tmpl8::vec2 pos);
 	Tmpl8::vec2 flee(Tmpl8::vec2 pos);
-	bool vacuumUpdate(); // bit scuffed maybe looking later if I can clean this function up
+	bool vacuumUpdate(const Player& player);
 
 	Tmpl8::vec2 m_position{ 0 };
 	Tmpl8::vec2 m_velocity{ 0 };

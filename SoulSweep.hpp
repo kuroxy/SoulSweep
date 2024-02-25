@@ -20,10 +20,10 @@ class SoulSweep {
 	}
 	void loadMap(std::string_view mapName) 
 	{
-		std::string sprites = std::format("assets/map/{}1.csv", mapName);
-		std::string collision = std::format("assets/map/{}2.csv", mapName);
+		std::string sprites = std::format("assets/map/{}L1.csv", mapName);
+		std::string collision = std::format("assets/map/{}L2.csv", mapName);
 
-		terrainTileMap = Tilemap(spriteSheet, sprites, collision);
+		terrainTileMap = new Tilemap(spriteSheet, sprites, collision);
 	}
 
 
@@ -31,12 +31,13 @@ class SoulSweep {
 
 public:
 	SoulSweep() = default;
+	~SoulSweep() { delete mainPlayer; delete terrainTileMap; }
 
 	void Initialize()
 	{
 		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
 		loadMap(Config::MAP_NAME);
-		mainPlayer = Player({ 0 }, Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE); // player is square for now
+		mainPlayer = new Player(Tmpl8::vec2(0), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 	}
 
 	void update(float deltaTime, Engine::InputManager im);
@@ -45,19 +46,18 @@ public:
 
 	
 private:
-
 	std::shared_ptr<Engine::SpriteSheet> spriteSheet{ nullptr };
-	Tilemap terrainTileMap;
+	Tilemap* terrainTileMap{ nullptr };
 	
-	Player mainPlayer;
+	Player* mainPlayer{ nullptr };
 	
 
 	std::vector<Soul> souls;
 
 
 	//debug stuff
-	bool terrainDebug = false;
-	bool playerDebug = false;
+	bool terrainDebug = true;
+	bool playerDebug = true;
 	bool soulsDebug = false;
 
 };
