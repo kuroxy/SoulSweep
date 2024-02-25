@@ -6,6 +6,11 @@
 
 
 
+void SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
+{
+	souls.push_back(Soul(spawnPosition));
+}
+
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
 {
 	mainPlayer->handleInput(im);
@@ -20,6 +25,13 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 		it->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
 
 		// checks if soul can be collected
+		
+		if (soulConduit.contains(it->getPosition()))
+		{
+			collectedSouls++;
+			it = souls.erase(it);
+			continue; // we skip the ++it
+		}
 
 		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
 		{
@@ -45,8 +57,10 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 void SoulSweep::render(Engine::Camera& camera)
 {
 	// draw order
-	// terrain -> souls -> ?(monster) -> player -> ?(fog of war)
+	// terrain -> SoulConduit -> souls -> ?(monster) -> player -> ?(fog of war)
 	terrainTileMap->draw(camera, terrainDebug);
+	soulConduit.draw(camera, soulsConduitDebug);
+
 
 	for (auto& soul : souls)
 	{

@@ -55,11 +55,5 @@ private:
 	float m_wanderingStrength{ 100.f };
 	float m_currentWanderAngle{ 0.f };
 	float m_wanderRate{ .3f };
-
-	const Player* m_playerPtr; 
-	const Tilemap* m_tileMapPtr;
-
-
-
 };
 
