@@ -53,7 +53,7 @@ private:
 
 	// wander
 	float m_wanderingStrength{ 100.f };
-	float m_currentWanderAngle{ 0.f };
+	float m_currentWanderAngle{ Rand(2*Tmpl8::PI)};
 	float m_wanderRate{ .3f };
 };
 

@@ -31,6 +31,7 @@ public:
 
 	bool canCollectSoul() const { return m_currentSouls < m_maxSouls; }
 	void collectSoul() { m_currentSouls = Tmpl8::Min<int>(m_currentSouls + 1, m_maxSouls); }
+	void removeSoul() { m_currentSouls = Tmpl8::Max<int>(m_currentSouls - 1, 0); }
 	float getCollectRadius() const { return m_collectRadius; }
 
 	const Engine::AABB& getAABB() const { return m_collisionBox; }
@@ -38,6 +39,8 @@ public:
 	float getHeight() const { return m_height; }
 	const Tmpl8::vec2& getVacuumDirection() const { return m_vacuumDirection; }
 	bool isVacuumEnabled() const { return m_vacuumEnabled; }
+
+	bool shouldDropSoul() const { return m_currentSouls > 0 && m_dropSoul; }
 
 	void handleInput(const Engine::InputManager& im);
 
@@ -61,6 +64,7 @@ private:
 
 	
 	bool m_vacuumEnabled = false;
+	bool m_dropSoul = false;
 	Tmpl8::vec2 m_vacuumDirection{ 1,0 };
 	float m_vacuumCone = .86f; // cone angle you can calculate by cos(angle) 
 

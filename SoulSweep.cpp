@@ -6,9 +6,10 @@
 
 
 
-void SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
+Soul& SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
 {
 	souls.push_back(Soul(spawnPosition));
+	return souls.back();
 }
 
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
@@ -16,6 +17,12 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	mainPlayer->handleInput(im);
 
 	mainPlayer->update(deltaTime, *terrainTileMap); // handles collision
+
+	if (mainPlayer->shouldDropSoul())
+	{
+		mainPlayer->removeSoul();
+		spawnSoul(mainPlayer->getPosition());
+	}
 
 
 	// TODO: fix this shii up.

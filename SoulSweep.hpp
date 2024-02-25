@@ -47,7 +47,7 @@ public:
 		}
 	}
 
-	void spawnSoul(Tmpl8::vec2 spawnPosition);
+	Soul& spawnSoul(Tmpl8::vec2 spawnPosition);
 
 
 	void update(float deltaTime, Engine::InputManager im);
