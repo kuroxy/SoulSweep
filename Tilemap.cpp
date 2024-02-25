@@ -119,18 +119,21 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
 			c.renderSpriteWorldSpace(m_spriteSheet.get(), m_mapSprite[y * m_mapWidth + x], drawpos);
 			
+
+			// can be done better maybe a switch case to get the amount of darkener
+			// magic numbers?
+			// we do tilesize -1 because it is draw bar is inclusive while a tilewidth is not inclusive
 			switch (m_tileVisibiliy[y*m_mapWidth+x])
 			{
 
 			case Visibility::Unknown:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 255);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize-1), 200);
 				break;
-
 			case Visibility::Dark:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 100);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
 				break;
 			case Visibility::Dim:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 40);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 40);
 				break;
 			case Visibility::Light:
 				break;
