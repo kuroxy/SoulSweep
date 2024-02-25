@@ -29,6 +29,8 @@ namespace Engine {
 
 		void drawText(const std::string str, int x, int y, Tmpl8::Pixel color);
 
+		void darkenPixel(int x, int y, int amount);
+
 
 		//Scaling before translationk, scale must be positive
 		void renderToSurface(Tmpl8::Surface* surface, int scale = 1, int xOffset = 0, int yOffset = 0) const; 
@@ -44,23 +46,21 @@ namespace Engine {
 		void drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
 		void drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
 
+		void drawBar(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
+		void drawBarWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
+
+		void drawBarDarken(int x1, int y1, int x2, int y2, int amount);
+		void drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, int amount);
+
 		void drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments = 50);
 		void drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, Tmpl8::Pixel c, const int segments = 50);
 		
 		
 
-
 		void renderSpriteWorldSpace(SpriteSheet* spriteSheet,int x, int y, const Tmpl8::vec2& worldSpace);
 
 		void renderSpriteWorldSpace(SpriteSheet* spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace);
 
-		// if ever want to go back to isometric 
-
-		//Tmpl8::vec2 worldToIsometric(const Tmpl8::vec2& worldSpace) const;
-		//Tmpl8::vec2 isometricToWorld(const Tmpl8::vec2& isometricSpace) const;
-		//void renderTextureIsometric(Texture* texture, float xIsoSpace, float yIsoSpace);
-		//void renderTextureIsometric(Texture* texture, const Tmpl8::vec2& isoSpace);
-		//void renderSpriteIsometric(SpriteSheet* spriteSheet, int x, int y, const Tmpl8::vec2& isoSpace); // for isometric stuff
 
 
 	private:

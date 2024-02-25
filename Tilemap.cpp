@@ -12,7 +12,8 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 	: m_spriteSheet{spriteSheet}
 	, m_offset{0}
 	, m_mapSprite{ new int[mapWidth* mapHeight] }
-	, m_mapCollision{ new bool[mapWidth*mapHeight]}
+	, m_mapCollision{ new bool[mapWidth*mapHeight] }
+	, m_tileVisibiliy{ new Visibility[mapWidth * mapHeight] }
 	, m_mapWidth{ mapWidth }
 	, m_mapHeight{ mapHeight }
 	, m_tileSize{ spriteSheet->getSpriteWidth()}
@@ -22,7 +23,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 
 		m_mapSprite[i] = 0;
 		m_mapCollision[i] = false;
-		
+		m_tileVisibiliy[i] = Visibility::Unknown;
 	}
 	
 
@@ -70,6 +71,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string f
 	
 	m_mapSprite = new int[mapData.size()];
 	m_mapCollision = new bool[mapData.size()];
+	m_tileVisibiliy = new Visibility[mapData.size()];
 	m_mapWidth = (int)mapData.size() / lines;
 	m_mapHeight = lines;
 	m_tileSize = spriteSheet->getSpriteWidth();
@@ -79,6 +81,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string f
 
 		m_mapSprite[i] = mapData[i];
 		m_mapCollision[i] = colData[i]!=-1;
+		m_tileVisibiliy[i] = Visibility::Unknown;
 
 	}
 }
@@ -114,11 +117,26 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 		for (int x = 0; x < m_mapWidth; x++)
 		{
 			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
-			if (m_mapSprite[y * m_mapWidth + x] == 1)
-				int i = 3;
-
 			c.renderSpriteWorldSpace(m_spriteSheet.get(), m_mapSprite[y * m_mapWidth + x], drawpos);
+			
+			switch (m_tileVisibiliy[y*m_mapWidth+x])
+			{
 
+			case Visibility::Unknown:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 255);
+				break;
+
+			case Visibility::Dark:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 100);
+				break;
+			case Visibility::Dim:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize), 40);
+				break;
+			case Visibility::Light:
+				break;
+			default:
+				break;
+			}
 
 
 			if (debug && m_mapCollision[y * m_mapWidth + x])
@@ -129,6 +147,38 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 	}
 	
 }
+
+void Tilemap::updateVisibility(Tmpl8::vec2 worldSpace)
+{
+	Tmpl8::vec2 center = worldToGrid(worldSpace);
+
+	for (int y = 0; y < m_mapHeight; y++)
+	{
+		for (int x = 0; x < m_mapWidth; x++)
+		{
+			float dist = (center - Tmpl8::vec2(x, y)).sqrLentgh();
+			Visibility newVis = Visibility::Unknown;
+
+			if (dist < 5*5)
+				newVis = Visibility::Light;
+			else if (dist < 7*7)
+				newVis = Visibility::Dim;
+			else if (dist < 10*10)
+				newVis = Visibility::Dark;
+			else
+			{
+				if (m_tileVisibiliy[x + y * m_mapWidth] != Visibility::Unknown)
+					newVis = Visibility::Dark;
+				else
+					newVis = Visibility::Unknown;
+			}
+
+
+			m_tileVisibiliy[x + y * m_mapWidth] = newVis;
+		}
+	}
+}
+
 
 bool Tilemap::doesTileCollide(int x, int y) const
 {
