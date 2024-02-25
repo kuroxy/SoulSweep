@@ -25,12 +25,6 @@
     <ClCompile Include="surface.cpp">
       <Filter>Tmpl8</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>SoulSweep</Filter>
     </ClCompile>
@@ -41,7 +35,10 @@
       <Filter>SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="SoulManager.cpp">
+    <ClCompile Include="SoulSweep.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="SoulConduit.cpp">
       <Filter>SoulSweep</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +80,10 @@
       <Filter>SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="game.h" />
-    <ClInclude Include="SoulManager.hpp">
+    <ClInclude Include="SoulSweep.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="SoulConduit.hpp">
       <Filter>SoulSweep</Filter>
     </ClInclude>
   </ItemGroup>

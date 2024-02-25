@@ -6,9 +6,10 @@
 namespace Engine
 {
 
-Texture::Texture(const std::string& filename)
+Texture::Texture(std::string_view filename)
 {
-	const char* filecstr = filename.c_str();
+	std::string filstr = std::string{ filename };
+	const char* filecstr = filstr.c_str();
 	// thank you surface.h
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	fif = FreeImage_GetFileType(filecstr, 0);

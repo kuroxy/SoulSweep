@@ -66,6 +66,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string f
 	file.close();
 	fileCol.close();
 
+
 	
 	m_mapSprite = new int[mapData.size()];
 	m_mapCollision = new bool[mapData.size()];
@@ -100,7 +101,7 @@ void Tilemap::setTile(int x, int y, int tilemapIndex, bool collider)
 	m_mapCollision[index] = collider;
 }
 
-const Tmpl8::vec2& Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
+const Tmpl8::vec2 Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
 {
 	return Tmpl8::vec2((worldSpace.x-m_offset.x)/m_tileSize, (worldSpace.y - m_offset.y) / m_tileSize);
 }
@@ -319,7 +320,7 @@ bool Tilemap::boxCollideDebug(const Engine::AABB& box, Engine::Camera& c) const
 				return true;
 			}
 
-			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1, m_tileSize - 1), 0x00ff00);
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1.f, m_tileSize - 1.f), 0x00ff00);
 
 		}
 	}
@@ -334,11 +335,11 @@ Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::v
 	{
 		Tmpl8::vec2 change{ 0 };
 
-		int minX = (box.min.x - m_offset.x) / m_tileSize;
-		int minY = (box.min.y - m_offset.y) / m_tileSize;
+		int minX = (int)(box.min.x - m_offset.x) / m_tileSize;
+		int minY = (int)(box.min.y - m_offset.y) / m_tileSize;
 
-		int maxX = ceil((box.max.x - m_offset.x) / m_tileSize);
-		int maxY = ceil((box.max.y - m_offset.y) / m_tileSize);
+		int maxX = (int)ceil((box.max.x - m_offset.x) / m_tileSize);
+		int maxY = (int)ceil((box.max.y - m_offset.y) / m_tileSize);
 
 		for (int y = minY; y < maxY; y++)
 		{
@@ -347,7 +348,7 @@ Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::v
 				if (doesTileCollide(x, y))
 				{
 					Tmpl8::vec2 min = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
-					Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(m_tileSize - 1));
+					Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(m_tileSize - 1.f));
 
 
 					if (std::abs(dir.x) > std::abs(dir.y))

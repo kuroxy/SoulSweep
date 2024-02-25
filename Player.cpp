@@ -22,7 +22,8 @@ void Player::handleInput(const Engine::InputManager& im)
 	if (im.isActionPressed("right"))
 		m_direction.x += 1.f;
 
-	m_vacuumEnabled = im.isActionPressed("vacuum");
+	m_vacuumEnabled = im.isActionPressed("vacuum") && !im.isActionPressed("dropsoul");
+	m_dropSoul = im.isActionDown("dropsoul");
 	m_vacuumDirection = (im.getWorldMouse() - m_position).normalized();
 
 }
@@ -91,7 +92,7 @@ void Player::draw(Engine::Camera& camera, bool debug)
 	}
 		
 	
-	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : 0xff0000;
+	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
 	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
 	
 	camera.drawText(std::format("Souls: {} / {}", m_currentSouls, m_maxSouls), 10, 10, 0x00ffff);

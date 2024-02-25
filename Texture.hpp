@@ -9,7 +9,7 @@ namespace Engine {
 class Texture
 {
 public:
-	Texture(const std::string& filename);
+	Texture(std::string_view filename);
 	Texture(int width, int height, Tmpl8::Pixel color);
 
 	int getWidth() const;

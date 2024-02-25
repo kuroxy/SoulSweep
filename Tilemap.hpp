@@ -16,6 +16,7 @@ namespace Engine
 class Tilemap
 {
 public:
+	Tilemap() = default;
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision);
 
@@ -32,7 +33,7 @@ public:
 
 	void setTile(int x, int y, int tilemapIndex, bool collider = false);
 
-	const Tmpl8::vec2& worldToGrid(Tmpl8::vec2 worldSpace) const;
+	const Tmpl8::vec2 worldToGrid(Tmpl8::vec2 worldSpace) const;
 
 	void draw(Engine::Camera& c, bool debug = false) const;
 
@@ -53,12 +54,12 @@ private:
 
 	Tmpl8::vec2 m_offset{ 0 };
 
-	int* m_mapSprite;
-	bool* m_mapCollision;
+	int* m_mapSprite{ nullptr };
+	bool* m_mapCollision{ nullptr };
 
-	int m_mapWidth;
-	int m_mapHeight;
+	int m_mapWidth{ 0 };
+	int m_mapHeight{ 0 };
 
-	int m_tileSize;
+	int m_tileSize{ 0 };
 
 };

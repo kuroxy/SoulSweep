@@ -224,15 +224,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Entity.hpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Soul.cpp" />
-    <ClCompile Include="SoulManager.cpp" />
+    <ClCompile Include="SoulConduit.cpp" />
+    <ClCompile Include="SoulSweep.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
@@ -248,7 +247,8 @@
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Soul.hpp" />
-    <ClInclude Include="SoulManager.hpp" />
+    <ClInclude Include="SoulConduit.hpp" />
+    <ClInclude Include="SoulSweep.hpp" />
     <ClInclude Include="SpriteSheet.hpp" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="template.h" />
