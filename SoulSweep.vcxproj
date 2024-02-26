@@ -245,6 +245,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="Particle.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Soul.hpp" />
     <ClInclude Include="SoulConduit.hpp" />

@@ -86,6 +86,9 @@
     <ClInclude Include="SoulConduit.hpp">
       <Filter>SoulSweep</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
