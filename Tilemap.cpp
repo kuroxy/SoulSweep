@@ -159,7 +159,7 @@ void Tilemap::updateVisibility(Tmpl8::vec2 worldSpace)
 	{
 		for (int x = 0; x < m_mapWidth; x++)
 		{
-			float dist = (center - Tmpl8::vec2(x, y)).sqrLentgh();
+			float dist = (center - Tmpl8::vec2(x + .5f , y+.5f)).sqrLentgh();
 			Visibility newVis = Visibility::Unknown;
 
 			if (dist < 5*5)
