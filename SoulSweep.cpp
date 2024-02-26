@@ -25,6 +25,8 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	}
 
 
+	terrainTileMap->updateVisibility(mainPlayer->getPosition());
+
 	// TODO: fix this shii up.
 	for (std::vector<Soul>::iterator it = souls.begin(); it != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
 	{

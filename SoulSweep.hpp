@@ -71,7 +71,7 @@ private:
 
 
 	//debug stuff
-	bool terrainDebug = true;
+	bool terrainDebug = false;
 	bool playerDebug = true;
 	bool soulsDebug = false;
 	bool soulsConduitDebug = true;

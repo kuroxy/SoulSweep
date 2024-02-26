@@ -58,6 +58,20 @@ void Camera::drawText(const std::string str, int x1, int y1, Tmpl8::Pixel color)
 	m_cameraBuffer->Print(str.c_str(), x1, y1, color);
 }
 
+void Camera::darkenPixel(int x, int y, int amount)
+{
+	Tmpl8::Pixel color = m_cameraBuffer->GetBuffer()[x + y * m_cameraWidth];
+	int r = (color&0xff0000)>>16;
+	int g = (color&0x00ff00)>>8;
+	int b = color&0x0000ff;
+
+	r = Tmpl8::Clamp(r - amount, 0, 255);
+	g = Tmpl8::Clamp(g - amount, 0, 255);
+	b = Tmpl8::Clamp(b - amount, 0, 255);
+	color = (r << 16) | (g << 8) | b;
+	m_cameraBuffer->GetBuffer()[x + y * m_cameraWidth] = color;
+}
+
 
 void Camera::renderToSurface(Tmpl8::Surface* surface, int scale, int xOffset, int yOffset) const
 {
@@ -150,7 +164,7 @@ void Camera::drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2&
 
 void Camera::drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
 {
-	m_cameraBuffer->Box((int)x1, (int)y1, (int)x2, (int)y2, color);
+	m_cameraBuffer->Box(x1, y1, x2, y2, color);
 }
 
 void Camera::drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
@@ -158,6 +172,42 @@ void Camera::drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& 
 	vec2 local = worldToLocal(position1);
 	vec2 local2 = worldToLocal(position2);
 	m_cameraBuffer->Box((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, color);
+}
+
+void Camera::drawBar(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)
+{
+	m_cameraBuffer->Bar(x1, y1, x2, y2, color);
+}
+
+void Camera::drawBarWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color)
+{
+	vec2 local = worldToLocal(position1);
+	vec2 local2 = worldToLocal(position2);
+	m_cameraBuffer->Bar((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, color);
+}
+
+void Camera::drawBarDarken(int x1, int y1, int x2, int y2, int amount)
+{
+	x1 = Tmpl8::Clamp(x1, 0, m_cameraWidth - 1);
+	x2 = Tmpl8::Clamp(x2, 0, m_cameraWidth - 1);
+
+	y1 = Tmpl8::Clamp(y1, 0, m_cameraHeight - 1);
+	y2 = Tmpl8::Clamp(y2, 0, m_cameraHeight - 1);
+
+	for (int y = y1; y <= y2; y++)
+	{
+		for (int x = x1; x <= x2; x++)
+		{
+			darkenPixel(x, y, amount);
+		}
+	}
+}
+
+void Camera::drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, int amount)
+{
+	vec2 local = worldToLocal(position1);
+	vec2 local2 = worldToLocal(position2);
+	drawBarDarken((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, amount);
 }
 
 

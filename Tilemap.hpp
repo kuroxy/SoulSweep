@@ -13,9 +13,19 @@ namespace Engine
 
 
 
+
+
 class Tilemap
 {
 public:
+	enum class Visibility
+	{
+		Unknown,
+		Dark,
+		Dim,
+		Light
+	};
+
 	Tilemap() = default;
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision);
@@ -35,6 +45,8 @@ public:
 
 	const Tmpl8::vec2 worldToGrid(Tmpl8::vec2 worldSpace) const;
 
+
+	void updateVisibility(Tmpl8::vec2 worldspace);
 	void draw(Engine::Camera& c, bool debug = false) const;
 
 	bool doesTileCollide(int x, int y) const;
@@ -56,6 +68,7 @@ private:
 
 	int* m_mapSprite{ nullptr };
 	bool* m_mapCollision{ nullptr };
+	Visibility* m_tileVisibiliy{ nullptr };
 
 	int m_mapWidth{ 0 };
 	int m_mapHeight{ 0 };
