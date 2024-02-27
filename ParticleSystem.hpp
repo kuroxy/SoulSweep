@@ -39,11 +39,6 @@ namespace Engine
 		float sizeRangeStart{ 1.f };
 		float sizeRangeEnd{ 1.f };
 
-		// turbulence todo::: <--
-		float turbulenceStrength;
-		float turbulenceSpeed;
-		float turbulenceFrequency;
-
 	};
 
 

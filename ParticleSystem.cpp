@@ -68,16 +68,15 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
 
         int r = (parameters.colorRangeEnd.x -parameters.colorRangeStart.x) * lifeTimePercentage + parameters.colorRangeStart.x;
 
-        int g = (parameters.colorRangeEnd.x - parameters.colorRangeStart.x) * lifeTimePercentage + parameters.colorRangeStart.x;
+        int g = (parameters.colorRangeEnd.y - parameters.colorRangeStart.y) * lifeTimePercentage + parameters.colorRangeStart.y;
 
-        int b = (parameters.colorRangeEnd.x - parameters.colorRangeStart.x) * lifeTimePercentage + parameters.colorRangeStart.x;
+        int b = (parameters.colorRangeEnd.z - parameters.colorRangeStart.z) * lifeTimePercentage + parameters.colorRangeStart.z;
 
-        float transparency = Tmpl8::Clamp(lifeTimePercentage, parameters.transparencyStartTime, parameters.transparencyEndTime)- parameters.transparencyStartTime /(parameters.transparencyEndTime-parameters.transparencyStartTime); // .5,.1,.7
+        float transparency = (Tmpl8::Clamp(lifeTimePercentage, parameters.transparencyStartTime, parameters.transparencyEndTime)- parameters.transparencyStartTime) /(parameters.transparencyEndTime-parameters.transparencyStartTime); // .5,.1,.7
 
         transparency = transparency * (parameters.transparencyEndValue - parameters.transparencyStartValue) + parameters.transparencyStartValue;
 
-        particle.color = (((int)transparency*255) << 24) | (r << 16) | (g << 8) | b;
-
+        particle.color = (((int)(transparency*255.f)) << 24) | (r << 16) | (g << 8) | b;
     }
 }
 
