@@ -8,7 +8,7 @@
 
 Soul& SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
 {
-	souls.push_back(Soul(spawnPosition));
+	souls.push_back(Soul(spawnPosition, soulParticles));
 	return souls.back();
 }
 
@@ -30,7 +30,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 
 	terrainTileMap->updateVisibility(mainPlayer->getPosition());
 
-	// TODO: fix this shii up.
+	// TODO: maybe can clean this up?
 	for (std::vector<Soul>::iterator it = souls.begin(); it != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
 	{
 		it->actionSelection();

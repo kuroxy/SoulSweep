@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="game.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Soul.hpp" />
     <ClInclude Include="SoulConduit.hpp" />

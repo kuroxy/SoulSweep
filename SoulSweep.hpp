@@ -8,6 +8,7 @@
 #include <format>
 #include "Config.hpp"
 #include "SoulConduit.hpp"
+#include "ParticleSystem.hpp"
 
 namespace Engine
 {
@@ -28,7 +29,17 @@ class SoulSweep {
 		terrainTileMap = new Tilemap(spriteSheet, sprites, collision);
 	}
 
+	void setSoulParticleSystem()
+	{
+		soulParticles.spawnRate = .05f;
+		soulParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
 
+		soulParticles.sizeRangeStart = 10.f;
+
+		soulParticles.sizeRangeEnd = 3.f;
+
+		soulParticles.particleLifetime = 1.f;
+	}
 	
 
 public:
@@ -37,14 +48,18 @@ public:
 
 	void Initialize()
 	{
+		setSoulParticleSystem();
 		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
 		loadMap(Config::MAP_NAME);
 		mainPlayer = new Player(Tmpl8::vec2(200), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
-		for (int i = 0; i < 10; i++)
+		for(int i = 0; i < 100; i++)
 		{
-			spawnSoul(Tmpl8::vec2((float)i * 20.f + 100.f));
+
+			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300) + 200.f));
 		}
+		//spawnSoul(mainPlayer->getPosition());
+		
 	}
 
 	Soul& spawnSoul(Tmpl8::vec2 spawnPosition);
@@ -67,6 +82,7 @@ private:
 	SoulConduit soulConduit{ {50,50}, {100,100} };
 
 	std::vector<Soul> souls;
+	Engine::ParticleSystemParams soulParticles;
 
 
 
@@ -76,4 +92,5 @@ private:
 	bool soulsDebug = false;
 	bool soulsConduitDebug = true;
 
+	
 };

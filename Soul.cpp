@@ -29,6 +29,10 @@ void Soul::update(float dt, const Player& player)
 
 	m_acceleration=Tmpl8::vec2(0.0f);
 
+
+	particleSystem->setPosition(m_position);
+	particleSystem->updateParticles(dt);
+
 }
 
 void Soul::actionSelection()
@@ -77,12 +81,14 @@ Tmpl8::vec2 Soul::flee(Tmpl8::vec2 pos)
 
 void Soul::draw(Engine::Camera& c, bool debug)
 {
-	c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
 
-	c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff); // direction line
+	particleSystem->renderParticles(c);
+	c.drawFillCircleWorldSpace(m_position, m_collectRadius, 0xffffff, false);
 
 	if (debug)
 	{
+		c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
+		c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff); // direction line
 		// wanderCircles
 		//c.drawCircleWorldSpace(m_position + m_orientation * (2 * m_wanderingStrength), m_wanderingStrength, 0xff00ff, 20);
 
