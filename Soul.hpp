@@ -3,6 +3,7 @@
 #include "surface.h"
 #include "Player.hpp"
 #include "Tilemap.hpp"
+#include "ParticleSystem.hpp"
 
 namespace Engine
 {
@@ -13,8 +14,9 @@ namespace Engine
 class Soul
 {
 public:
-	Soul(const Tmpl8::vec2& pos)
+	Soul(const Tmpl8::vec2& pos, const Engine::ParticleSystemParams& particleParams)
 		: m_position{ pos }
+	, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100)}
 	{
 	}
 
@@ -55,5 +57,10 @@ private:
 	float m_wanderingStrength{ 100.f };
 	float m_currentWanderAngle{ Rand(2*Tmpl8::PI)};
 	float m_wanderRate{ .3f };
+
+
+	// visuals
+	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;
+
 };
 

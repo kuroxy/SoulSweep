@@ -8,7 +8,7 @@
 
 Soul& SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
 {
-	souls.push_back(Soul(spawnPosition));
+	souls.push_back(Soul(spawnPosition, soulParticles));
 	return souls.back();
 }
 
