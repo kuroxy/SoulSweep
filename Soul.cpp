@@ -77,7 +77,9 @@ Tmpl8::vec2 Soul::flee(Tmpl8::vec2 pos)
 
 void Soul::draw(Engine::Camera& c, bool debug)
 {
-	c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
+	//c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
+
+	c.drawFillCircleWorldSpace(m_position, m_collectRadius, 0x6400ffff, true);
 
 	c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff); // direction line
 

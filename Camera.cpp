@@ -237,7 +237,7 @@ void Camera::drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, T
 	drawCircle(local.x,local.y,radius,c,segments);
 }
 
-void Camera::drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color)
+void Camera::drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color, bool alpha)
 {
 	float sqrRadius = radius * radius;
 	Tmpl8::vec2 pos = Tmpl8::vec2(x, y);
@@ -256,7 +256,15 @@ void Camera::drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color)
 		{
 			float sqrDist = (Tmpl8::vec2(ix, iy) - pos).sqrLentgh();
 			if (sqrDist < sqrRadius)
-				m_cameraBuffer->GetBuffer()[ix + iy * m_cameraWidth] = color;
+			{
+				if (alpha)
+				{
+					m_cameraBuffer->GetBuffer()[ix + iy * m_cameraWidth] = BlendColor(m_cameraBuffer->GetBuffer()[ix + iy * m_cameraWidth], color);
+					continue;
+				}
+				m_cameraBuffer->GetBuffer()[ix + iy * m_cameraWidth] = color; // no alpha
+				
+			}
 
 		}
 	}
@@ -265,10 +273,10 @@ void Camera::drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color)
 
 }
 
-void Camera::drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color)
+void Camera::drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color, bool alpha)
 {
 	vec2 local = worldToLocal(position);
-	drawFillCircle(local.x, local.y, radius, color);
+	drawFillCircle(local.x, local.y, radius, color, alpha);
 }
 
 

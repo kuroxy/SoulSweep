@@ -54,10 +54,9 @@ namespace Engine {
 
 		void drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments = 50);
 		void drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, Tmpl8::Pixel c, const int segments = 50);
-		
-		void drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color);
-		void drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color);
 
+		void drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color, bool alpha=false);
+		void drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color, bool alpha=false);
 
 		void renderSpriteWorldSpace(SpriteSheet* spriteSheet,int x, int y, const Tmpl8::vec2& worldSpace);
 

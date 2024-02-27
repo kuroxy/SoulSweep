@@ -5,11 +5,26 @@
 
 namespace Tmpl8 {
 
-constexpr int RedMask = 0xff0000;
-constexpr int GreenMask = 0x00ff00;
-constexpr int BlueMask = 0x0000ff;
+constexpr int AlphaMask = 0xff000000;
+constexpr int RedMask = 0x00ff0000;
+constexpr int GreenMask = 0x0000ff00;
+constexpr int BlueMask = 0x000000ff;
 
 typedef unsigned int Pixel; // unsigned int is assumed to be 32-bit, which seems a safe assumption.
+
+
+inline Pixel BlendColor(Pixel dest, Pixel source)
+{
+	float alpha = ((source & AlphaMask) >> 24)/255.f;
+	float invAlpha = 1 - alpha;
+
+	unsigned int r = static_cast<int>(alpha * ((source & RedMask) >> 16) + invAlpha * ((dest & RedMask) >> 16));
+	unsigned int g = static_cast<int>(alpha * ((source & GreenMask) >> 8) + invAlpha * ((dest & GreenMask) >> 8));
+	unsigned int b = static_cast<int>(alpha * (source & BlueMask) + invAlpha * (dest & BlueMask));
+
+	return ((r<<16) | (g<<8) | b);
+}
+
 
 inline Pixel AddBlend( Pixel a_Color1, Pixel a_Color2 )
 {
