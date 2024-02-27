@@ -14,6 +14,9 @@ Soul& SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
 
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
 {
+	if (im.isActionDown("debugfogofwar"))
+		terrainTileMap->toggleFogOfWar();
+
 	mainPlayer->handleInput(im);
 
 	mainPlayer->update(deltaTime, *terrainTileMap); // handles collision

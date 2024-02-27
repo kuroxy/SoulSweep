@@ -123,23 +123,28 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 			// can be done better maybe a switch case to get the amount of darkener
 			// magic numbers?
 			// we do tilesize -1 because it is draw bar is inclusive while a tilewidth is not inclusive
-			switch (m_tileVisibiliy[y*m_mapWidth+x])
+			
+			if (fogOfWarEnabled)
 			{
+				switch (m_tileVisibiliy[y * m_mapWidth + x])
+				{
 
-			case Visibility::Unknown:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize-1), 200);
-				break;
-			case Visibility::Dark:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
-				break;
-			case Visibility::Dim:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 40);
-				break;
-			case Visibility::Light:
-				break;
-			default:
-				break;
+				case Visibility::Unknown:
+					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 200);
+					break;
+				case Visibility::Dark:
+					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
+					break;
+				case Visibility::Dim:
+					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 40);
+					break;
+				case Visibility::Light:
+					break;
+				default:
+					break;
+				}
 			}
+			
 
 
 			if (debug && m_mapCollision[y * m_mapWidth + x])
@@ -153,6 +158,9 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 
 void Tilemap::updateVisibility(Tmpl8::vec2 worldSpace)
 {
+	if (!fogOfWarEnabled)
+		return;
+
 	Tmpl8::vec2 center = worldToGrid(worldSpace);
 
 	for (int y = 0; y < m_mapHeight; y++)

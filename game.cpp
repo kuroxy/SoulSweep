@@ -38,6 +38,8 @@ namespace Tmpl8
 		im.addKeyMap("debugleft", SDL_SCANCODE_LEFT);
 		im.addKeyMap("debugright", SDL_SCANCODE_RIGHT);
 
+		im.addKeyMap("debugfogofwar", SDL_SCANCODE_Z);
+
 		im.addMouseMap("leftmouse", SDL_BUTTON_LEFT);
 
 		//im.addMouseMap("left", SDL_BUTTON_LEFT);

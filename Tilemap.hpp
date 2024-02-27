@@ -61,6 +61,10 @@ public:
 
 	bool boxCollideDebug(const Engine::AABB& box, Engine::Camera& c) const; // same as lineSegmentCollideDebug
 
+	void toggleFogOfWar() {
+		fogOfWarEnabled = !fogOfWarEnabled;
+	}
+
 private:
 	std::shared_ptr<Engine::SpriteSheet> m_spriteSheet{ nullptr };
 
@@ -75,4 +79,5 @@ private:
 
 	int m_tileSize{ 0 };
 
+	bool fogOfWarEnabled = false;
 };
