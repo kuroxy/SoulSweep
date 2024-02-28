@@ -36,8 +36,9 @@ class SoulSweep {
 
 		soulParticles.sizeRangeStart = 10.f;
 
-		soulParticles.sizeRangeEnd = 3.f;
-
+		soulParticles.sizeRangeEnd = 2.f;
+		
+		soulParticles.colorRangeEnd = Tmpl8::vec3(200.f);
 		soulParticles.particleLifetime = 1.f;
 	}
 	
@@ -53,7 +54,7 @@ public:
 		loadMap(Config::MAP_NAME);
 		mainPlayer = new Player(Tmpl8::vec2(200), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 5; i++)
 		{
 
 			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300) + 200.f));
