@@ -20,6 +20,8 @@ public:
 	{
 	}
 
+	void setVelocity(const Tmpl8::vec2& velocity) { m_velocity = velocity; }
+	
 	const Tmpl8::vec2 getPosition() const { return m_position; };
 
 	float getCollectRadius() const { return m_collectRadius; }

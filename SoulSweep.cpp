@@ -6,9 +6,10 @@
 
 
 
-Soul& SoulSweep::spawnSoul(Tmpl8::vec2 spawnPosition)
+Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity)
 {
 	souls.push_back(Soul(spawnPosition, soulParticles));
+	souls.back().setVelocity(initialVelocity);
 	return souls.back();
 }
 
@@ -24,7 +25,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	if (mainPlayer->shouldDropSoul())
 	{
 		mainPlayer->removeSoul();
-		spawnSoul(mainPlayer->getPosition());
+		spawnSoul(mainPlayer->getPosition(), mainPlayer->getVacuumDirection()*100.f);
 	}
 
 
