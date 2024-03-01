@@ -28,7 +28,7 @@ public:
 
 	Tilemap() = default;
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
-	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::string& fileMap, const std::string& fileCollision);
 
 	~Tilemap()
 	{
@@ -43,7 +43,7 @@ public:
 
 	void setTile(int x, int y, int tilemapIndex, bool collider = false);
 
-	const Tmpl8::vec2 worldToGrid(Tmpl8::vec2 worldSpace) const;
+	Tmpl8::vec2 worldToGrid(Tmpl8::vec2 worldSpace) const;
 
 
 	void updateVisibility(Tmpl8::vec2 worldspace);

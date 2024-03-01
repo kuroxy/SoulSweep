@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-bool InputManager::isActionDown(const std::string& actionName) const
+bool InputManager::isActionPressed(const std::string& actionName) const
 {
 	auto action = m_actionDown.find(actionName);
 
@@ -15,7 +15,7 @@ bool InputManager::isActionDown(const std::string& actionName) const
 	return false; 
 }
 
-bool InputManager::isActionUp(const std::string& actionName) const
+bool InputManager::isActionReleased(const std::string& actionName) const
 {
 	auto action = m_actionUp.find(actionName);
 
@@ -26,7 +26,7 @@ bool InputManager::isActionUp(const std::string& actionName) const
 	return false; 
 }
 
-bool InputManager::isActionPressed(const std::string& actionName) const
+bool InputManager::isActionHeld(const std::string& actionName) const
 {
 	auto action = m_actionPressed.find(actionName);
 
@@ -37,7 +37,7 @@ bool InputManager::isActionPressed(const std::string& actionName) const
 	return false;
 }
 
-void InputManager::addKeyMap(std::string actionName, int SDL_Scancode)
+void InputManager::addKeyMap(const std::string& actionName, int SDL_Scancode)
 {
 	m_keyMapping.insert({ SDL_Scancode,actionName });
 	m_actionDown[actionName] = false;
@@ -46,7 +46,7 @@ void InputManager::addKeyMap(std::string actionName, int SDL_Scancode)
 
 }
 
-void InputManager::addMouseMap(std::string actionName, int SDL_MouseButton)
+void InputManager::addMouseMap(const std::string& actionName, int SDL_MouseButton)
 {
 	m_mouseMapping.insert({ SDL_MouseButton,actionName });
 	m_actionDown[actionName] = false;

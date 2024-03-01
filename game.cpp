@@ -67,13 +67,13 @@ namespace Tmpl8
 		float clampedDT = Min(deltaTime / 1000, .032f); // slowest is 30fps clamping solves more lag spike issues
 
 		vec2 dir = vec2(0);
-		if (im.isActionPressed("debugup"))
+		if (im.isActionHeld("debugup"))
 			dir.y -= 1.f;
-		if (im.isActionPressed("debugdown"))
+		if (im.isActionHeld("debugdown"))
 			dir.y += 1.f;
-		if (im.isActionPressed("debugleft"))
+		if (im.isActionHeld("debugleft"))
 			dir.x -= 1.f;
-		if (im.isActionPressed("debugright"))
+		if (im.isActionHeld("debugright"))
 			dir.x += 1.f;
 
 		mainCamera.setPosition(mainCamera.getPosition() + dir * 100 * clampedDT);

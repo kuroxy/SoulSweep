@@ -13,17 +13,17 @@ using namespace Tmpl8;
 void Player::handleInput(const Engine::InputManager& im)
 {
 	m_direction = vec2(0);
-	if (im.isActionPressed("up"))
+	if (im.isActionHeld("up"))
 		m_direction.y -= 1.f;
-	if (im.isActionPressed("down"))
+	if (im.isActionHeld("down"))
 		m_direction.y += 1.f;
-	if (im.isActionPressed("left"))
+	if (im.isActionHeld("left"))
 		m_direction.x -= 1.f;
-	if (im.isActionPressed("right"))
+	if (im.isActionHeld("right"))
 		m_direction.x += 1.f;
 
-	m_vacuumEnabled = im.isActionPressed("vacuum") && !im.isActionPressed("dropsoul");
-	m_dropSoul = im.isActionDown("dropsoul");
+	m_vacuumEnabled = im.isActionHeld("vacuum") && !im.isActionHeld("dropsoul");
+	m_dropSoul = im.isActionPressed("dropsoul");
 	m_vacuumDirection = (im.getWorldMouse() - m_position).normalized();
 
 }

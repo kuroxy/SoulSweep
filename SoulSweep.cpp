@@ -15,7 +15,7 @@ Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& 
 
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
 {
-	if (im.isActionDown("debugfogofwar"))
+	if (im.isActionPressed("debugfogofwar"))
 		terrainTileMap->toggleFogOfWar();
 
 	mainPlayer->handleInput(im);
@@ -32,36 +32,37 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	terrainTileMap->updateVisibility(mainPlayer->getPosition());
 
 	// TODO: maybe can clean this up?
-	for (std::vector<Soul>::iterator it = souls.begin(); it != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
+	for (auto soulIter = souls.begin(); soulIter != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
 	{
-		it->actionSelection();
-		it->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
+		
+		soulIter->actionSelection();
+		soulIter->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
 
 		// checks if soul can be collected
 		
-		if (soulConduit.contains(it->getPosition()))
+		if (soulConduit.contains(soulIter->getPosition()))
 		{
 			collectedSouls++;
-			it = souls.erase(it);
+			soulIter = souls.erase(soulIter);
 			continue; // we skip the ++it
 		}
 
 		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
 		{
 			// calculate it the collect radius of the players hits the soul
-			float rad = mainPlayer->getCollectRadius() + it->getCollectRadius();
-			if ((mainPlayer->getPosition() - it->getPosition()).sqrLentgh() < rad * rad)
+			float rad = mainPlayer->getCollectRadius() + soulIter->getCollectRadius();
+			if ((mainPlayer->getPosition() - soulIter->getPosition()).sqrLentgh() < rad * rad)
 			{
 				mainPlayer->collectSoul();
 				// now need to remove 
 
-				it = souls.erase(it);
+				soulIter = souls.erase(soulIter);
 				continue; // we skip the ++it
 
 			}
 		}
 
-		++it;
+		++soulIter;
 
 	}
 

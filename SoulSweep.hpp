@@ -59,7 +59,6 @@ public:
 
 			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300.f) + 200.f), Tmpl8::vec2(0.f));
 		}
-		//spawnSoul(mainPlayer->getPosition());
 		
 	}
 

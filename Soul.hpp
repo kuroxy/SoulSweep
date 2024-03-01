@@ -50,7 +50,7 @@ private:
 
 	float m_mass{ 1.f };
 	float m_maxForce{ 20.f };
-	float m_maxSpeed{ 40.f };
+	float m_maxSpeed{ 30.f };
 	float m_maxSpeedVacuumed{ 1000.f };
 
 	float m_collectRadius{ 10.f };
@@ -58,7 +58,7 @@ private:
 	// wander
 	float m_wanderingStrength{ 100.f };
 	float m_currentWanderAngle{ Rand(2*Tmpl8::PI)};
-	float m_wanderRate{ .3f };
+	float m_wanderRate{ .5f };
 
 
 	// visuals

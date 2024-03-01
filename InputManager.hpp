@@ -6,19 +6,22 @@
 
 namespace Engine {
 
-	class Camera; // forward dec
+	class Camera; 
 
 	class InputManager
 	{
 	public:
 		InputManager() = default;
 
-		bool isActionDown(const std::string& actionName) const;
-		bool isActionUp(const std::string& actionName) const;
+		// isActionPressed is true on the the first frame where this action is pressed.
+		// isActionReleased is only true on the the frame where this action is released.
+		// isActionHeld is true when the button is down/held.
 		bool isActionPressed(const std::string& actionName) const;
+		bool isActionReleased(const std::string& actionName) const;
+		bool isActionHeld(const std::string& actionName) const;
 
-		void addKeyMap(std::string actionName, int SDL_Scancode); //https://wiki.libsdl.org/SDL2/SDLScancodeLookup
-		void addMouseMap(std::string actionName, int SDL_MouseButton); //https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent
+		void addKeyMap(const std::string&, int SDL_Scancode); //https://wiki.libsdl.org/SDL2/SDLScancodeLookup
+		void addMouseMap(const std::string&, int SDL_MouseButton); //https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent
 
 		void handleMouseUp(int button);
 		void handleMouseDown(int button);
@@ -38,7 +41,6 @@ namespace Engine {
 
 		std::unordered_map<std::string, bool> m_actionDown;
 		std::unordered_map<std::string, bool> m_actionUp;
-
 		std::unordered_map<std::string, bool> m_actionPressed;
 
 		int m_mouseX{ 0 };

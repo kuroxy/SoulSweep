@@ -29,7 +29,7 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 
 }
 
-Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string fileMap, std::string fileCollision)
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::string& fileMap, const std::string& fileCollision)
 	: m_spriteSheet{ spriteSheet }
 {
 	// big function
