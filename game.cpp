@@ -1,7 +1,6 @@
 #include "game.h"
 #include "surface.h"
 #include <cstdio> //printf
-#include "assetManager.hpp"
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "Soul.hpp"

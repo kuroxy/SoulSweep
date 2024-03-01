@@ -104,7 +104,7 @@ void Tilemap::setTile(int x, int y, int tilemapIndex, bool collider)
 	m_mapCollision[index] = collider;
 }
 
-const Tmpl8::vec2 Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
+Tmpl8::vec2 Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
 {
 	return Tmpl8::vec2((worldSpace.x-m_offset.x)/m_tileSize, (worldSpace.y - m_offset.y) / m_tileSize);
 }
