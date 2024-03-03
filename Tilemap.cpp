@@ -55,6 +55,8 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::st
 		}
 
 	}
+	file.close();
+
 
 	while (std::getline(fileCol, line)) {
 		std::stringstream ss(line);
@@ -64,7 +66,6 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::st
 			colData.push_back(std::stoi(cell));
 		}
 	}
-	file.close();
 	fileCol.close();
 
 
