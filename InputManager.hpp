@@ -16,12 +16,12 @@ namespace Engine {
 		// isActionPressed is true on the the first frame where this action is pressed.
 		// isActionReleased is only true on the the frame where this action is released.
 		// isActionHeld is true when the button is down/held.
-		bool isActionPressed(const std::string& actionName) const;
-		bool isActionReleased(const std::string& actionName) const;
-		bool isActionHeld(const std::string& actionName) const;
+		bool isActionPressed(std::string_view actionName) const;
+		bool isActionReleased(std::string_view actionName) const;
+		bool isActionHeld(std::string_view actionName) const;
 
-		void addKeyMap(const std::string&, int SDL_Scancode); //https://wiki.libsdl.org/SDL2/SDLScancodeLookup
-		void addMouseMap(const std::string&, int SDL_MouseButton); //https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent
+		void addKeyMap(std::string_view, int SDL_Scancode); //https://wiki.libsdl.org/SDL2/SDLScancodeLookup
+		void addMouseMap(std::string_view, int SDL_MouseButton); //https://wiki.libsdl.org/SDL2/SDL_MouseButtonEvent
 
 		void handleMouseUp(int button);
 		void handleMouseDown(int button);
@@ -39,9 +39,9 @@ namespace Engine {
 		std::unordered_multimap<int, std::string> m_keyMapping;
 		std::unordered_multimap<int, std::string> m_mouseMapping;
 
-		std::unordered_map<std::string, bool> m_actionDown;
-		std::unordered_map<std::string, bool> m_actionUp;
 		std::unordered_map<std::string, bool> m_actionPressed;
+		std::unordered_map<std::string, bool> m_actionReleased;
+		std::unordered_map<std::string, bool> m_actionHeld;
 
 		int m_mouseX{ 0 };
 		int m_mouseY{ 0 };

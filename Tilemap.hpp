@@ -28,7 +28,7 @@ public:
 
 	Tilemap() = default;
 	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
-	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::string& fileMap, const std::string& fileCollision);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision);
 
 	~Tilemap()
 	{

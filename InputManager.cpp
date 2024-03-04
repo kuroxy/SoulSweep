@@ -4,54 +4,57 @@
 
 namespace Engine
 {
-bool InputManager::isActionPressed(const std::string& actionName) const
+bool InputManager::isActionPressed(std::string_view actionName) const
 {
-	auto action = m_actionDown.find(actionName);
 
-	if (action != m_actionDown.end())
-		return action->second;
-
-	printf("'%s', action not found!\n", actionName.c_str());
-	return false; 
-}
-
-bool InputManager::isActionReleased(const std::string& actionName) const
-{
-	auto action = m_actionUp.find(actionName);
-
-	if (action != m_actionUp.end())
-		return action->second;
-
-	printf("'%s', action not found!\n", actionName.c_str());
-	return false; 
-}
-
-bool InputManager::isActionHeld(const std::string& actionName) const
-{
-	auto action = m_actionPressed.find(actionName);
+	auto action = m_actionPressed.find(std::string{ actionName });
 
 	if (action != m_actionPressed.end())
 		return action->second;
 
-	printf("'%s', action not found!\n", actionName.c_str());
+	printf("'%s', action not found!\n", actionName.data());
+	return false; 
+}
+
+bool InputManager::isActionReleased(std::string_view actionName) const
+{
+	auto action = m_actionReleased.find(std::string{ actionName });
+
+	if (action != m_actionReleased.end())
+		return action->second;
+
+	printf("'%s', action not found!\n", actionName.data());
+	return false; 
+}
+
+bool InputManager::isActionHeld(std::string_view actionName) const
+{
+	auto action = m_actionHeld.find(std::string{ actionName });
+
+	if (action != m_actionHeld.end())
+		return action->second;
+
+	printf("'%s', action not found!\n", actionName.data());
 	return false;
 }
 
-void InputManager::addKeyMap(const std::string& actionName, int SDL_Scancode)
+void InputManager::addKeyMap(std::string_view actionName, int SDL_Scancode)
 {
-	m_keyMapping.insert({ SDL_Scancode,actionName });
-	m_actionDown[actionName] = false;
-	m_actionUp[actionName] = false;
-	m_actionPressed[actionName] = false;
+	std::string action = std::string{ actionName };
+	m_keyMapping.insert({ SDL_Scancode, action });
+	m_actionPressed[action] = false;
+	m_actionReleased[action] = false;
+	m_actionHeld[action] = false;
 
 }
 
-void InputManager::addMouseMap(const std::string& actionName, int SDL_MouseButton)
+void InputManager::addMouseMap(std::string_view actionName, int SDL_MouseButton)
 {
-	m_mouseMapping.insert({ SDL_MouseButton,actionName });
-	m_actionDown[actionName] = false;
-	m_actionUp[actionName] = false;
-	m_actionPressed[actionName] = false;
+	std::string action = std::string{ actionName };
+	m_mouseMapping.insert({ SDL_MouseButton, action });
+	m_actionPressed[action] = false;
+	m_actionReleased[action] = false;
+	m_actionHeld[action] = false;
 }
 
 void InputManager::handleMouseUp(int button)
@@ -60,8 +63,8 @@ void InputManager::handleMouseUp(int button)
 
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
-		m_actionUp[it->second] = true;
-		m_actionPressed[it->second] = false;
+		m_actionReleased[it->second] = true;
+		m_actionHeld[it->second] = false;
 	}
 }
 
@@ -71,8 +74,8 @@ void InputManager::handleMouseDown(int button)
 
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
-		m_actionDown[it->second] = true;
 		m_actionPressed[it->second] = true;
+		m_actionHeld[it->second] = true;
 	}
 }
 
@@ -82,8 +85,8 @@ void InputManager::handleKeyUp(int key)
 
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
-		m_actionUp[it->second] = true;
-		m_actionPressed[it->second] = false;
+		m_actionReleased[it->second] = true;
+		m_actionHeld[it->second] = false;
 	}
 }
 
@@ -93,8 +96,8 @@ void InputManager::handleKeyDown(int key)
 
 	// Iterate over the range and perform some operation
 	for (auto it = range.first; it != range.second; ++it) {
-		m_actionDown[it->second] = true;
 		m_actionPressed[it->second] = true;
+		m_actionHeld[it->second] = true;
 	}
 }
 
@@ -109,11 +112,11 @@ void InputManager::update(const Camera& c)
 {
 	m_mouseWorld = c.localToWorld(Tmpl8::vec2((float)m_mouseX, (float)m_mouseY)); // safety because camera can move without that mouseMove event is called, because the mouse didn't move. However the world mouse has.
 
-	for (auto& action : m_actionDown) {
+	for (auto& action : m_actionPressed) {
 		action.second = false;
 	}
 
-	for (auto& action : m_actionUp) {
+	for (auto& action : m_actionReleased) {
 		action.second = false;
 	}
 }

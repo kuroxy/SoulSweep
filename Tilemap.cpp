@@ -29,12 +29,12 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 
 }
 
-Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, const std::string& fileMap, const std::string& fileCollision)
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision)
 	: m_spriteSheet{ spriteSheet }
 {
 	// big function
-	std::ifstream file(fileMap);
-	std::ifstream fileCol(fileCollision);
+	std::ifstream file(std::string{ fileMap });
+	std::ifstream fileCol(std::string{ fileCollision });
 	if (!file.is_open() || !fileCol.is_open()) {
 		std::cerr << "Error opening file!" << std::endl;
 	}
