@@ -41,6 +41,12 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Devourer.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMovement.cpp">
+      <Filter>SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aabb.hpp">
@@ -85,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.hpp">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Devourer.hpp">
+      <Filter>SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMovement.hpp">
+      <Filter>SoulSweep</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

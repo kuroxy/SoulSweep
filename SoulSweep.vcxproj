@@ -227,11 +227,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
+    <ClCompile Include="Devourer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="SimpleMovement.cpp" />
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="SoulConduit.cpp" />
     <ClCompile Include="SoulSweep.cpp" />
@@ -244,11 +246,13 @@
   <ItemGroup>
     <ClInclude Include="aabb.hpp" />
     <ClInclude Include="Config.hpp" />
+    <ClInclude Include="Devourer.hpp" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="SimpleMovement.hpp" />
     <ClInclude Include="Soul.hpp" />
     <ClInclude Include="SoulConduit.hpp" />
     <ClInclude Include="SoulSweep.hpp" />
