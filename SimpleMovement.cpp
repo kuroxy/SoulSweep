@@ -21,3 +21,13 @@ void SimpleMovement::draw(Engine::Camera& camera, Tmpl8::Pixel color)
 {
 	camera.drawFillCircleWorldSpace(position, 5, color, false);
 }
+
+Tmpl8::vec2 SimpleMovement::seek(Tmpl8::vec2 pos)
+{
+	return (pos - position).normalized() * maxForce;
+}
+
+Tmpl8::vec2 SimpleMovement::flee(Tmpl8::vec2 pos)
+{
+	return -seek(pos);
+}

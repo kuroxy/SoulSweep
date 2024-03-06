@@ -9,6 +9,7 @@
 #include "Config.hpp"
 #include "SoulConduit.hpp"
 #include "ParticleSystem.hpp"
+#include "Devourer.hpp"
 
 namespace Engine
 {
@@ -41,7 +42,21 @@ class SoulSweep {
 		soulParticles.colorRangeEnd = Tmpl8::vec3(200.f);
 		soulParticles.particleLifetime = 1.f;
 	}
-	
+
+	void setDevourerParticleSystem()
+	{
+		
+		devourerParticles.spawnRate = .05f;
+		devourerParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
+
+		devourerParticles.sizeRangeStart = 10.f;
+
+		devourerParticles.sizeRangeEnd = 2.f;
+
+		devourerParticles.colorRangeStart = Tmpl8::vec3(40.f, 15.f, 15.f);
+		devourerParticles.colorRangeEnd = Tmpl8::vec3(20.f, 5.f , 5.f);
+		devourerParticles.particleLifetime = 1.f;
+	}
 
 public:
 	SoulSweep() = default;
@@ -50,19 +65,21 @@ public:
 	void Initialize()
 	{
 		setSoulParticleSystem();
+		setDevourerParticleSystem();
 		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
 		loadMap(Config::MAP_NAME);
-		mainPlayer = new Player(Tmpl8::vec2(200), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
+		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
 		for(int i = 0; i < 5; i++)
 		{
-
 			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300.f) + 200.f), Tmpl8::vec2(0.f));
 		}
 		
+		spawnDevourer(Tmpl8::vec2(200.f, 200.f));
 	}
 
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);
+	Devourer& spawnDevourer(const Tmpl8::vec2& spawnPosition);
 
 
 	void update(float deltaTime, Engine::InputManager im);
@@ -79,10 +96,12 @@ private:
 	
 	Player* mainPlayer{ nullptr };
 	
-	SoulConduit soulConduit{ {50,50}, {100,100} };
+	SoulConduit soulConduit{ {50.f,50.f}, {100.f,100.f} };
 
 	std::vector<Soul> souls;
+	std::vector<Devourer> devourers;
 	Engine::ParticleSystemParams soulParticles;
+	Engine::ParticleSystemParams devourerParticles;
 
 
 
@@ -90,6 +109,7 @@ private:
 	bool terrainDebug = false;
 	bool playerDebug = true;
 	bool soulsDebug = false;
+	bool devourerDebug = false;
 	bool soulsConduitDebug = true;
 
 	

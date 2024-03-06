@@ -13,6 +13,8 @@ namespace Engine {
 class SimpleMovement {
 public:
 	SimpleMovement() = default;
+	SimpleMovement(const Tmpl8::vec2& pos)
+		: position{ pos } {}
 	SimpleMovement(const Tmpl8::vec2& pos, float maxSpeed, float maxForce, float mass=1.0f) 
 		: position{ pos }
 		, velocity { 0.f }
@@ -34,6 +36,7 @@ public:
 	void setMaxForce(float speed) { maxForce = speed; }
 
 	void setPosition(Tmpl8::vec2 pos) { position = pos; }
+	void setVelocity(Tmpl8::vec2 vel) { velocity = vel; }
 
 	void update(float deltaTime);
 
@@ -41,9 +44,11 @@ public:
 
 	void draw(Engine::Camera& camera, Tmpl8::Pixel color);
 
-	
+	// force calculations
+	Tmpl8::vec2 seek(Tmpl8::vec2 pos);
+	Tmpl8::vec2 flee(Tmpl8::vec2 pos);
 
-private:
+protected:
 	Tmpl8::vec2 position;
 	Tmpl8::vec2 velocity;
 	Tmpl8::vec2 acceleration;

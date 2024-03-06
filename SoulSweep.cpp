@@ -13,6 +13,13 @@ Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& 
 	return souls.back();
 }
 
+Devourer& SoulSweep::spawnDevourer(const Tmpl8::vec2& spawnPosition)
+{
+	devourers.push_back(Devourer(spawnPosition, devourerParticles));
+
+	return devourers.back();
+}
+
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
 {
 	if (im.isActionPressed("debugfogofwar"))
@@ -66,6 +73,14 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 
 	}
 
+
+	for (auto& devourer : devourers)
+	{
+		devourer.chooseBehavior(*terrainTileMap, *mainPlayer, souls);
+		devourer.actBehavior();
+		devourer.update(deltaTime);
+	}
+
 }
 
 void SoulSweep::render(Engine::Camera& camera)
@@ -79,6 +94,11 @@ void SoulSweep::render(Engine::Camera& camera)
 	for (auto& soul : souls)
 	{
 		soul.draw(camera, soulsDebug);
+	}
+
+	for (auto& devourer : devourers)
+	{
+		devourer.draw(camera, devourerDebug);
 	}
 
 	mainPlayer->draw(camera, playerDebug);
