@@ -41,17 +41,20 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	// TODO: maybe can clean this up?
 	for (auto soulIter = souls.begin(); soulIter != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
 	{
-		
+		bool removeSoul = false;
+
 		soulIter->actionSelection();
 		soulIter->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
 
+		// checks if soul already dead
+		if (soulIter->isEaten)
+			removeSoul = true;
+
+
 		// checks if soul can be collected
-		
 		if (soulConduit.contains(soulIter->getPosition()))
 		{
-			collectedSouls++;
-			soulIter = souls.erase(soulIter);
-			continue; // we skip the ++it
+			removeSoul = true;
 		}
 
 		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
@@ -63,13 +66,19 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 				mainPlayer->collectSoul();
 				// now need to remove 
 
-				soulIter = souls.erase(soulIter);
-				continue; // we skip the ++it
+				removeSoul = true;
 
 			}
 		}
 
+		if (removeSoul)
+		{
+			soulIter = souls.erase(soulIter);
+			continue;
+		}
+
 		++soulIter;
+		
 
 	}
 
@@ -77,7 +86,6 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	for (auto& devourer : devourers)
 	{
 		devourer.chooseBehavior(*terrainTileMap, *mainPlayer, souls);
-		devourer.actBehavior();
 		devourer.update(deltaTime);
 	}
 

@@ -34,7 +34,7 @@ public:
 
 	void draw(Engine::Camera& c, bool debug=false);
 
-
+	bool isEaten = false;
 private:
 
 	Tmpl8::vec2 wander();
@@ -60,6 +60,8 @@ private:
 	float m_currentWanderAngle{ Rand(2*Tmpl8::PI)};
 	float m_wanderRate{ .5f };
 
+
+	
 
 	// visuals
 	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;

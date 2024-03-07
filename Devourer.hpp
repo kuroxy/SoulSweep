@@ -17,12 +17,12 @@ public:
 	Devourer() : SimpleMovement() {}
 
 	Devourer(const Tmpl8::vec2& pos, const Engine::ParticleSystemParams& particleParams) 
-		: SimpleMovement(pos, 30, 20.f)
+		: SimpleMovement(pos, 50.f, 100.f)
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
-	void chooseBehavior(const Tilemap& map, const Player& player, const std::vector<Soul>& soulList);
+	void chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList);
 
-	void actBehavior();
+	void actBehavior(float deltaTime);
 
 	bool collideWithSoul(const Soul& soul) const;
 
@@ -51,7 +51,7 @@ private:
 
 	// ConsumingSoul info
 	Soul* consumingSoulPtr{ nullptr };
-	float consumingSoulTime{ 1.f }; // this is the time that it takes to consume the soul. In this time the Devourer nor the soul will move.
+	float consumingSoulTime{ 2.f }; // this is the time that it takes to consume the soul. In this time the Devourer nor the soul will move.
 	float consumingSoulProgress{ 0.f };
 
 	// ChasingOldSoul
@@ -64,10 +64,19 @@ private:
 
 	float seekRadius{ 40.f }; // this is the distance to the position to considered it has been visited
 
+	float maxPlayerDistance{ 400.f };
+
 	
 	float collideRadius{ 10.f };
 
 
-	
+	std::vector<std::string_view> statesString = {
+		"ConsumingSoul",
+		"ChasingSoul",
+		"ChasingPlayer",
+		"ChasingOldSoul",
+		"ChasingOldPlayer",
+		"Wandering"
+	};
 };
 

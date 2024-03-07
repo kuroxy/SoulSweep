@@ -89,7 +89,7 @@ namespace Tmpl8
 		game.render(mainCamera);
 		mainCamera.renderToSurface(screen);
 	
-		
+
 
 		// update inputmanager for next keypresses
 		im.update(mainCamera);

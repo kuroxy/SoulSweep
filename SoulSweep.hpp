@@ -70,7 +70,7 @@ public:
 		loadMap(Config::MAP_NAME);
 		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 1; i++)
 		{
 			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300.f) + 200.f), Tmpl8::vec2(0.f));
 		}
@@ -108,8 +108,8 @@ private:
 	//debug stuff
 	bool terrainDebug = false;
 	bool playerDebug = true;
-	bool soulsDebug = false;
-	bool devourerDebug = false;
+	bool soulsDebug = true;
+	bool devourerDebug = true;
 	bool soulsConduitDebug = true;
 
 	
