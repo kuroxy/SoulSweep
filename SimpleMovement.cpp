@@ -3,6 +3,7 @@
 
 void SimpleMovement::update(float deltaTime)
 {
+	time += deltaTime;
 	velocity += acceleration * deltaTime;
 	velocity = velocity.normalized() * Tmpl8::Min<float>(maxSpeed, velocity.length());
 
@@ -30,4 +31,12 @@ Tmpl8::vec2 SimpleMovement::seek(Tmpl8::vec2 pos)
 Tmpl8::vec2 SimpleMovement::flee(Tmpl8::vec2 pos)
 {
 	return -seek(pos);
+}
+
+Tmpl8::vec2 SimpleMovement::wander(float maxSpeed, float changeSpeed)
+{
+	Tmpl8::vec2 a = Tmpl8::vec2(perlinX.noise1D_01(time * changeSpeed)*2.f-1.f, perlinY.noise1D_01(time * changeSpeed) * 2.f - 1.f);
+	a.normalize();
+	a *= maxSpeed;
+	return a;
 }

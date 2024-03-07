@@ -251,6 +251,7 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
+    <ClInclude Include="PerlinNoise.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />
     <ClInclude Include="Soul.hpp" />

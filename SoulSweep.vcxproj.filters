@@ -98,6 +98,7 @@
     <ClInclude Include="SimpleMovement.hpp">
       <Filter>SoulSweep</Filter>
     </ClInclude>
+    <ClInclude Include="PerlinNoise.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
