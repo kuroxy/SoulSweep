@@ -16,6 +16,17 @@ namespace Config
 	constexpr std::string_view MAP_NAME = "map1";
 
 
+	// -- Devourer -- 
+
+	constexpr float devourerMaxSpeed = 50.f; // the max speed that devourer goes in px/s
+	constexpr float devourerMaxForce = 100.f; // how much force can be added in a single add force call.
+	constexpr float devourerConsumingTime = 2.f; // time it takes for the devourer to eat a soul. This time the devourer&soul are frozen in place.
+	
+	constexpr float devourerVisitRadius = 40.f; // distance to a point to consider it visited. T
+	constexpr float devourerMaxPlayerDistance = 500.f; // bigger distance with player-devourer then this var, devourer knows player position.
+
+	constexpr float devourerCollideRadius = 10.f; // collider radius of the devourer.
+
 
 	// -- Player -- 
 	// the speed that the player goes in px/s 

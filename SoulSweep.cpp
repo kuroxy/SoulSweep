@@ -15,7 +15,14 @@ Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& 
 
 Devourer& SoulSweep::spawnDevourer(const Tmpl8::vec2& spawnPosition)
 {
-	devourers.push_back(Devourer(spawnPosition, devourerParticles));
+	devourers.push_back(Devourer(spawnPosition, 
+		Config::devourerMaxSpeed, 
+		Config::devourerMaxForce, 
+		Config::devourerConsumingTime, 
+		Config::devourerVisitRadius, 
+		Config::devourerMaxPlayerDistance, 
+		Config::devourerCollideRadius, 
+		devourerParticles));
 
 	return devourers.back();
 }

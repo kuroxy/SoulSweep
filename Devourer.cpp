@@ -142,7 +142,7 @@ void Devourer::actBehavior(float deltaTime)
 	}
 
 
-	printf("x: %f, y:%f. Vel x:%f y:%f\n", force.x, force.y, velocity.x, velocity.y);
+	//printf("x: %f, y:%f. Vel x:%f y:%f\n", force.x, force.y, velocity.x, velocity.y);
 	SimpleMovement::addForce(force);
 }
 
