@@ -82,7 +82,9 @@ private:
 
 	const float maxPlayerDistance{ 400.f };
 
-	
+	const float wanderStrength{ .5f };
+
+
 	const float collideRadius{ 10.f };
 
 

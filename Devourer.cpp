@@ -135,7 +135,7 @@ void Devourer::actBehavior(float deltaTime)
 		force = seek(playerPosition);
 		break;
 	case Devourer::BehaviorState::Wandering:
-		force = wander(getMaxForce(), .5f);
+		force = wander(getMaxForce(), wanderStrength);
 		break;
 	default:
 		break;

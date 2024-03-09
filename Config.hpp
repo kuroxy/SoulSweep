@@ -25,7 +25,19 @@ namespace Config
 	constexpr float devourerVisitRadius = 40.f; // distance to a point to consider it visited. T
 	constexpr float devourerMaxPlayerDistance = 500.f; // bigger distance with player-devourer then this var, devourer knows player position.
 
+	constexpr float devourerWanderStrength = .5f; // how fast wandering changes. higher more random, lower the less change over time.
+
 	constexpr float devourerCollideRadius = 10.f; // collider radius of the devourer.
+
+	// -- Soul --
+
+	constexpr float soulMaxSpeed = 10.f;
+
+
+	constexpr float soulWanderStrength = .5f; // how fast wandering changes. higher more random, lower the less change over time.
+
+	constexpr float soulCollideRadius = 10.f; // collider radius of the devourer.
+
 
 
 	// -- Player -- 
