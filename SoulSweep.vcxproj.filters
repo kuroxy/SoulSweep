@@ -2,116 +2,133 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="aabb.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="SpriteSheet.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="template.cpp">
-      <Filter>Tmpl8</Filter>
+      <Filter>Source\Tmpl8</Filter>
     </ClCompile>
     <ClCompile Include="surface.cpp">
-      <Filter>Tmpl8</Filter>
+      <Filter>Source\Tmpl8</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="Soul.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="Tilemap.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="SoulSweep.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="SoulConduit.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Devourer.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
     <ClCompile Include="SimpleMovement.cpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Source\SoulSweep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aabb.hpp">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.hpp">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.hpp">
-      <Filter>Engine</Filter>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="Texture.hpp">
+      <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="SpriteSheet.hpp">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.hpp">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="template.h">
-      <Filter>Tmpl8</Filter>
-    </ClInclude>
-    <ClInclude Include="surface.h">
-      <Filter>Tmpl8</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Soul.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Tilemap.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="game.h" />
-    <ClInclude Include="SoulSweep.hpp">
-      <Filter>SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="SoulConduit.hpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.hpp">
-      <Filter>Engine</Filter>
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="aabb.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.hpp">
+      <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="Devourer.hpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="SimpleMovement.hpp">
-      <Filter>SoulSweep</Filter>
+      <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
-    <ClInclude Include="PerlinNoise.hpp" />
+    <ClInclude Include="Soul.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="SoulConduit.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="SoulSweep.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="template.h">
+      <Filter>Headers\Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="surface.h">
+      <Filter>Headers\Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{43161c7d-34b5-48e8-92e7-6587ce2d2329}</UniqueIdentifier>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{470eeb29-b9ae-48c8-81a8-9671dea2971f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SoulSweep">
+    <Filter Include="Headers\Engine">
+      <UniqueIdentifier>{5141a371-9c56-47eb-96bd-8e0d18c79f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\SoulSweep">
+      <UniqueIdentifier>{13e5caaf-c0f8-480e-aa03-44000334c403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Tmpl8">
+      <UniqueIdentifier>{09acb6c5-29f5-42b5-bfca-6f4519791701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{881f32cf-8e7b-4b21-876a-4af8104cf4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tmpl8">
+      <UniqueIdentifier>{ef39ef9c-ecfe-4d4b-8918-c91d15563dab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SoulSweep">
       <UniqueIdentifier>{6c54b4fd-c324-4215-88f8-0bad6fe92ca2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tmpl8">
-      <UniqueIdentifier>{ef39ef9c-ecfe-4d4b-8918-c91d15563dab}</UniqueIdentifier>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{43161c7d-34b5-48e8-92e7-6587ce2d2329}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
