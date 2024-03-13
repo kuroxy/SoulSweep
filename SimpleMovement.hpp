@@ -16,7 +16,8 @@ public:
 	SimpleMovement() = default;
 	SimpleMovement(const Tmpl8::vec2& pos)
 		: position{ pos }
-		, time{ Rand(10000.f) }
+		, seedX{ IRand(INT_MAX) }
+		, seedY{ IRand(INT_MAX) }
 		, simplex{ } {}
 
 	SimpleMovement(const Tmpl8::vec2& pos, float maxSpeed, float maxForce, float mass=1.0f) 
@@ -26,7 +27,8 @@ public:
 		, mass{ mass }
 		, maxSpeed{ maxSpeed }
 		, maxForce{ maxForce }
-		, time{ Rand(10000.f) }
+		, seedX{ IRand(INT_MAX) }
+		, seedY{ IRand(INT_MAX) }
 		, simplex{ } {}
 		
 
@@ -68,6 +70,9 @@ protected:
 
 	float maxSpeed = 0.f;
 	float maxForce = 0.f;
+
+	int seedX{ 0 };
+	int seedY{ 0 };
 
 	SimplexNoise simplex;
 

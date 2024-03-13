@@ -70,19 +70,19 @@ private:
 
 	BehaviorState currentState = BehaviorState::Wandering;
 
-	const float vacuumMaxSpeed{ 100.f };
-	const float fleeMaxSpeed{ 40.f };
-	const float defaultMaxSpeed{ 30.f };
+	float vacuumMaxSpeed{ 100.f };
+	float fleeMaxSpeed{ 40.f };
+	float defaultMaxSpeed{ 30.f };
 
 	
-	const float seekRadius{ 40.f }; // the distance between neighbours to go in AvoidNeigbours state
+	float seekRadius{ 40.f }; // the distance between neighbours to go in AvoidNeigbours state
 
-	const float minPlayerDistance{ 100.f }; // will end seekplayer behaviour if inside this range
-	const float maxPlayerDistance{ 400.f }; // will start seekplayer behaviour if outside this range
+	float minPlayerDistance{ 100.f }; // will end seekplayer behaviour if inside this range
+	float maxPlayerDistance{ 400.f }; // will start seekplayer behaviour if outside this range
 
-	const float wanderStrength{ .5f };
+	float wanderStrength{ .5f };
 
-	const float collideRadius{ 10.f };
+	float collideRadius{ 10.f };
 
 
 	Tmpl8::vec2 fleePosition{ 0.f };
