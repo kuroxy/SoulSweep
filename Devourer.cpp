@@ -135,7 +135,7 @@ void Devourer::actBehavior(float deltaTime)
 		force = seek(playerPosition);
 		break;
 	case Devourer::BehaviorState::Wandering:
-		force = wander(getMaxForce(), wanderStrength);
+		force = wander(wanderStrength);
 		break;
 	default:
 		break;
@@ -149,7 +149,7 @@ void Devourer::actBehavior(float deltaTime)
 bool Devourer::collideWithSoul(const Soul& soul) const
 {
 	float distsq = (position - soul.getPosition()).sqrLentgh();
-	return distsq < (collideRadius+soul.getCollectRadius())*(collideRadius + soul.getCollectRadius());
+	return distsq < (collideRadius+soul.getCollisionRadius())*(collideRadius + soul.getCollisionRadius());
 }
 
 void Devourer::update(float deltaTime)

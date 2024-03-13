@@ -89,7 +89,8 @@ public:
 	
 private:
 
-	unsigned int collectedSouls{ 0 }; // unsigned doesnt really matter maybe can even go down to a char since we will never collect that many souls
+	unsigned int collectedSouls{ 0 }; 
+
 
 	std::shared_ptr<Engine::SpriteSheet> spriteSheet{ nullptr };
 	Tilemap* terrainTileMap{ nullptr };

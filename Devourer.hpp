@@ -49,10 +49,6 @@ public:
 	
 
 private:
-	// visuals
-	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;
-
-
 	enum class BehaviorState {
 		ConsumingSoul,
 		ChasingSoul,
@@ -60,6 +56,15 @@ private:
 		ChasingOldSoul,
 		ChasingOldPlayer,
 		Wandering
+	};
+
+	const std::vector<std::string_view> statesString = {
+		"ConsumingSoul",
+		"ChasingSoul",
+		"ChasingPlayer",
+		"ChasingOldSoul",
+		"ChasingOldPlayer",
+		"Wandering"
 	};
 
 	BehaviorState currentState = BehaviorState::Wandering;
@@ -79,22 +84,15 @@ private:
 	Tmpl8::vec2 playerPosition{ 0.f }; // look at newSoulPosition comment
 
 	const float seekRadius{ 40.f }; // this is the distance to the position to considered it has been visited
-
 	const float maxPlayerDistance{ 400.f };
 
-	const float wanderStrength{ .5f };
 
+	const float wanderStrength{ .5f };
 
 	const float collideRadius{ 10.f };
 
 
-	std::vector<std::string_view> statesString = {
-		"ConsumingSoul",
-		"ChasingSoul",
-		"ChasingPlayer",
-		"ChasingOldSoul",
-		"ChasingOldPlayer",
-		"Wandering"
-	};
+	// visuals
+	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;
 };
 

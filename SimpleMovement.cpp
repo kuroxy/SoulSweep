@@ -33,10 +33,10 @@ Tmpl8::vec2 SimpleMovement::flee(Tmpl8::vec2 pos)
 	return -seek(pos);
 }
 
-Tmpl8::vec2 SimpleMovement::wander(float maxSpeed, float changeSpeed)
+Tmpl8::vec2 SimpleMovement::wander(float changeSpeed)
 {
-	Tmpl8::vec2 a = Tmpl8::vec2(perlinX.noise1D_01(time * changeSpeed)*2.f-1.f, perlinY.noise1D_01(time * changeSpeed) * 2.f - 1.f);
+	Tmpl8::vec2 a = Tmpl8::vec2(simplex.noise(time * changeSpeed,0.f) * 2.f - 1.f, simplex.noise(0.f,time * changeSpeed) * 2.f - 1.f);
 	a.normalize();
-	a *= maxSpeed;
+	a *= maxForce;
 	return a;
 }

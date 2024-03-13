@@ -234,6 +234,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="SimpleMovement.cpp" />
+    <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="Soul.cpp" />
     <ClCompile Include="SoulConduit.cpp" />
     <ClCompile Include="SoulSweep.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="PerlinNoise.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />
+    <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="Soul.hpp" />
     <ClInclude Include="SoulConduit.hpp" />
     <ClInclude Include="SoulSweep.hpp" />

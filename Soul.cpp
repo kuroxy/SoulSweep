@@ -1,108 +1,143 @@
 #include "Soul.hpp"
 #include "Camera.hpp"
-#include "Player.hpp"
 
-
-
-void Soul::applyForce(const Tmpl8::vec2& force)
+void Soul::chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList)
 {
-	Tmpl8::vec2 clampedForce = force.normalized() * Tmpl8::Min<float>(m_maxForce, force.length());
-	m_acceleration += Tmpl8::vec2(clampedForce.x/m_mass, clampedForce.y/m_mass);
-	
-}
+	// ----     Flee - SeekPlayer - AvoidNeigbours - Wander    ----
 
-
-
-void Soul::update(float dt, const Player& player)
-{
-	bool vacuumed = vacuumUpdate(player);
-
-
-	float maxVel = vacuumed ? m_maxSpeedVacuumed : m_maxSpeed;
-
-	m_velocity += m_acceleration* dt;
-	m_velocity = m_velocity.normalized() * Tmpl8::Min<float>(maxVel, m_velocity.length());
-	
-	m_position += m_velocity* dt;
-	if (m_velocity.x != 0.f && m_velocity.y != 0.f)
-		m_orientation = m_velocity.normalized();
-
-	m_acceleration=Tmpl8::vec2(0.0f);
-
-
-	particleSystem->setPosition(m_position);
-	particleSystem->updateParticles(dt);
-
-}
-
-void Soul::actionSelection()
-{
-	// prio 1: collision avoidance
-	// prio 2: flee from monster (if in view)
-	// prio 3: flee from player if soul has seen the player activate their vacuum (if in view)
-	// prio 4: wander+separation
-	
-	//applyForce(flee(fleepos));
-	applyForce(wander());
-
-}
-
-bool Soul::vacuumUpdate(const Player& player)
-{
-	Tmpl8::vec2 force = player.calculateVacuumForce(m_position);
-	
-	m_acceleration += Tmpl8::vec2(force.x / m_mass, force.y / m_mass); // we ignore the max force restriction
-
-	return (force.x != 0.f || force.y != 0.f);
-
-}
-
-Tmpl8::vec2 Soul::wander()
-{
-	float random = (Rand(2.f) - 1) / 2;
-	m_currentWanderAngle -= random* m_wanderRate;
-	
-
-	return (m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2((float)cos(m_currentWanderAngle), (float)sin(m_currentWanderAngle))* m_wanderingStrength).normalized()*m_maxForce;
-}
-
-Tmpl8::vec2 Soul::seek(Tmpl8::vec2 pos)
-{
-	return (pos - m_position).normalized() * m_maxForce;
-}
-
-Tmpl8::vec2 Soul::flee(Tmpl8::vec2 pos)
-{
-	return -seek(pos);
-}
-
-
-
-
-void Soul::draw(Engine::Camera& c, bool debug)
-{
-
-	particleSystem->renderParticles(c);
-	c.drawFillCircleWorldSpace(m_position, m_collectRadius, 0xffffff, false);
-
-	if (debug)
+	// see devourer will flee or see player with active vacuum
+	for (auto& devourer : devourerList)
 	{
-		c.drawCircleWorldSpace(m_position, m_collectRadius, 0x00ffff, 10); // body
-		c.drawLineWorldSpace(m_position, m_position + m_orientation * 5, 0x00ffff); // direction line
-		// wanderCircles
-		//c.drawCircleWorldSpace(m_position + m_orientation * (2 * m_wanderingStrength), m_wanderingStrength, 0xff00ff, 20);
+		if (!map.lineSegmentCollide(position, devourer.getPosition()))
+		{
+			fleePosition = devourer.getPosition();
+			currentState = BehaviorState::Flee;
+			return;
+		}
+	}
 
-		//c.drawCircleWorldSpace(m_position + m_orientation * (2.f * m_wanderingStrength) + Tmpl8::vec2((float)cos(m_currentWanderAngle), (float)sin(m_currentWanderAngle)) * m_wanderingStrength, 2.f, 0xffffff, 10);
 	
-		// vacuumRange
-		//Tmpl8::Pixel color = m_playerRef.vacuumRange(m_position) ? 0x00ff00 : 0xff0000;
-		//c.drawLineWorldSpace(m_playerRef.getPosition(), m_position, color); 
+	if (player.isVacuumEnabled() && !map.lineSegmentCollide(position, player.getPosition()))
+	{
+		fleePosition = player.getPosition();
+		currentState = BehaviorState::Flee;
+		return;
+	}
+
+	// player too far away movetoward the player
+	float playerDist = (player.getPosition() - getPosition()).length();
+	if ((currentState == BehaviorState::SeekPlayer && playerDist > minPlayerDistance) || playerDist > maxPlayerDistance)
+	{
+		playerPosition = player.getPosition();
+		currentState = BehaviorState::SeekPlayer;
+		return;
+	}
+
+	// check neigbours and player move away from the closest one
+	float distance = INFINITY;
+
+	for (auto& soul : soulList)
+	{
+		if (&soul != this && (soul.getPosition()-getPosition()).sqrLentgh() < distance)
+		{	
+			distance = (soul.getPosition() - getPosition()).sqrLentgh();
+			neigboursPosition = soul.getPosition();
+		}
+	}
 	
+	if (sqrt(distance) < seekRadius)
+	{
+		currentState = BehaviorState::AvoidNeigbours;
+		return;
+	}
+
+	// wander
+	currentState = BehaviorState::Wandering;
+
+}
+
+void Soul::actBehavior(float deltaTime)
+{
+	Tmpl8::vec2 force = Tmpl8::vec2(0.f);
 
 
+	switch (currentState)
+	{
+	case Soul::BehaviorState::Flee:
+		force = flee(fleePosition);
+		break;
+	case Soul::BehaviorState::SeekPlayer:
+		force = seek(playerPosition);
+		break;
+	case Soul::BehaviorState::AvoidNeigbours:
+		force = flee(neigboursPosition);
+		break;
+	case Soul::BehaviorState::Wandering:
+		force = wander(wanderStrength);
+		break;
+	default:
+		break;
 	}
 
 
-
+	
+	addForce(force);
 }
 
+void Soul::applyVacuumForce(const Player& player)
+{
+	Tmpl8::vec2 force = player.calculateVacuumForce(getPosition());
+
+	acceleration += Tmpl8::vec2(force.x / mass, force.y / mass); // we ignore the max force restriction
+
+	beingVacuumed = (force.x != 0.f || force.y != 0.f);
+}
+
+void Soul::update(float deltaTime, const Player& player)
+{
+	actBehavior(deltaTime);
+
+	applyVacuumForce(player);
+
+	switch (currentState)
+	{
+	case Soul::BehaviorState::Flee:
+		setMaxSpeed(fleeMaxSpeed);
+		break;
+	case Soul::BehaviorState::SeekPlayer:
+	case Soul::BehaviorState::AvoidNeigbours:
+	case Soul::BehaviorState::Wandering:
+	default:
+		setMaxSpeed(defaultMaxSpeed);
+		break;
+	}
+
+
+	SimpleMovement::update(deltaTime);
+
+	particleSystem->setPosition(position);
+	particleSystem->updateParticles(deltaTime);
+}
+
+void Soul::draw(Engine::Camera& camera, bool debug)
+{
+	particleSystem->renderParticles(camera);
+
+
+
+	if (debug)
+	{
+		Tmpl8::vec2 local = camera.worldToLocal(getPosition() + Tmpl8::vec2(-20, -20));
+		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
+
+		// collision circle
+		camera.drawCircleWorldSpace(position, collideRadius, 0x00ffff, 10);
+
+
+		// todo other saved positions
+
+		camera.drawCircleWorldSpace(position, minPlayerDistance, 0xffff00);
+		camera.drawCircleWorldSpace(position, maxPlayerDistance, 0xffff00);
+
+	}
+}

@@ -2,6 +2,7 @@
 #include "template.h"
 #include "surface.h"
 #include "PerlinNoise.hpp"
+#include "SimplexNoise.h"
 
 namespace Engine {
 	class Camera;
@@ -15,8 +16,8 @@ public:
 	SimpleMovement() = default;
 	SimpleMovement(const Tmpl8::vec2& pos)
 		: position{ pos }
-		, perlinX{ (unsigned int)IRand(INT_MAX) }
-		, perlinY{ (unsigned int)IRand(INT_MAX) } {}
+		, time{ Rand(10000.f) }
+		, simplex{ } {}
 
 	SimpleMovement(const Tmpl8::vec2& pos, float maxSpeed, float maxForce, float mass=1.0f) 
 		: position{ pos }
@@ -25,13 +26,14 @@ public:
 		, mass{ mass }
 		, maxSpeed{ maxSpeed }
 		, maxForce{ maxForce }
-		, perlinX{ (unsigned int)IRand(INT_MAX) }
-		, perlinY{ (unsigned int)IRand(INT_MAX) } {}
+		, time{ Rand(10000.f) }
+		, simplex{ } {}
 		
 
 
 	const Tmpl8::vec2& getPosition() const { return position; }
 	const Tmpl8::vec2& getVelocity() const { return velocity; }
+	const Tmpl8::vec2& getAcceration() const { return acceleration; }
 
 	float getMass() const { return mass; }
 
@@ -42,6 +44,7 @@ public:
 	void setMaxSpeed(float speed) { maxSpeed = speed; }
 	void setMaxForce(float speed) { maxForce = speed; }
 
+	void setAcceleration(Tmpl8::vec2 acc) { acceleration = acc; }
 	void setPosition(Tmpl8::vec2 pos) { position = pos; }
 	void setVelocity(Tmpl8::vec2 vel) { velocity = vel; }
 
@@ -54,7 +57,7 @@ public:
 	// force calculations
 	Tmpl8::vec2 seek(Tmpl8::vec2 pos);
 	Tmpl8::vec2 flee(Tmpl8::vec2 pos);
-	Tmpl8::vec2 wander(float maxSpeed, float changeSpeed);
+	Tmpl8::vec2 wander(float changeSpeed);
 
 protected:
 	Tmpl8::vec2 position;
@@ -66,10 +69,7 @@ protected:
 	float maxSpeed = 0.f;
 	float maxForce = 0.f;
 
+	SimplexNoise simplex;
 
-
-
-	const siv::PerlinNoise perlinX;
-	const siv::PerlinNoise perlinY;
 	float time{ 0.f };
 };

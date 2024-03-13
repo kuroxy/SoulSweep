@@ -8,7 +8,18 @@
 
 Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity)
 {
-	souls.push_back(Soul(spawnPosition, soulParticles));
+	souls.push_back(Soul(spawnPosition,
+		Config::soulMaxForce,
+		Config::soulVacuumSpeed,
+		Config::soulFleeSpeed,
+		Config::soulDefaultSpeed,
+		Config::soulMaxNeighbourRadius,
+		Config::soulMinPlayerDist,
+		Config::soulMaxPlayerDistance,
+		Config::soulWanderSpeed,
+		Config::soulCollisionRadius,
+		soulParticles));
+	
 	souls.back().setVelocity(initialVelocity);
 	return souls.back();
 }
@@ -50,34 +61,17 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 	{
 		bool removeSoul = false;
 
-		soulIter->actionSelection();
+		// Soul Behavior
+		soulIter->chooseBehavior(*terrainTileMap, *mainPlayer, souls, devourers);
 		soulIter->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
 
-		// checks if soul already dead
+		// if eaten remove it from the game.
 		if (soulIter->isEaten)
 			removeSoul = true;
 
 
-		// checks if soul can be collected
-		if (soulConduit.contains(soulIter->getPosition()))
-		{
-			removeSoul = true;
-		}
-
-		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
-		{
-			// calculate it the collect radius of the players hits the soul
-			float rad = mainPlayer->getCollectRadius() + soulIter->getCollectRadius();
-			if ((mainPlayer->getPosition() - soulIter->getPosition()).sqrLentgh() < rad * rad)
-			{
-				mainPlayer->collectSoul();
-				// now need to remove 
-
-				removeSoul = true;
-
-			}
-		}
-
+		// TODODODOODO!!!!!!!!!!!!!!!!! LOOK AT DIFF. WHAT NEEDS TO BE IMPLEMENTED
+		
 		if (removeSoul)
 		{
 			soulIter = souls.erase(soulIter);
@@ -85,7 +79,6 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 		}
 
 		++soulIter;
-		
 
 	}
 

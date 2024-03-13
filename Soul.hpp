@@ -4,6 +4,8 @@
 #include "Player.hpp"
 #include "Tilemap.hpp"
 #include "ParticleSystem.hpp"
+#include "SimpleMovement.hpp"
+#include "Devourer.hpp"
 
 namespace Engine
 {
@@ -11,57 +13,88 @@ namespace Engine
 }
 
 
-class Soul
+class Soul : public SimpleMovement
 {
 public:
+	Soul() : SimpleMovement() {}
+
 	Soul(const Tmpl8::vec2& pos, const Engine::ParticleSystemParams& particleParams)
-		: m_position{ pos }
-	, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100)}
-	{
-	}
+		: SimpleMovement{pos, 50.f, 100.f }
+		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
-	void setVelocity(const Tmpl8::vec2& velocity) { m_velocity = velocity; }
-	
-	const Tmpl8::vec2 getPosition() const { return m_position; };
+	Soul(const Tmpl8::vec2& pos,
+		float maxForce,
+		float vacuumSpeed,
+		float fleeSpeed,
+		float defaultSpeed,
+		float maxNeighbourRadius,
+		float minPlayerDist,
+		float maxPlayerDistance,
+		float wanderSpeed,
+		float collisionRadius,
+		const Engine::ParticleSystemParams& particleParams)
+		: SimpleMovement{ pos, defaultSpeed, maxForce }
+		, vacuumMaxSpeed{ vacuumSpeed }
+		, fleeMaxSpeed{ fleeSpeed }
+		, defaultMaxSpeed{ defaultSpeed }
+		, seekRadius{ maxNeighbourRadius }
+		, minPlayerDistance { minPlayerDist }
+		, maxPlayerDistance { maxPlayerDistance }
+		, wanderStrength { wanderSpeed }
+		, collideRadius{ collisionRadius }
+		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
-	float getCollectRadius() const { return m_collectRadius; }
 
-	void applyForce(const Tmpl8::vec2& force); // maybe can be private
+	float getCollisionRadius() const { return collideRadius; }
 
-	void update(float dt, const Player& player);
+	void chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList);
 
-	void actionSelection();
+	void actBehavior(float deltaTime);
 
-	void draw(Engine::Camera& c, bool debug=false);
+	void applyVacuumForce(const Player& player);
 
-	bool isEaten = false;
+	void update(float deltaTime, const Player& player);
+
+	void draw(Engine::Camera& camera, bool debug);
+
+	bool isEaten{ false }; // souls with isEaten to true will be removed from soulList
 private:
+	bool beingVacuumed{ false };
 
-	Tmpl8::vec2 wander();
-	Tmpl8::vec2 seek(Tmpl8::vec2 pos);
-	Tmpl8::vec2 flee(Tmpl8::vec2 pos);
-	bool vacuumUpdate(const Player& player);
+	enum class BehaviorState {
+		Flee,
+		SeekPlayer,
+		AvoidNeigbours,
+		Wandering
+	};
 
-	Tmpl8::vec2 m_position{ 0 };
-	Tmpl8::vec2 m_velocity{ 0 };
-	Tmpl8::vec2 m_acceleration{ 0 };
+	const std::vector<std::string_view> statesString = {
+		"Flee",
+		"SeekPlayer",
+		"AvoidNeigbours",
+		"Wandering",
+	};
 
-	Tmpl8::vec2 m_orientation{ 1,0 };
+	BehaviorState currentState = BehaviorState::Wandering;
 
-	float m_mass{ 1.f };
-	float m_maxForce{ 20.f };
-	float m_maxSpeed{ 30.f };
-	float m_maxSpeedVacuumed{ 1000.f };
-
-	float m_collectRadius{ 10.f };
-
-	// wander
-	float m_wanderingStrength{ 100.f };
-	float m_currentWanderAngle{ Rand(2*Tmpl8::PI)};
-	float m_wanderRate{ .5f };
-
+	const float vacuumMaxSpeed{ 100.f };
+	const float fleeMaxSpeed{ 40.f };
+	const float defaultMaxSpeed{ 30.f };
 
 	
+	const float seekRadius{ 40.f }; // the distance between neighbours to go in AvoidNeigbours state
+
+	const float minPlayerDistance{ 100.f }; // will end seekplayer behaviour if inside this range
+	const float maxPlayerDistance{ 400.f }; // will start seekplayer behaviour if outside this range
+
+	const float wanderStrength{ .5f };
+
+	const float collideRadius{ 10.f };
+
+
+	Tmpl8::vec2 fleePosition{ 0.f };
+	Tmpl8::vec2 neigboursPosition{ 0.f };
+	Tmpl8::vec2 playerPosition{ 0.f };
 
 	// visuals
 	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;

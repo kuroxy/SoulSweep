@@ -31,7 +31,19 @@ namespace Config
 
 	// -- Soul --
 
-	constexpr float soulMaxSpeed = 10.f;
+
+	constexpr float soulMaxForce = 100.f;
+	constexpr float soulVacuumSpeed = 1000.f;
+	constexpr float soulFleeSpeed = 45.f;
+	constexpr float soulDefaultSpeed = 30.f;
+	constexpr float soulMaxNeighbourRadius = 20.f;
+	constexpr float soulMinPlayerDist = 200.f;
+	constexpr float soulMaxPlayerDistance = 400.f;
+	constexpr float soulWanderSpeed = .5f;
+	constexpr float soulCollisionRadius = 10.f;
+
+
+
 
 
 	constexpr float soulWanderStrength = .5f; // how fast wandering changes. higher more random, lower the less change over time.
