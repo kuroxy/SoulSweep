@@ -68,13 +68,6 @@ private:
 		Wandering
 	};
 
-	const std::vector<std::string_view> statesString = {
-		"Flee",
-		"SeekPlayer",
-		"AvoidNeigbours",
-		"Wandering",
-	};
-
 	BehaviorState currentState = BehaviorState::Wandering;
 
 	const float vacuumMaxSpeed{ 100.f };

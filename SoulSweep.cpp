@@ -72,11 +72,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 
 		// TODODODOODO!!!!!!!!!!!!!!!!! LOOK AT DIFF. WHAT NEEDS TO BE IMPLEMENTED
 		
-		if (removeSoul)
-		{
-			soulIter = souls.erase(soulIter);
-			continue;
-		}
+		
 
 		++soulIter;
 
