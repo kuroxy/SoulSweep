@@ -195,17 +195,25 @@ void Tilemap::updateVisibility(Tmpl8::vec2 playerPosition)
 
 			else // somewhere inbetween
 			{
-				if (lineSegmentCollide(playerPosition, Tmpl8::vec2(x * m_tileSize + m_offset.x + m_tileSize * .5f, y * m_tileSize + m_offset.y + m_tileSize * .5)))
+				//remove the collide point
+				bool wasCollider = false;
+				if (m_mapCollision[y * m_mapWidth + x])
 				{
-					newVis = Visibility::Dark;
+					m_mapCollision[y * m_mapWidth + x] = false;
+					wasCollider = true;
 				}
 
+				if (lineSegmentCollide(playerPosition, Tmpl8::vec2(x * m_tileSize + m_offset.x + m_tileSize * .5f, y * m_tileSize + m_offset.y + m_tileSize * .5)))
+					newVis = Visibility::Unknown;
 
 				else if ((sqrt(dist) - minDist) / (maxDist- minDist) > .5f)
 					newVis = Visibility::Dark;
+
 				else
 					newVis = Visibility::Dim;
 
+				
+				m_mapCollision[y * m_mapWidth + x] = wasCollider; // reset if the original position was a collider
 			}
 
 			m_tileVisibiliy[x + y * m_mapWidth] = newVis;
