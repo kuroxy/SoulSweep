@@ -38,6 +38,20 @@ Devourer& SoulSweep::spawnDevourer(const Tmpl8::vec2& spawnPosition)
 	return devourers.back();
 }
 
+Soul& SoulSweep::spawnRandomSoul(float distance)
+{
+	float i = Rand(Tmpl8::PI);
+	Tmpl8::vec2 position(cos(i), sin(i));
+	return spawnSoul(mainPlayer->getPosition() + position * distance, Tmpl8::vec2(0));
+}
+
+Devourer& SoulSweep::spawnRandomDevourer(float distance)
+{
+	float i = Rand(Tmpl8::PI);
+	Tmpl8::vec2 position(cos(i), sin(i));
+	return spawnDevourer(mainPlayer->getPosition() + position * distance);
+}
+
 void SoulSweep::update(float deltaTime, Engine::InputManager im)
 {
 	if (im.isActionPressed("debugfogofwar"))
@@ -68,9 +82,6 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 		// if eaten remove it from the game.
 		if (soulIter->isEaten)
 			removeSoul = true;
-
-
-		// TODODODOODO!!!!!!!!!!!!!!!!! LOOK AT DIFF. WHAT NEEDS TO BE IMPLEMENTED
 		
 		if (soulConduit.contains(soulIter->getPosition()))
 		{
@@ -108,6 +119,17 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 		devourer.chooseBehavior(*terrainTileMap, *mainPlayer, souls);
 		devourer.update(deltaTime);
 	}
+
+
+
+	// spawn regulator
+
+	if (souls.size() < Config::minSouls)
+	{
+		spawnRandomSoul(Config::spawnDistance);
+	}
+
+
 
 }
 

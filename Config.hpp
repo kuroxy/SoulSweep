@@ -3,6 +3,10 @@
 
 namespace Config
 {
+	//-- Game Settings --
+	constexpr int minSouls = 10;
+	constexpr float spawnDistance = 400.f;
+
 	//World
 	// the spritesheet texture (fullpath e.i "assets/large.png")
 	constexpr std::string_view TERRAIN_TEXTURE = "assets/large.png";
@@ -16,8 +20,8 @@ namespace Config
 	constexpr std::string_view MAP_NAME = "map1";
 
 	// fog of war settings
-	constexpr float viewDistanceMin = 100.f; // distance smaller is always visible
-	constexpr float viewDistanceMax = 200.f; // after this distance is dark
+	constexpr float viewDistanceMin = 50.f; // distance smaller is always visible
+	constexpr float viewDistanceMax = 300.f; // after this distance is dark
 
 	// -- Devourer -- 
 
@@ -26,7 +30,7 @@ namespace Config
 	constexpr float devourerConsumingTime = 2.f; // time it takes for the devourer to eat a soul. This time the devourer&soul are frozen in place.
 	
 	constexpr float devourerVisitRadius = 40.f; // distance to a point to consider it visited. T
-	constexpr float devourerMaxPlayerDistance = 500.f; // bigger distance with player-devourer then this var, devourer knows player position.
+	constexpr float devourerMaxPlayerDistance = 700.f; // bigger distance with player-devourer then this var, devourer knows player position.
 
 	constexpr float devourerWanderStrength = .5f; // how fast wandering changes. higher more random, lower the less change over time.
 
@@ -40,8 +44,8 @@ namespace Config
 	constexpr float soulFleeSpeed = 45.f;
 	constexpr float soulDefaultSpeed = 30.f;
 	constexpr float soulMaxNeighbourRadius = 20.f;
-	constexpr float soulMinPlayerDist = 200.f;
-	constexpr float soulMaxPlayerDistance = 400.f;
+	constexpr float soulMinPlayerDist = 400.f;
+	constexpr float soulMaxPlayerDistance = 600.f;
 	constexpr float soulWanderSpeed = .5f;
 	constexpr float soulCollisionRadius = 10.f;
 

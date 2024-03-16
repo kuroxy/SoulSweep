@@ -70,16 +70,16 @@ public:
 		loadMap(Config::MAP_NAME, Config::viewDistanceMin, Config::viewDistanceMax);
 		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
-		for(int i = 0; i < 1; i++)
-		{
-			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300.f) + 200.f), Tmpl8::vec2(0.f));
-		}
-		
-		//spawnDevourer(Tmpl8::vec2(200.f, 200.f));
+
+		spawnRandomDevourer(500.f);
 	}
 
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);
 	Devourer& spawnDevourer(const Tmpl8::vec2& spawnPosition);
+
+	// spawns them based on the position of the player but a certain distance from it
+	Soul& spawnRandomSoul(float distance);
+	Devourer& spawnRandomDevourer(float distance);
 
 
 	void update(float deltaTime, Engine::InputManager im);
@@ -108,9 +108,9 @@ private:
 
 	//debug stuff
 	bool terrainDebug = false;
-	bool playerDebug = true;
-	bool soulsDebug = true;
-	bool devourerDebug = true;
+	bool playerDebug = false;
+	bool soulsDebug = false;
+	bool devourerDebug = false;
 	bool soulsConduitDebug = true;
 
 	

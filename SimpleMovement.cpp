@@ -35,7 +35,7 @@ Tmpl8::vec2 SimpleMovement::flee(Tmpl8::vec2 pos)
 
 Tmpl8::vec2 SimpleMovement::wander(float changeSpeed)
 {
-	Tmpl8::vec2 a = Tmpl8::vec2(simplex.noise(time * changeSpeed,0.f) * 2.f - 1.f, simplex.noise(0.f,time * changeSpeed) * 2.f - 1.f);
+	Tmpl8::vec2 a = Tmpl8::vec2(simplex.noise((float)seedX + time * changeSpeed, (float)seedY) * 2.f - 1.f, simplex.noise((float)seedX, seedY + time * changeSpeed) * 2.f - 1.f);
 	a.normalize();
 	a *= maxForce;
 	return a;

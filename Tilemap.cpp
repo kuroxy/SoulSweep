@@ -152,7 +152,7 @@ void Tilemap::drawFOW(Engine::Camera& c) const
 			{
 
 			case Visibility::Unknown:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 200);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 255);
 				break;
 			case Visibility::Dark:
 				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
