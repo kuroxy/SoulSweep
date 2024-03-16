@@ -78,7 +78,7 @@ namespace Tmpl8
 		mainCamera.setPosition(mainCamera.getPosition() + dir * 100 * clampedDT);
 
 
-		game.update(clampedDT, im);
+		game.update(clampedDT, im, mainCamera);
 
 
 		// rendering

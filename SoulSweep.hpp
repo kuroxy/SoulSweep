@@ -82,7 +82,7 @@ public:
 	Devourer& spawnRandomDevourer(float distance);
 
 
-	void update(float deltaTime, Engine::InputManager im);
+	void update(float deltaTime, Engine::InputManager im, Engine::Camera& camera);
 
 	void render(Engine::Camera& camera);
 
@@ -108,7 +108,7 @@ private:
 
 	//debug stuff
 	bool terrainDebug = false;
-	bool playerDebug = false;
+	bool playerDebug = true;
 	bool soulsDebug = false;
 	bool devourerDebug = false;
 	bool soulsConduitDebug = true;

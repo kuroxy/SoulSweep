@@ -5,6 +5,11 @@
 #include "Config.hpp"
 
 
+Tmpl8::vec2 lerp(Tmpl8::vec2 p1, Tmpl8::vec2 p2, float progress)
+{
+	return (p2 - p1) * progress + p1;
+}
+
 
 Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity)
 {
@@ -52,8 +57,14 @@ Devourer& SoulSweep::spawnRandomDevourer(float distance)
 	return spawnDevourer(mainPlayer->getPosition() + position * distance);
 }
 
-void SoulSweep::update(float deltaTime, Engine::InputManager im)
+void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera& camera)
 {
+	// update camera
+
+	camera.setPosition(lerp(camera.getPosition(), mainPlayer->getPosition()-Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f, deltaTime*2) );
+
+
+
 	if (im.isActionPressed("debugfogofwar"))
 		terrainTileMap->toggleFogOfWar();
 
