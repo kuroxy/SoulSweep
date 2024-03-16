@@ -17,7 +17,7 @@ namespace Config
 	constexpr Tmpl8::Pixel TERRAIN_CHROMA = 0xff00ff; // 0 for no chroma
 
 	// The csv for the map (just the namename like file is "assets/map/thismapL1.csv" then just "thismap")
-	constexpr std::string_view MAP_NAME = "map1";
+	constexpr std::string_view MAP_NAME = "TheMap"; //"oldmap";
 
 	// fog of war settings
 	constexpr float viewDistanceMin = 50.f; // distance smaller is always visible
