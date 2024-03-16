@@ -27,8 +27,8 @@ public:
 	};
 
 	Tilemap() = default;
-	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight);
-	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, float viewDistanceMin, float viewDistanceMax);
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision, float viewDistanceMin, float viewDistanceMax);
 
 	~Tilemap()
 	{
@@ -45,9 +45,9 @@ public:
 
 	Tmpl8::vec2 worldToGrid(Tmpl8::vec2 worldSpace) const;
 
-
 	void updateVisibility(Tmpl8::vec2 worldspace);
 	void draw(Engine::Camera& c, bool debug = false) const;
+	void drawFOW(Engine::Camera& c) const;
 
 	bool doesTileCollide(int x, int y) const;
 
@@ -78,6 +78,10 @@ private:
 	int m_mapHeight{ 0 };
 
 	int m_tileSize{ 0 };
+
+
+	float viewDistanceMin{0.f};
+	float viewDistanceMax{0.f};
 
 	bool fogOfWarEnabled = false;
 };

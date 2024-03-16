@@ -22,12 +22,12 @@ class SoulSweep {
 		spriteSheet = std::make_shared<Engine::SpriteSheet>(textureFile, spriteSize, spriteSize, chroma);
 	}
 
-	void loadMap(std::string_view mapName) 
+	void loadMap(std::string_view mapName, float viewDistMin, float viewDistMax) 
 	{
 		std::string sprites = std::format("assets/map/{}L1.csv", mapName);
 		std::string collision = std::format("assets/map/{}L2.csv", mapName);
 
-		terrainTileMap = new Tilemap(spriteSheet, sprites, collision);
+		terrainTileMap = new Tilemap(spriteSheet, sprites, collision, viewDistMin, viewDistMax);
 	}
 
 	void setSoulParticleSystem()
@@ -67,7 +67,7 @@ public:
 		setSoulParticleSystem();
 		setDevourerParticleSystem();
 		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
-		loadMap(Config::MAP_NAME);
+		loadMap(Config::MAP_NAME, Config::viewDistanceMin, Config::viewDistanceMax);
 		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
 
 		for(int i = 0; i < 1; i++)
@@ -75,7 +75,7 @@ public:
 			spawnSoul(Tmpl8::vec2(Rand(300.f) + 200.f, Rand(300.f) + 200.f), Tmpl8::vec2(0.f));
 		}
 		
-		spawnDevourer(Tmpl8::vec2(200.f, 200.f));
+		//spawnDevourer(Tmpl8::vec2(200.f, 200.f));
 	}
 
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);

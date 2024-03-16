@@ -72,6 +72,26 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im)
 
 		// TODODODOODO!!!!!!!!!!!!!!!!! LOOK AT DIFF. WHAT NEEDS TO BE IMPLEMENTED
 		
+		if (soulConduit.contains(soulIter->getPosition()))
+		{
+			collectedSouls++;
+			removeSoul = true;
+		}
+
+		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
+		{
+			// calculate it the collect radius of the players hits the soul
+			float rad = mainPlayer->getCollectRadius() + soulIter->getCollisionRadius();
+			if ((mainPlayer->getPosition() - soulIter->getPosition()).sqrLentgh() < rad * rad)
+			{
+				mainPlayer->collectSoul();
+				// now need to remove 
+
+				removeSoul = true;
+
+			}
+		}
+
 		if (removeSoul)
 		{
 			soulIter = souls.erase(soulIter);
@@ -110,4 +130,14 @@ void SoulSweep::render(Engine::Camera& camera)
 	}
 
 	mainPlayer->draw(camera, playerDebug);
+
+
+	// fog of war
+
+	camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMin, 0xff0ff0);
+
+	camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMax, 0xff0ff0);
+
+
+	terrainTileMap->drawFOW(camera);
 }

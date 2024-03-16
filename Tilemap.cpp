@@ -8,7 +8,7 @@
 #include <vector>
 #include <sstream>
 
-Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight)
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, float viewDistMin, float viewDistMax)
 	: m_spriteSheet{spriteSheet}
 	, m_offset{0}
 	, m_mapSprite{ new int[mapWidth* mapHeight] }
@@ -17,7 +17,8 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 	, m_mapWidth{ mapWidth }
 	, m_mapHeight{ mapHeight }
 	, m_tileSize{ spriteSheet->getSpriteWidth()}
-{
+	, viewDistanceMin{ viewDistMin }
+	, viewDistanceMax{ viewDistMax } {
 	for (int i = 0; i < m_mapWidth * m_mapHeight; i++)
 	{
 
@@ -29,8 +30,10 @@ Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth,
 
 }
 
-Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision)
+Tilemap::Tilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view fileMap, std::string_view fileCollision, float viewDistMin, float viewDistMax)
 	: m_spriteSheet{ spriteSheet }
+	, viewDistanceMin{ viewDistMin }
+	, viewDistanceMax{ viewDistMax } 
 {
 	// big function
 	std::ifstream file(std::string{ fileMap });
@@ -111,6 +114,7 @@ Tmpl8::vec2 Tilemap::worldToGrid(Tmpl8::vec2 worldSpace) const
 }
 
 
+
 void Tilemap::draw(Engine::Camera& c, bool debug) const
 {
 	for (int y = 0; y < m_mapHeight; y++)
@@ -121,33 +125,6 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 			c.renderSpriteWorldSpace(m_spriteSheet.get(), m_mapSprite[y * m_mapWidth + x], drawpos);
 			
 
-			// can be done better maybe a switch case to get the amount of darkener
-			// magic numbers?
-			// we do tilesize -1 because it is draw bar is inclusive while a tilewidth is not inclusive
-			
-			if (fogOfWarEnabled)
-			{
-				switch (m_tileVisibiliy[y * m_mapWidth + x])
-				{
-
-				case Visibility::Unknown:
-					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 200);
-					break;
-				case Visibility::Dark:
-					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
-					break;
-				case Visibility::Dim:
-					c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 40);
-					break;
-				case Visibility::Light:
-					break;
-				default:
-					break;
-				}
-			}
-			
-
-
 			if (debug && m_mapCollision[y * m_mapWidth + x])
 			{
 				c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(m_tileSize-1), (int)(m_tileSize -1)), 0xff0000);
@@ -157,34 +134,79 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 	
 }
 
-void Tilemap::updateVisibility(Tmpl8::vec2 worldSpace)
+void Tilemap::drawFOW(Engine::Camera& c) const
 {
 	if (!fogOfWarEnabled)
 		return;
-
-	Tmpl8::vec2 center = worldToGrid(worldSpace);
 
 	for (int y = 0; y < m_mapHeight; y++)
 	{
 		for (int x = 0; x < m_mapWidth; x++)
 		{
+			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
+			
+			// can be done better maybe a switch case to get the amount of darkener
+			// magic numbers?
+			// we do tilesize -1 because it is draw bar is inclusive while a tilewidth is not inclusive
+			switch (m_tileVisibiliy[y * m_mapWidth + x])
+			{
+
+			case Visibility::Unknown:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 200);
+				break;
+			case Visibility::Dark:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 100);
+				break;
+			case Visibility::Dim:
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(m_tileSize - 1), 40);
+				break;
+			case Visibility::Light:
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void Tilemap::updateVisibility(Tmpl8::vec2 playerPosition)
+{
+	if (!fogOfWarEnabled)
+		return;
+
+	Tmpl8::vec2 center = worldToGrid(playerPosition);
+	float minDist = viewDistanceMin / m_tileSize; 
+	float maxDist = viewDistanceMax / m_tileSize;
+
+
+	for (int y = 0; y < m_mapHeight; y++)
+	{
+		for (int x = 0; x < m_mapWidth; x++)
+		{
+
 			float dist = (center - Tmpl8::vec2(x + .5f , y+.5f)).sqrLentgh();
 			Visibility newVis = Visibility::Unknown;
 
-			if (dist < 5*5)
-				newVis = Visibility::Light;
-			else if (dist < 7*7)
-				newVis = Visibility::Dim;
-			else if (dist < 10*10)
-				newVis = Visibility::Dark;
-			else
+			if (dist > maxDist* maxDist)
+				newVis = Visibility::Unknown;
+
+			else if (dist < minDist* minDist)
+				newVis = Visibility::Light;	// inside the small circle means it is always visible 
+
+			else // somewhere inbetween
 			{
-				if (m_tileVisibiliy[x + y * m_mapWidth] != Visibility::Unknown)
+				if (lineSegmentCollide(playerPosition, Tmpl8::vec2(x * m_tileSize + m_offset.x + m_tileSize * .5f, y * m_tileSize + m_offset.y + m_tileSize * .5)))
+				{
+					newVis = Visibility::Dark;
+				}
+
+
+				else if ((sqrt(dist) - minDist) / (maxDist- minDist) > .5f)
 					newVis = Visibility::Dark;
 				else
-					newVis = Visibility::Unknown;
-			}
+					newVis = Visibility::Dim;
 
+			}
 
 			m_tileVisibiliy[x + y * m_mapWidth] = newVis;
 		}

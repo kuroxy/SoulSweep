@@ -15,6 +15,9 @@ namespace Config
 	// The csv for the map (just the namename like file is "assets/map/thismapL1.csv" then just "thismap")
 	constexpr std::string_view MAP_NAME = "map1";
 
+	// fog of war settings
+	constexpr float viewDistanceMin = 100.f; // distance smaller is always visible
+	constexpr float viewDistanceMax = 200.f; // after this distance is dark
 
 	// -- Devourer -- 
 
@@ -41,9 +44,6 @@ namespace Config
 	constexpr float soulMaxPlayerDistance = 400.f;
 	constexpr float soulWanderSpeed = .5f;
 	constexpr float soulCollisionRadius = 10.f;
-
-
-
 
 
 	constexpr float soulWanderStrength = .5f; // how fast wandering changes. higher more random, lower the less change over time.
