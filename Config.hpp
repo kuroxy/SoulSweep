@@ -4,8 +4,8 @@
 namespace Config
 {
 	//-- Game Settings --
-	constexpr int minSouls = 21;
-	constexpr float spawnDistance = 400.f;
+	constexpr int minSouls = 10;
+	constexpr float spawnDistance = 600.f;
 
 	//World
 	// the spritesheet texture (fullpath e.i "assets/large.png")
@@ -25,8 +25,8 @@ namespace Config
 
 	// -- Devourer -- 
 
-	constexpr float devourerMaxSpeed = 100.f; // the max speed that devourer goes in px/s
-	constexpr float devourerMaxForce = 200.f; // how much force can be added in a single add force call.
+	constexpr float devourerMaxSpeed = 70.f; // the max speed that devourer goes in px/s
+	constexpr float devourerMaxForce = 300.f; // how much force can be added in a single add force call.
 	constexpr float devourerConsumingTime = 2.f; // time it takes for the devourer to eat a soul. This time the devourer&soul are frozen in place.
 	
 	constexpr float devourerVisitRadius = 40.f; // distance to a point to consider it visited. T
