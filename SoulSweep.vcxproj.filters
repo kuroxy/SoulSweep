@@ -28,9 +28,6 @@
     <ClCompile Include="Soul.cpp">
       <Filter>Source\SoulSweep</Filter>
     </ClCompile>
-    <ClCompile Include="Tilemap.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="SoulSweep.cpp">
       <Filter>Source\SoulSweep</Filter>
@@ -50,6 +47,13 @@
     <ClCompile Include="SimplexNoise.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="RawTilemap.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -57,9 +61,6 @@
       <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="SpriteSheet.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.hpp">
       <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.hpp">
@@ -101,12 +102,16 @@
     <ClInclude Include="surface.h">
       <Filter>Headers\Tmpl8</Filter>
     </ClInclude>
-    <ClInclude Include="PerlinNoise.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="SimplexNoise.h">
       <Filter>Headers\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Level.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="RawTilemap.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />

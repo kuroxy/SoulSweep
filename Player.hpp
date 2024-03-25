@@ -2,7 +2,6 @@
 #include "template.h"
 #include "aabb.hpp"
 
-
 //forward declaration
 namespace Engine
 {
@@ -10,7 +9,10 @@ namespace Engine
 	class InputManager;
 }
 
-class Tilemap;
+
+
+
+class Level;
 
 class Player
 {
@@ -45,7 +47,7 @@ public:
 	void handleInput(const Engine::InputManager& im);
 
 	void move(float deltaTime);
-	void update(float deltaTime, const Tilemap& tilemap);
+	void update(float deltaTime, const Level& tilemap);
 
 	bool vacuumRange(const Tmpl8::vec2 pos) const;
 	const Tmpl8::vec2 calculateVacuumForce(const Tmpl8::vec2 pos) const;

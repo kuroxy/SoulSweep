@@ -421,6 +421,7 @@ bool Tilemap::boxCollideDebug(const Engine::AABB& box, Engine::Camera& c) const
 	return false;
 }
 
+
 // this function can definitely be made better
 Tmpl8::vec2 Tilemap::resolveBoxCollision(const Engine::AABB& box, const Tmpl8::vec2 dir) const 
 {

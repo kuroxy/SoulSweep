@@ -229,10 +229,12 @@
     <ClCompile Include="aabb.cpp" />
     <ClCompile Include="Devourer.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="RawTilemap.cpp" />
     <ClCompile Include="SimpleMovement.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
     <ClCompile Include="Soul.cpp" />
@@ -251,9 +253,10 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="InputManager.hpp" />
-    <ClInclude Include="ParticleSystem.hpp" />
-    <ClInclude Include="PerlinNoise.hpp" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Level.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="RawTilemap.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />
     <ClInclude Include="SimplexNoise.h" />
     <ClInclude Include="Soul.hpp" />

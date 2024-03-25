@@ -66,11 +66,16 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 
 	if (im.isActionPressed("debugfogofwar"))
-		terrainTileMap->toggleFogOfWar();
+		fogOfWarDisabled = !fogOfWarDisabled;
+
+	if (!fogOfWarDisabled)
+	{
+		level->updateFogOfWar(mainPlayer->getPosition(), Config::viewDistanceMin, Config::viewDistanceMax);
+	}
 
 	mainPlayer->handleInput(im);
 
-	mainPlayer->update(deltaTime, *terrainTileMap); // handles collision
+	mainPlayer->update(deltaTime, *level.get()); // handles collision
 
 	if (mainPlayer->shouldDropSoul())
 	{
@@ -79,7 +84,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 	}
 
 
-	terrainTileMap->updateVisibility(mainPlayer->getPosition());
+	//terrainTileMap->updateVisibility(mainPlayer->getPosition());
 
 	// TODO: maybe can clean this up?
 	for (auto soulIter = souls.begin(); soulIter != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
@@ -87,14 +92,14 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		bool removeSoul = false;
 
 		// Soul Behavior
-		soulIter->chooseBehavior(*terrainTileMap, *mainPlayer, souls, devourers);
+		soulIter->chooseBehavior(*level.get(), *mainPlayer, souls, devourers);
 		soulIter->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
 
 		// if eaten remove it from the game.
 		if (soulIter->isEaten)
 			removeSoul = true;
 		
-		if (soulConduit.contains(soulIter->getPosition()))
+		if (level->getConduit().contains(soulIter->getPosition()))
 		{
 			collectedSouls++;
 			removeSoul = true;
@@ -127,7 +132,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	for (auto& devourer : devourers)
 	{
-		devourer.chooseBehavior(*terrainTileMap, *mainPlayer, souls);
+		devourer.chooseBehavior(*level.get(), *mainPlayer, souls);
 		devourer.update(deltaTime);
 	}
 
@@ -148,9 +153,9 @@ void SoulSweep::render(Engine::Camera& camera)
 {
 	// draw order
 	// terrain -> SoulConduit -> souls -> ?(monster) -> player -> ?(fog of war)
-	terrainTileMap->draw(camera, terrainDebug);
-	soulConduit.draw(camera, soulsConduitDebug);
-
+	level->draw(camera);
+	if (terrainDebug)
+		level->drawCollision(camera);
 
 	for (auto& soul : souls)
 	{
@@ -165,12 +170,17 @@ void SoulSweep::render(Engine::Camera& camera)
 	mainPlayer->draw(camera, playerDebug);
 
 
-	// fog of war
+	if (!fogOfWarDisabled)
+	{
+		level->drawFogOfWar(camera);
+	}
 
-	camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMin, 0xff0ff0);
+	// -- fog of war --
 
-	camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMax, 0xff0ff0);
+	//camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMin, 0xff0ff0);
+
+	//camera.drawCircleWorldSpace(mainPlayer->getPosition(), Config::viewDistanceMax, 0xff0ff0);
 
 
-	terrainTileMap->drawFOW(camera);
+	//terrainTileMap->drawFOW(camera);
 }

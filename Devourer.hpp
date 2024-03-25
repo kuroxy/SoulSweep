@@ -4,11 +4,12 @@
 #include "ParticleSystem.hpp"
 #include <vector>
 #include <memory>
+#include <string_view>
 
 
 class Player;
 class Soul;
-class Tilemap;
+class Level;
 
 
 class Devourer : public SimpleMovement
@@ -36,7 +37,7 @@ public:
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
 
-	void chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList);
+	void chooseBehavior(const Level& level, const Player& player, std::vector<Soul>& soulList);
 
 	void actBehavior(float deltaTime);
 

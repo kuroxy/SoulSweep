@@ -65,9 +65,10 @@ void Camera::darkenPixel(int x, int y, int amount)
 	int g = (color&0x00ff00)>>8;
 	int b = color&0x0000ff;
 
-	r = Tmpl8::Clamp(r - amount, 0, 255);
-	g = Tmpl8::Clamp(g - amount, 0, 255);
-	b = Tmpl8::Clamp(b - amount, 0, 255);
+	float f = Tmpl8::Clamp(255-amount, 0, 255) / 255.0f;
+	r *= f;
+	g *= f;
+	b *= f;
 	color = (r << 16) | (g << 8) | b;
 	m_cameraBuffer->GetBuffer()[x + y * m_cameraWidth] = color;
 }
@@ -141,12 +142,12 @@ void Camera::blitTexture(Texture* texture, int x, int y)
 }
 
 
-void Camera::renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& WorldSpace)
+void Camera::renderTextureWorldSpace(const Texture& texture, const Tmpl8::vec2& WorldSpace)
 {
 	float localSpaceX = WorldSpace.x - m_position.x;
 	float localSpaceY = WorldSpace.y - m_position.y;
 
-	texture->CopyToSurface(m_cameraBuffer.get(), (int)localSpaceX, (int)localSpaceY);
+	texture.CopyToSurface(m_cameraBuffer.get(), (int)localSpaceX, (int)localSpaceY);
 }
 
 void Camera::drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color)

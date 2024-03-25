@@ -38,7 +38,7 @@ namespace Engine {
 		// drawing textures
 		void blitTexture(Texture* texture, int x, int y);
 
-		void renderTextureWorldSpace(Texture* texture, const Tmpl8::vec2& worldSpace);
+		void renderTextureWorldSpace(const Texture& texture, const Tmpl8::vec2& WorldSpace);
 
 		void drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
 		void drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);

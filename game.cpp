@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "Tilemap.hpp"
 #include "SoulSweep.hpp"
+#include "Level.hpp"
 
 namespace Tmpl8
 {
@@ -14,12 +15,13 @@ namespace Tmpl8
 	// Initialize the application
 	// -----------------------------------------------------------
 
-
+	
 	
 	SoulSweep game = SoulSweep();
 
 	void Game::Init()
 	{
+		
 		
 
 		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);

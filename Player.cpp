@@ -4,6 +4,7 @@
 #include "InputManager.hpp"
 #include <format>
 #include <string>
+#include "Level.hpp"
 
 using namespace Tmpl8;
 
@@ -39,22 +40,28 @@ void Player::move(float deltaTime)
 	updateAABB();
 }
 
-void Player::update(float deltaTime, const Tilemap& tilemap)
+void Player::update(float deltaTime, const Level& level)
 {
 	move(deltaTime);
 
-	if (tilemap.boxCollide(m_collisionBox))
+	if (level.aabbCollision(m_collisionBox))
 	{
 		// there is a collisions
-		m_position+= tilemap.resolveBoxCollision(m_collisionBox, m_direction);
+		m_position+= level.resolveBoxCollision(m_collisionBox, m_direction);
 		updateAABB();
 	}
 
-	if (tilemap.boxCollide(m_collisionBox)) // double collision check
+	// double collision check
+	// because the first can the player into a new collider, this one resolves this one.
+	if (level.aabbCollision(m_collisionBox)) 
 	{
-		m_position += tilemap.resolveBoxCollision(m_collisionBox, m_direction);
+		m_position += level.resolveBoxCollision(m_collisionBox, m_direction);
 		updateAABB();
 	}
+
+	// most of the times this will be enough.
+	// if not player has a frame inside a collider 
+	// next frame will solve this collision
 
 }
 

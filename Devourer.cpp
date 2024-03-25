@@ -2,8 +2,9 @@
 #include "Soul.hpp"
 #include "Camera.hpp"
 #include <format>
+#include "Level.hpp"
 
-void Devourer::chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList)
+void Devourer::chooseBehavior(const Level& level , const Player& player, std::vector<Soul>& soulList)
 {
 	// prettify this <---------------------------------------------------------
 	// this will check if it is still consuming 
@@ -36,7 +37,7 @@ void Devourer::chooseBehavior(const Tilemap& map, const Player& player, std::vec
 	for (auto& soul : soulList)
 	{
 		// we check if there is a direct line of sight ,,, currently there is no max view distance for the devourer
-		if (!map.lineSegmentCollide(position, soul.getPosition()))
+		if (!level.lineSegmentCollision(position, soul.getPosition()))
 		{
 			
 
@@ -59,7 +60,7 @@ void Devourer::chooseBehavior(const Tilemap& map, const Player& player, std::vec
 
 	// chasing player
 	float playerDistsqr = (player.getPosition() - getPosition()).sqrLentgh();
-	if (!map.lineSegmentCollide(position, player.getPosition()) || playerDistsqr > maxPlayerDistance * maxPlayerDistance)
+	if (!level.lineSegmentCollision(position, player.getPosition()) || playerDistsqr > maxPlayerDistance * maxPlayerDistance)
 	{
 		if (playerDistsqr < distance || playerDistsqr > maxPlayerDistance * maxPlayerDistance)
 		{

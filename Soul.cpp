@@ -1,14 +1,15 @@
 #include "Soul.hpp"
 #include "Camera.hpp"
+#include "Level.hpp"
 
-void Soul::chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList)
+void Soul::chooseBehavior(const Level& level, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList)
 {
 	// ----     Flee - SeekPlayer - AvoidNeigbours - Wander    ----
 
 	// see devourer will flee or see player with active vacuum
 	for (auto& devourer : devourerList)
 	{
-		if (!map.lineSegmentCollide(position, devourer.getPosition()))
+		if (!level.lineSegmentCollision(position, devourer.getPosition()))
 		{
 			fleePosition = devourer.getPosition();
 			currentState = BehaviorState::Flee;
@@ -17,7 +18,7 @@ void Soul::chooseBehavior(const Tilemap& map, const Player& player, std::vector<
 	}
 
 	
-	if (player.isVacuumEnabled() && !map.lineSegmentCollide(position, player.getPosition()))
+	if (player.isVacuumEnabled() && !level.lineSegmentCollision(position, player.getPosition()))
 	{
 		fleePosition = player.getPosition();
 		currentState = BehaviorState::Flee;

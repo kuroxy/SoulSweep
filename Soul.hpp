@@ -47,7 +47,7 @@ public:
 
 	float getCollisionRadius() const { return collideRadius; }
 
-	void chooseBehavior(const Tilemap& map, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList);
+	void chooseBehavior(const Level& level, const Player& player, std::vector<Soul>& soulList, std::vector<Devourer>& devourerList);
 
 	void actBehavior(float deltaTime);
 

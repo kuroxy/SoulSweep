@@ -10,6 +10,7 @@
 #include "SoulConduit.hpp"
 #include "ParticleSystem.hpp"
 #include "Devourer.hpp"
+#include "Level.hpp"
 
 namespace Engine
 {
@@ -20,14 +21,6 @@ class SoulSweep {
 	void loadSpriteSheet(std::string_view textureFile, int spriteSize, Tmpl8::Pixel chroma)
 	{
 		spriteSheet = std::make_shared<Engine::SpriteSheet>(textureFile, spriteSize, spriteSize, chroma);
-	}
-
-	void loadMap(std::string_view mapName, float viewDistMin, float viewDistMax) 
-	{
-		std::string sprites = std::format("assets/map/{}L1.csv", mapName);
-		std::string collision = std::format("assets/map/{}L2.csv", mapName);
-
-		terrainTileMap = new Tilemap(spriteSheet, sprites, collision, viewDistMin, viewDistMax);
 	}
 
 	void setSoulParticleSystem()
@@ -60,15 +53,17 @@ class SoulSweep {
 
 public:
 	SoulSweep() = default;
-	~SoulSweep() { delete mainPlayer; delete terrainTileMap; }
+	~SoulSweep() { delete mainPlayer; }
 
 	void Initialize()
 	{
 		setSoulParticleSystem();
 		setDevourerParticleSystem();
 		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
-		loadMap(Config::MAP_NAME, Config::viewDistanceMin, Config::viewDistanceMax);
+		//loadMap(Config::MAP_NAME, Config::viewDistanceMin, Config::viewDistanceMax);
 		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
+
+		level = std::make_unique<Level>(spriteSheet, "assets/map/level1.json");
 
 
 		spawnRandomDevourer(500.f);
@@ -93,11 +88,10 @@ private:
 
 
 	std::shared_ptr<Engine::SpriteSheet> spriteSheet{ nullptr };
-	Tilemap* terrainTileMap{ nullptr };
+	std::unique_ptr<Level> level{ nullptr };
+
 	
 	Player* mainPlayer{ nullptr };
-	
-	SoulConduit soulConduit{ {50.f,50.f}, {100.f,100.f} };
 
 	std::vector<Soul> souls;
 	std::vector<Devourer> devourers;
@@ -107,7 +101,10 @@ private:
 
 
 	//debug stuff
-	bool terrainDebug = false;
+	bool fogOfWarDisabled = false;
+
+
+	bool terrainDebug = true;
 	bool playerDebug = true;
 	bool soulsDebug = false;
 	bool devourerDebug = false;
