@@ -109,7 +109,16 @@ void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance,
 					wasCollider = true;
 				}
 
-				if (lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize * .5f)))
+				// backwards logic a bit 
+				bool hidden = true;
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize));
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize));
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f));
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f));
+
+
+
+				if (hidden)
 					newVis = Visibility::Unknown;
 
 				else if ((sqrt(dist) - minDist) / (maxDist - minDist) > .5f)
@@ -158,7 +167,23 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 				break;
 			}
 
-			
+
+
+			/*
+			* 
+			* Debug to see where checks are made
+			* 
+			Tmpl8::vec2 aV = Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize);
+			Tmpl8::vec2 bV = Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize);
+			Tmpl8::vec2 cV = Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f);
+			Tmpl8::vec2 dV = Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f);
+
+			c.drawBoxWorldSpace(aV, aV + Tmpl8::vec2(1.f), 0xff00ff);
+			c.drawBoxWorldSpace(bV, bV + Tmpl8::vec2(1.f), 0xff00ff);
+			c.drawBoxWorldSpace(cV, cV + Tmpl8::vec2(1.f), 0xff00ff);
+			c.drawBoxWorldSpace(dV, dV + Tmpl8::vec2(1.f), 0xff00ff);
+			*/
+
 		}
 	}
 }
