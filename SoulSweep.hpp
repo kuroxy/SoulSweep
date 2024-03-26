@@ -104,7 +104,7 @@ private:
 	bool fogOfWarDisabled = false;
 
 
-	bool terrainDebug = true;
+	bool terrainDebug = false;
 	bool playerDebug = true;
 	bool soulsDebug = false;
 	bool devourerDebug = false;
