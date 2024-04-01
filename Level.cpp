@@ -110,12 +110,12 @@ void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance,
 				}
 
 				// backwards logic a bit 
+				// we check the 4 midpoints of each side of the square it one has side is visible this means this tile is visiable.
 				bool hidden = true;
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f));
-
 
 
 				if (hidden)
@@ -166,30 +166,21 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 			default:
 				break;
 			}
-
-
-
-			/*
-			* 
-			* Debug to see where checks are made
-			* 
-			Tmpl8::vec2 aV = Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize);
-			Tmpl8::vec2 bV = Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize);
-			Tmpl8::vec2 cV = Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f);
-			Tmpl8::vec2 dV = Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f);
-
-			c.drawBoxWorldSpace(aV, aV + Tmpl8::vec2(1.f), 0xff00ff);
-			c.drawBoxWorldSpace(bV, bV + Tmpl8::vec2(1.f), 0xff00ff);
-			c.drawBoxWorldSpace(cV, cV + Tmpl8::vec2(1.f), 0xff00ff);
-			c.drawBoxWorldSpace(dV, dV + Tmpl8::vec2(1.f), 0xff00ff);
-			*/
-
 		}
 	}
 
+	
+	// outside the level we also draw the fog for 10 more tiles, this seems enough
+	// we do this because the camera can view outside the level, and fog of war is only calculated within the level
+
+
+	//left side
 	c.drawBarWorldSpace(Tmpl8::vec2(-10.f*tileSize, -10.f * tileSize), Tmpl8::vec2(0.f, (levelHeight + 10.f) * tileSize), 0);
-	c.drawBarWorldSpace(Tmpl8::vec2((levelWidth + 10.f) * tileSize, -10.f * tileSize), Tmpl8::vec2(levelWidth * tileSize, (levelHeight + 10.f) * tileSize), 0);
+	//right side
+	c.drawBarWorldSpace(Tmpl8::vec2(levelWidth * tileSize, -10.f * tileSize), Tmpl8::vec2((levelWidth+10.f) * tileSize, (levelHeight + 10.f) * tileSize), 0);
+	//top side
 	c.drawBarWorldSpace(Tmpl8::vec2(0, -10.f * tileSize), Tmpl8::vec2(levelWidth * tileSize, 0.f), 0);
+	//bottom side
 	c.drawBarWorldSpace(Tmpl8::vec2(0, levelHeight * tileSize), Tmpl8::vec2(levelWidth * tileSize, (levelHeight+10.f)*tileSize), 0);
 
 }

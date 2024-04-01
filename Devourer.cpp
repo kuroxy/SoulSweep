@@ -174,7 +174,7 @@ void Devourer::draw(Engine::Camera& camera, bool debug)
 	if (debug)
 	{
 		Tmpl8::vec2 local = camera.worldToLocal(getPosition() + Tmpl8::vec2(-20, -20));
-		camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
+		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
 
 		// collision circle
 		camera.drawCircleWorldSpace(position, collideRadius, 0x00ffff, 10); 
