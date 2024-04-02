@@ -6,6 +6,7 @@
 #include <string>
 #include "Level.hpp"
 
+
 using namespace Tmpl8;
 
 
@@ -22,6 +23,19 @@ void Player::handleInput(const Engine::InputManager& im)
 		m_direction.x -= 1.f;
 	if (im.isActionHeld("right"))
 		m_direction.x += 1.f;
+
+	if (m_direction.x == 0.f && m_direction.y == 0.f)
+	{
+		anim.changeAnimation("idle");
+	}
+	else
+	{
+		anim.changeAnimation("walk");
+		flipCharacter = m_direction.x < 0.f;
+	}
+
+	
+
 
 	m_vacuumEnabled = im.isActionHeld("vacuum") && !im.isActionHeld("dropsoul");
 	m_dropSoul = im.isActionPressed("dropsoul");
@@ -42,6 +56,7 @@ void Player::move(float deltaTime)
 
 void Player::update(float deltaTime, const Level& level)
 {
+	anim.update(deltaTime);
 	move(deltaTime);
 
 	if (level.aabbCollision(m_collisionBox))
@@ -98,7 +113,10 @@ void Player::draw(Engine::Camera& camera, bool debug)
 		camera.drawCircleWorldSpace(m_position, m_collectRadius, 0xffffff);
 	}
 		
-	
+	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2, sprites.getSpriteHeight() / 2), flipCharacter);
+
+	//camera.renderSpriteWorldSpace(&sprites, 0, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2, sprites.getSpriteHeight() / 2));
+
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
 	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
 	

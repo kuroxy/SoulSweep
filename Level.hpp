@@ -23,7 +23,7 @@ class Level
 
 public:
 	Level() = default;
-	Level(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view filename);
+	Level(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, std::string_view filename);
 	
 	//getters
 	const Engine::AABB& getConduit() const { return conduitCollider; }

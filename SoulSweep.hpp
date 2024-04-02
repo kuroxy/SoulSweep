@@ -18,11 +18,6 @@ namespace Engine
 };
 
 class SoulSweep {
-	void loadSpriteSheet(std::string_view textureFile, int spriteSize, Tmpl8::Pixel chroma)
-	{
-		spriteSheet = std::make_shared<Engine::SpriteSheet>(textureFile, spriteSize, spriteSize, chroma);
-	}
-
 	void setSoulParticleSystem()
 	{
 		soulParticles.spawnRate = .05f;
@@ -59,11 +54,13 @@ public:
 	{
 		setSoulParticleSystem();
 		setDevourerParticleSystem();
-		loadSpriteSheet(Config::TERRAIN_TEXTURE, Config::TERRAIN_SPRITE_SIZE, Config::TERRAIN_CHROMA);
-		//loadMap(Config::MAP_NAME, Config::viewDistanceMin, Config::viewDistanceMax);
-		mainPlayer = new Player(Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);; // player is square for now
+		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff); // initially done from config but I find this almost easier maybe later adding it back to config
+		playerSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/playerSheet.png", 32, 32, 0xff00ff);
 
-		level = std::make_unique<Level>(spriteSheet, "assets/map/level1.json");
+		
+		mainPlayer = new Player(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
+
+		level = std::make_unique<Level>(terrainSpriteSheet, "assets/Maps/level1.json");
 
 
 		spawnRandomDevourer(500.f);
@@ -87,7 +84,8 @@ private:
 	unsigned int collectedSouls{ 0 }; 
 
 
-	std::shared_ptr<Engine::SpriteSheet> spriteSheet{ nullptr };
+	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
+	std::shared_ptr<Engine::SpriteSheet> playerSpriteSheet{ nullptr };
 	std::unique_ptr<Level> level{ nullptr };
 
 	
@@ -105,7 +103,7 @@ private:
 
 
 	bool terrainDebug = false;
-	bool playerDebug = true;
+	bool playerDebug = false;
 	bool soulsDebug = false;
 	bool devourerDebug = false;
 	bool soulsConduitDebug = true;

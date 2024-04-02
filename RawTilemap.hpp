@@ -13,13 +13,13 @@ class RawTilemap
 {
 public:
 	RawTilemap() = delete;
-	RawTilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight)
-		: spriteSheet{ spriteSheet }
+	RawTilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight)
+		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
 		, mapData{ new int[mapWidth* mapHeight] } {};
-	RawTilemap(std::shared_ptr<Engine::SpriteSheet> spriteSheet, int mapWidth, int mapHeight, const Tmpl8::vec2& offset)
-		: spriteSheet{ spriteSheet }
+	RawTilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight, const Tmpl8::vec2& offset)
+		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
 		, offset{ offset }

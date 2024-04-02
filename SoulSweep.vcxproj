@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Devourer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -248,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aabb.hpp" />
+    <ClInclude Include="Animator.hpp" />
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="Devourer.hpp" />
     <ClInclude Include="game.h" />

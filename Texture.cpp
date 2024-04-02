@@ -171,7 +171,7 @@ void Texture::CopyOpaque(Tmpl8::Surface* surface, int x, int y) const
 	}
 }
 
-void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency)
+void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency, bool flip)
 {
 	Tmpl8::Pixel* src = m_buffer.get();
 	Tmpl8::Pixel* dst = surface->GetBuffer();
@@ -193,7 +193,7 @@ void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, 
 	int yMin = Tmpl8::Max<int>(yDst, 0);
 	int yMax = Tmpl8::Min<int>(yDst + (y2 - y1), dstHeight);
 
-	// iew
+	
 	for (int y = 0; y < yMax - yMin; y++)
 	{
 		for (int x = 0; x < xMax - xMin; x++)
@@ -206,12 +206,17 @@ void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, 
 			if (!(c & 0xff000000) && useTransparency)
 				continue;
 
-			dst[(y + yMin) * dstWidth + xMin + x] = c;
 			
+			if (flip)
+				dst[(y + yMin) * dstWidth + xMax - x] = c;
+			else
+				dst[(y + yMin) * dstWidth + xMin + x] = c;
 
 		}
 
 	}
+
+
 }
 
 };

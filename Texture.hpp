@@ -29,7 +29,7 @@ public:
 	// copies every pixel to surface even if chromakeyed // maybe getting removed
 	void CopyOpaque(Tmpl8::Surface* surface, int x, int y) const;
 
-	void PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency = true);
+	void PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency = true, bool flip=false);
 
 
 private:

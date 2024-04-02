@@ -1,6 +1,9 @@
 #pragma once
 #include "template.h"
 #include "aabb.hpp"
+#include "SpriteSheet.hpp"
+#include "Animator.hpp"
+
 
 //forward declaration
 namespace Engine
@@ -17,15 +20,26 @@ class Level;
 class Player
 {
 public:
-	Player(const Tmpl8::vec2& pos, float playerSpeed, float width, float height)
-		: m_position{ pos }
+	Player(const Engine::SpriteSheet& playerSheet, const Tmpl8::vec2& pos, float playerSpeed, float width, float height)
+		: sprites { playerSheet }
+		, anim { sprites }
+		, m_position{ pos }
 		, m_direction{ 0 }
 		, m_playerSpeed{ playerSpeed }
 		, m_width{ width }
 		, m_height{ height }
 	{
 		updateAABB();
+		
+		anim.setAnimationSpeed(1.f / 10.f);
+
+		anim.addAnimation("idle", { 0,0,0,1,1, 1 });
+		anim.addAnimation("walk", { 24, 25, 26, 27, 28, 29 ,30 ,31 });
+
+		anim.addAnimation("dies", {48, 49, 50, 51 ,52 ,52 ,52, 52 ,52});
 	}
+
+
 
 
 	const Tmpl8::vec2& getPosition() const { return m_position; }
@@ -55,6 +69,11 @@ public:
 	void draw(Engine::Camera& camera, bool debug=false);
 
 private:
+	Engine::SpriteSheet sprites;
+	Engine::Animator anim;
+	bool flipCharacter = false;
+
+
 	Tmpl8::vec2 m_position{ 0 };
 	Tmpl8::vec2 m_direction{ 0 }; // last movedirection
 	float m_playerSpeed;

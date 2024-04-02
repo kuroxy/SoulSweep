@@ -54,6 +54,7 @@
     <ClCompile Include="Tilemap.cpp">
       <Filter>Source\SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="Animator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -112,6 +113,7 @@
       <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="Animator.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
