@@ -14,6 +14,17 @@ void Devourer::chooseBehavior(const Level& level , const Player& player, std::ve
 		return;
 	}
 
+
+	//check if collision with player
+	// if it collides we just want is to have no behaviour this is similar to consuming since this is just not moving for a certain time but we keep it indefinetly
+	float distsq = (position - player.getPosition()).sqrLentgh();
+	if (distsq < (collideRadius + player.getCollectRadius()) * (collideRadius + player.getCollectRadius()))
+	{
+		currentState = BehaviorState::ConsumingSoul;
+		consumingSoulPtr = nullptr;
+		return;
+	}
+
 	// if it collides with a soul it just goes into comsuming
 	for (auto& soul : soulList)
 	{
@@ -26,9 +37,6 @@ void Devourer::chooseBehavior(const Level& level , const Player& player, std::ve
 		}
 
 	}
-
-
-	// we don't need to check collision with player because that is not a state and the game will handle game over etc..
 
 	// chasing soul
 
@@ -108,9 +116,12 @@ void Devourer::actBehavior(float deltaTime)
 	switch (currentState)
 	{
 	case Devourer::BehaviorState::ConsumingSoul:
-		consumingSoulPtr->setVelocity({ 0.f });
 		setVelocity({ 0.f });
 
+		if (consumingSoulPtr == nullptr)
+			break;
+
+		consumingSoulPtr->setVelocity({ 0.f });
 		consumingSoulProgress += deltaTime;
 
 		if (consumingSoulProgress > consumingSoulTime) // it is done eating

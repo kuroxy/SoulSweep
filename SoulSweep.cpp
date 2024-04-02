@@ -134,6 +134,12 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 	{
 		devourer.chooseBehavior(*level.get(), *mainPlayer, souls);
 		devourer.update(deltaTime);
+
+		float distsq = (devourer.getPosition() - mainPlayer->getPosition()).sqrLentgh();
+		if (distsq < (devourer.getCollideRadius() + mainPlayer->getCollectRadius()) * (devourer.getCollideRadius() + mainPlayer->getCollectRadius()))
+		{
+			mainPlayer->setDeath(true);
+		}
 	}
 
 

@@ -36,7 +36,7 @@ public:
 		anim.addAnimation("idle", { 0,0,0,1,1, 1 });
 		anim.addAnimation("walk", { 24, 25, 26, 27, 28, 29 ,30 ,31 });
 
-		anim.addAnimation("dies", {48, 49, 50, 51 ,52 ,52 ,52, 52 ,52});
+		anim.addAnimation("death", {56, 57, 58, 59, 60, 61, 62, 63});
 	}
 
 
@@ -68,6 +68,9 @@ public:
 
 	void draw(Engine::Camera& camera, bool debug=false);
 
+	bool isDead() const { return dead; }
+	void setDeath(bool val) { dead = val; }
+
 private:
 	Engine::SpriteSheet sprites;
 	Engine::Animator anim;
@@ -96,5 +99,8 @@ private:
 	float m_maxVacuumForce = 1500.f;
 	float m_maxVacuumDistance = 150.f;
 
+
+	bool dead = false;
+	bool totalDead = false;
 };
 

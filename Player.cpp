@@ -14,6 +14,10 @@ using namespace Tmpl8;
 
 void Player::handleInput(const Engine::InputManager& im)
 {
+	// if player is dead we will ignore player input
+	if (dead)
+		return;
+
 	m_direction = vec2(0);
 	if (im.isActionHeld("up"))
 		m_direction.y -= 1.f;
@@ -56,6 +60,25 @@ void Player::move(float deltaTime)
 
 void Player::update(float deltaTime, const Level& level)
 {
+	
+
+	// this means there is no animation playing meaning the death animation has finished 
+	if (anim.getCurrentAnim() == "")
+		return;
+
+	// if the player is dead just or the animation is not finished
+	// change animation to dead (this will not reset the animation)
+	if (dead)
+	{
+		anim.changeAnimation("death");
+
+		if (anim.isLastFrame()) // if this is the last frame of the animation set animation to empty
+			anim.changeAnimation("");
+		anim.update(deltaTime);
+		return;
+	}
+
+
 	anim.update(deltaTime);
 	move(deltaTime);
 
