@@ -257,6 +257,7 @@
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Level.hpp" />
+    <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="RawTilemap.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />

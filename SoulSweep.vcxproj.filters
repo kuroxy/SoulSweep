@@ -50,11 +50,15 @@
     <ClCompile Include="RawTilemap.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Tilemap.cpp">
       <Filter>Source\SoulSweep</Filter>
     </ClCompile>
-    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Animator.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -112,8 +116,15 @@
     <ClInclude Include="RawTilemap.hpp">
       <Filter>Headers\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp" />
-    <ClInclude Include="Animator.hpp" />
+    <ClInclude Include="Animator.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />
