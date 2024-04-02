@@ -37,7 +37,7 @@ void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int 
 void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool useTransparency, bool flip) const
 {
 	if (m_rows == 0 || m_columns == 0) return;
-	int x = spriteIndex % m_rows;
+	int x = spriteIndex % m_columns;
 	int y = spriteIndex / m_columns;
 
 	drawSprite(surface, x, y, xDst, yDst, useTransparency, flip);
