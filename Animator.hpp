@@ -34,8 +34,6 @@ namespace Engine
 		void draw(Camera& camera, const Tmpl8::vec2& worldPosition, bool flip=false);
 		
 
-
-
 	private:
 		SpriteSheet sprites;
 

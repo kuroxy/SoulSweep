@@ -47,7 +47,8 @@ public:
 
 	void draw(Engine::Camera& camera, bool debug);
 
-	
+	float getCollideRadius() const { return collideRadius; }
+
 
 private:
 	enum class BehaviorState {
@@ -57,15 +58,6 @@ private:
 		ChasingOldSoul,
 		ChasingOldPlayer,
 		Wandering
-	};
-
-	const std::vector<std::string_view> statesString = {
-		"ConsumingSoul",
-		"ChasingSoul",
-		"ChasingPlayer",
-		"ChasingOldSoul",
-		"ChasingOldPlayer",
-		"Wandering"
 	};
 
 	BehaviorState currentState = BehaviorState::Wandering;
