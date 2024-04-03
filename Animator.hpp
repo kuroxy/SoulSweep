@@ -6,12 +6,6 @@
 
 namespace Engine
 {
-	struct anim
-	{
-		std::vector<int> spriteIndices;
-		float timePerFrame;
-	};
-
 
 	class Animator
 	{
