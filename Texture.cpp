@@ -2,6 +2,7 @@
 #include "FreeImage.h"
 #include "surface.h"
 #include "template.h"
+#include <stdexcept> // For std::runtime_error
 
 namespace Engine
 {
@@ -34,6 +35,12 @@ Texture::Texture(std::string_view filename)
 		}
 	}
 	FreeImage_Unload(dib);
+
+	if (m_width == 0 && m_height == 0)
+	{
+		throw std::runtime_error("Failed to load texture: " + filstr);
+	}
+
 }
 
 Texture::Texture(int width, int height, Tmpl8::Pixel color)

@@ -9,7 +9,7 @@
 
 namespace Tmpl8 {
 
-void NotifyUser( char* s );
+void NotifyUser( const char* s );
 char Surface::s_Font[51][5][6];	
 bool Surface::fontInitialized = false;
 

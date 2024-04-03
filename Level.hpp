@@ -62,7 +62,7 @@ private:
 
 	// Textures
 
-	Engine::Texture conduitTexture{ "assets/SoulConduit.png" };
+	Engine::Texture conduitTexture{ "assets/Textures/SoulConduit.png" };
 
 
 };
