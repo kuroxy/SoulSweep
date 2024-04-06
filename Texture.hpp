@@ -9,14 +9,16 @@ namespace Engine {
 class Texture
 {
 public:
+	Texture() = default;
 	Texture(std::string_view filename);
+	Texture(std::string_view filename, Tmpl8::Pixel chromaColor);
 	Texture(int width, int height, Tmpl8::Pixel color);
 
 	int getWidth() const;
 	int getHeight() const;
 
 	bool hasTransparency() const;
-
+		
 	void setChromaKey(Tmpl8::Pixel colorKey);
 
 

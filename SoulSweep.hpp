@@ -11,6 +11,7 @@
 #include "ParticleSystem.hpp"
 #include "Devourer.hpp"
 #include "Level.hpp"
+#include "ResourceBar.hpp"
 
 namespace Engine
 {
@@ -81,9 +82,11 @@ public:
 	
 private:
 
-	unsigned int collectedSouls{ 0 }; 
+	int collectSoulsGoal{ 10 };
+	ResourceBar collectedSoulsBar{ std::make_shared<Engine::Texture>("assets/Textures/Bar.png", 0xff00ff), 15, 4, 635, 27, (float)collectSoulsGoal };
+	int collectedSouls{ 0 }; 
 
-
+	
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
 	std::shared_ptr<Engine::SpriteSheet> playerSpriteSheet{ nullptr };
 	std::unique_ptr<Level> level{ nullptr };
@@ -105,7 +108,7 @@ private:
 	bool terrainDebug = false;
 	bool playerDebug = false;
 	bool soulsDebug = false;
-	bool devourerDebug = false;
+	bool devourerDebug = true;
 	bool soulsConduitDebug = true;
 
 	

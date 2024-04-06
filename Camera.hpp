@@ -27,7 +27,7 @@ namespace Engine {
 
 		void Fill(Tmpl8::Pixel c);
 
-		void drawText(const std::string str, int x, int y, Tmpl8::Pixel color);
+		void drawText(std::string_view str, int x, int y, Tmpl8::Pixel color);
 
 		void darkenPixel(int x, int y, int amount);
 

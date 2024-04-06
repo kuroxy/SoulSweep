@@ -43,6 +43,13 @@ Texture::Texture(std::string_view filename)
 
 }
 
+Texture::Texture(std::string_view filename, Tmpl8::Pixel chromaColor)
+	: Texture(filename)
+{
+	
+	setChromaKey(chromaColor);
+}
+
 Texture::Texture(int width, int height, Tmpl8::Pixel color)
 	: m_width{ width }
 	, m_height{ height }

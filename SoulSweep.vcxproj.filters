@@ -59,6 +59,9 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source\SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceBar.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.hpp">
       <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceBar.hpp">
+      <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

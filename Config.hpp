@@ -25,7 +25,7 @@ namespace Config
 
 	// -- Devourer -- 
 
-	constexpr float devourerMaxSpeed = 70.f; // the max speed that devourer goes in px/s
+	constexpr float devourerMaxSpeed = 55.f; // the max speed that devourer goes in px/s
 	constexpr float devourerMaxForce = 300.f; // how much force can be added in a single add force call.
 	constexpr float devourerConsumingTime = 2.f; // time it takes for the devourer to eat a soul. This time the devourer&soul are frozen in place.
 	

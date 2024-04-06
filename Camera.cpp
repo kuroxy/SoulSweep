@@ -53,9 +53,9 @@ void Camera::Fill(Tmpl8::Pixel c)
 	m_cameraBuffer->Clear(c);
 }
 
-void Camera::drawText(const std::string str, int x1, int y1, Tmpl8::Pixel color)
+void Camera::drawText(std::string_view str, int x1, int y1, Tmpl8::Pixel color)
 {
-	m_cameraBuffer->Print(str.c_str(), x1, y1, color);
+	m_cameraBuffer->Print(str, x1, y1, color);
 }
 
 void Camera::darkenPixel(int x, int y, int amount)

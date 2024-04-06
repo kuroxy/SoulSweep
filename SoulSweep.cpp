@@ -153,6 +153,11 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 
 
+	//UI
+
+	collectedSoulsBar.setValue(collectedSouls);
+
+
 }
 
 void SoulSweep::render(Engine::Camera& camera)
@@ -180,6 +185,11 @@ void SoulSweep::render(Engine::Camera& camera)
 	{
 		level->drawFogOfWar(camera);
 	}
+
+	// UI
+
+	collectedSoulsBar.draw(camera, Tmpl8::vec2(10.f, 10.f), 0x6600ff);
+
 
 	// -- fog of war --
 
