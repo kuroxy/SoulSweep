@@ -73,6 +73,8 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		level->updateFogOfWar(mainPlayer->getPosition(), Config::viewDistanceMin, Config::viewDistanceMax);
 	}
 
+	level->updateSoulConduit(mainPlayer->getPosition());
+
 	mainPlayer->handleInput(im);
 
 	mainPlayer->update(deltaTime, *level.get()); // handles collision
@@ -99,7 +101,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		if (soulIter->isEaten)
 			removeSoul = true;
 		
-		if (level->getConduit().contains(soulIter->getPosition()))
+		if (level->isSoulConduitActivated() && level->getConduit().contains(soulIter->getPosition()))
 		{
 			collectedSouls++;
 			removeSoul = true;

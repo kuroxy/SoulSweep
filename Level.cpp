@@ -41,10 +41,8 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view 
 	conduitCollider.min.x = (float)data["conduitPosition"][0] * terrainSpriteSheet->getSpriteWidth();
 	conduitCollider.min.y = (float)data["conduitPosition"][1] * terrainSpriteSheet->getSpriteHeight();
 
-	conduitCollider.max.x = conduitCollider.min.x + conduitTexture.getWidth();
-	conduitCollider.max.y = conduitCollider.min.y + conduitTexture.getHeight();
-
-	conduitTexture.setChromaKey(0xff00ff);
+	conduitCollider.max.x = conduitCollider.min.x + conduitSheet.getSpriteWidth();
+	conduitCollider.max.y = conduitCollider.min.y + conduitSheet.getSpriteHeight();
 }
 
 void Level::draw(Engine::Camera& c) const
@@ -52,7 +50,11 @@ void Level::draw(Engine::Camera& c) const
 	terrainTilemap->draw(c);
 
 	// objects
-	c.renderTextureWorldSpace(conduitTexture, conduitCollider.min);
+	if (conduitActivated)
+		c.renderSpriteWorldSpace(conduitSheet, 1, conduitCollider.min);
+	else
+		c.renderSpriteWorldSpace(conduitSheet, 0, conduitCollider.min);
+
 }
 
 void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::Pixel conduitColor) const

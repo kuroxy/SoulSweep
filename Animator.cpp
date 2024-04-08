@@ -46,6 +46,6 @@ void Engine::Animator::draw(Camera& camera, const Tmpl8::vec2& worldPosition, bo
 
 
 	int frameIndex = animations[currentAnimation][currentFrame];
-	camera.renderSpriteWorldSpace(&sprites, frameIndex, worldPosition, flip);
+	camera.renderSpriteWorldSpace(sprites, frameIndex, worldPosition, flip);
 
 }

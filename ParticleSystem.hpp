@@ -61,7 +61,7 @@ namespace Engine
 
 		void updateParticles(float deltaTime);
 
-		void renderParticles(Camera& camera);
+		void renderParticles(Camera& camera) const;
 
 		const Tmpl8::vec2& getPosition() const { return position; }
 		void setPosition(Tmpl8::vec2 newPosition) { position = newPosition; }

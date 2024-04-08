@@ -122,7 +122,7 @@ void Tilemap::draw(Engine::Camera& c, bool debug) const
 		for (int x = 0; x < m_mapWidth; x++)
 		{
 			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * m_tileSize + m_offset.x, y * m_tileSize + m_offset.y);
-			c.renderSpriteWorldSpace(m_spriteSheet.get(), m_mapSprite[y * m_mapWidth + x], drawpos);
+			c.renderSpriteWorldSpace(*m_spriteSheet.get(), m_mapSprite[y * m_mapWidth + x], drawpos);
 			
 
 			if (debug && m_mapCollision[y * m_mapWidth + x])
@@ -203,7 +203,7 @@ void Tilemap::updateVisibility(Tmpl8::vec2 playerPosition)
 					wasCollider = true;
 				}
 
-				if (lineSegmentCollide(playerPosition, Tmpl8::vec2(x * m_tileSize + m_offset.x + m_tileSize * .5f, y * m_tileSize + m_offset.y + m_tileSize * .5)))
+				if (lineSegmentCollide(playerPosition, Tmpl8::vec2(x * m_tileSize + m_offset.x + m_tileSize * .5f, y * m_tileSize + m_offset.y + m_tileSize * .5f)))
 					newVis = Visibility::Unknown;
 
 				else if ((sqrt(dist) - minDist) / (maxDist- minDist) > .5f)

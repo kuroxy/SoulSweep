@@ -282,20 +282,20 @@ void Camera::drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius,
 
 
 
-void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int x, int y, const Tmpl8::vec2& worldSpace, bool flip)
+void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int x, int y, const Tmpl8::vec2& worldSpace, bool flip)
 {
 	int localSpaceX = (int)worldSpace.x - (int)m_position.x;
 	int localSpaceY = (int)worldSpace.y - (int)m_position.y;
 
-	spritesheet->drawSprite(m_cameraBuffer.get(), x, y, localSpaceX, localSpaceY);
+	spritesheet.drawSprite(m_cameraBuffer.get(), x, y, localSpaceX, localSpaceY);
 }
 
-void Camera::renderSpriteWorldSpace(SpriteSheet* spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace, bool flip)
+void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace, bool flip)
 {
 	int localSpaceX = (int)worldSpace.x - (int)m_position.x;
 	int localSpaceY = (int)worldSpace.y - (int)m_position.y;
 
-	spritesheet->drawSprite(m_cameraBuffer.get(), spriteIndex, localSpaceX, localSpaceY, true, flip);
+	spritesheet.drawSprite(m_cameraBuffer.get(), spriteIndex, localSpaceX, localSpaceY, true, flip);
 }
 
 

@@ -27,7 +27,7 @@ void Engine::RawTilemap::draw(Engine::Camera& c) const
 		for (int x = 0; x < width; x++)
 		{
 			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * spriteSheet->getSpriteWidth() + offset.x, y * spriteSheet->getSpriteHeight() + offset.y);
-			c.renderSpriteWorldSpace(spriteSheet.get(), mapData[y * width + x], drawpos);
+			c.renderSpriteWorldSpace(*spriteSheet.get(), mapData[y * width + x], drawpos);
 		}
 	}
 }

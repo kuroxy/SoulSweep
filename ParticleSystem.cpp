@@ -80,7 +80,7 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
     }
 }
 
-void Engine::BaseParticleSystem::renderParticles(Camera& camera)
+void Engine::BaseParticleSystem::renderParticles(Camera& camera) const
 {
     for (auto& particle : particlePool)
     {
