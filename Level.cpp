@@ -300,7 +300,7 @@ bool Level::lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::vec2 dir) const
 {
 	// While this function does work in the current situtation.
-	// This wil generate some weird behaviour if tile width is different from the tile height, 
+	// This can generate some unexpected behaviour if tile width is different from the tile height, 
 	// luckily most tilesheets tiles are square so I don't think it is worth to look at collisions again.
 	// this algorithm is based on this : https://www.youtube.com/watch?v=LYrge3ylccQ
 	Tmpl8::vec2 change{ 0 };

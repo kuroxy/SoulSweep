@@ -51,10 +51,6 @@ namespace Engine
 			: parameters{ params } 
 		{
 			particlePool.resize(poolSize);
-			for (int i = 0; i < poolSize; i++) // initalize the particle list
-			{
-				availableParticles.push(&particlePool[i]);
-			}
 		}
 
 		void spawnParticle();
@@ -90,7 +86,6 @@ namespace Engine
 		// todo: sorting particles instead of queue the when we need one just get the last one, and when it dies put it at the end
 
 		std::vector<Particle> particlePool;
-		std::queue<Particle*> availableParticles;
 
 
 		Particle* getNewParticle(); // gets a available particle and returns a pointer to it, if there is none returns nullptr

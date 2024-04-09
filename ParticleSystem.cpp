@@ -78,6 +78,17 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
 
         particle.color = (((int)(transparency*255.f)) << 24) | (r << 16) | (g << 8) | b;
     }
+
+    std::sort(particlePool.begin(), particlePool.end(), [](const Particle& lhs, const Particle& rhs)
+    {
+            if (!lhs.enabled && rhs.enabled)
+                return false;
+            else if (lhs.enabled && !rhs.enabled)
+                return true;
+
+            return lhs.currentLifeTime > rhs.currentLifeTime;
+    });
+
 }
 
 void Engine::BaseParticleSystem::renderParticles(Camera& camera) const
@@ -94,11 +105,11 @@ void Engine::BaseParticleSystem::renderParticles(Camera& camera) const
 
 BaseParticleSystem::Particle* BaseParticleSystem::getNewParticle()
 {
-    if (!availableParticles.empty())
+    // current system we can only get 1 particle per frame
+
+    if (!particlePool.back().enabled)
     {
-        Particle* particle = availableParticles.front();
-        availableParticles.pop();
-        return particle;
+        return &particlePool.back();
     }
     return nullptr; // we also can increase the poolSize dynamically but I will leave it for now.
 }
@@ -106,5 +117,4 @@ BaseParticleSystem::Particle* BaseParticleSystem::getNewParticle()
 void BaseParticleSystem::resetParticle(Particle* particle)
 {
     particle->enabled = false;
-    availableParticles.push(particle);
 }
