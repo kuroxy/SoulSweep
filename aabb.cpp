@@ -1,6 +1,11 @@
 #include "aabb.hpp"
 #include "Camera.hpp"
 
+void Engine::AABB::setPosition(const Tmpl8::vec2& newPosition)
+{
+    operator+(newPosition - min);
+}
+
 bool Engine::AABB::intersect(const Tmpl8::vec2& p0, const Tmpl8::vec2& p1) const
 {
     // Find min and max X for the segment

@@ -50,9 +50,6 @@
     <ClCompile Include="RawTilemap.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Tilemap.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="SoulSweep.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Tilemap.hpp">
       <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
     <ClInclude Include="template.h">

@@ -37,6 +37,9 @@ public:
 		this->maxValue = maxValue;
 	}
 	
+	int getFullWidth() const { return barTexture->getWidth(); }
+	int getFullHeight() const { return barTexture->getHeight(); }
+
 	void setValue(float value) { currentValue = value; }
 
 	float getValue() const { return currentValue; }

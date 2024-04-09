@@ -243,11 +243,11 @@ void Camera::drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color, 
 	float sqrRadius = radius * radius;
 	Tmpl8::vec2 pos = Tmpl8::vec2(x, y);
 
-	int x1 = Tmpl8::Clamp<int>(((int)x - radius), 0, m_cameraWidth);
-	int y1 = Tmpl8::Clamp<int>(((int)y - radius), 0, m_cameraHeight);
+	int x1 = Tmpl8::Clamp<int>(((int)x - radius - 1), 0, m_cameraWidth);
+	int y1 = Tmpl8::Clamp<int>(((int)y - radius - 1), 0, m_cameraHeight);
 
-	int x2 = Tmpl8::Clamp<int>(((int)x + radius), 0, m_cameraWidth);
-	int y2 = Tmpl8::Clamp<int>(((int)y + radius), 0, m_cameraHeight);
+	int x2 = Tmpl8::Clamp<int>(((int)x + radius + 1), 0, m_cameraWidth);
+	int y2 = Tmpl8::Clamp<int>(((int)y + radius + 1), 0, m_cameraHeight);
 
 	
 

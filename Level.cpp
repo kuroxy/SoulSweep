@@ -7,8 +7,11 @@
 // for convenience
 using json = nlohmann::json;
 
-Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view filename)
+Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, std::string_view filename, Engine::ParticleSystemParams soulFire)
 {
+
+
+
 	std::ifstream file(std::string{ filename });
 	if (!file.is_open()) {
 		std::cerr << "Error opening file!" << std::endl;
@@ -18,7 +21,7 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view 
 	file.close();
 
 
-	terrainSpriteSheet = spriteSheet;
+	terrainSpriteSheet = spriteSheetLevel;
 
 	levelWidth = data["levelWidth"];
 	levelHeight = data["levelHeight"];
@@ -38,11 +41,15 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheet, std::string_view 
 		terrainColliders[i] = ((int)data["colliderData"][i] == 255);
 	}
 
-	conduitCollider.min.x = (float)data["conduitPosition"][0] * terrainSpriteSheet->getSpriteWidth();
-	conduitCollider.min.y = (float)data["conduitPosition"][1] * terrainSpriteSheet->getSpriteHeight();
 
-	conduitCollider.max.x = conduitCollider.min.x + conduitSheet.getSpriteWidth();
-	conduitCollider.max.y = conduitCollider.min.y + conduitSheet.getSpriteHeight();
+	float conduitPositionX = (float)data["conduitPosition"][0] * terrainSpriteSheet->getSpriteWidth();
+	float conduitPositionY = (float)data["conduitPosition"][1] * terrainSpriteSheet->getSpriteHeight();
+
+
+
+	soulConduit = std::make_unique<SoulConduit>(Tmpl8::vec2(conduitPositionX, conduitPositionY), spriteSheetConduit, soulFire);
+
+
 }
 
 void Level::draw(Engine::Camera& c) const
@@ -50,10 +57,7 @@ void Level::draw(Engine::Camera& c) const
 	terrainTilemap->draw(c);
 
 	// objects
-	if (conduitActivated)
-		c.renderSpriteWorldSpace(conduitSheet, 1, conduitCollider.min);
-	else
-		c.renderSpriteWorldSpace(conduitSheet, 0, conduitCollider.min);
+	soulConduit->draw(c);
 
 }
 
@@ -73,7 +77,7 @@ void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::P
 	}
 
 	// also a collider
-	conduitCollider.draw(c, conduitColor);
+	soulConduit->draw(c, true);
 }
 
 void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance, float maxDistance)

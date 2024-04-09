@@ -2,7 +2,6 @@
 #include <vector>
 #include "Camera.hpp"
 #include "Player.hpp"
-#include "Tilemap.hpp"
 #include "Soul.hpp"
 #include "SpriteSheet.hpp"
 #include <format>
@@ -24,9 +23,9 @@ class SoulSweep {
 		soulParticles.spawnRate = .05f;
 		soulParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
 
-		soulParticles.sizeRangeStart = 10.f;
+		soulParticles.sizeRangeStart = 10.5f;
 
-		soulParticles.sizeRangeEnd = 2.f;
+		soulParticles.sizeRangeEnd = 2.5f;
 		
 		soulParticles.colorRangeEnd = Tmpl8::vec3(200.f);
 		soulParticles.particleLifetime = 1.f;
@@ -38,30 +37,52 @@ class SoulSweep {
 		devourerParticles.spawnRate = .05f;
 		devourerParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
 
-		devourerParticles.sizeRangeStart = 10.f;
+		devourerParticles.sizeRangeStart = 10.5f;
 
-		devourerParticles.sizeRangeEnd = 2.f;
+		devourerParticles.sizeRangeEnd = 2.5f;
 
 		devourerParticles.colorRangeStart = Tmpl8::vec3(40.f, 15.f, 15.f);
 		devourerParticles.colorRangeEnd = Tmpl8::vec3(20.f, 5.f , 5.f);
 		devourerParticles.particleLifetime = 1.f;
 	}
 
+	void setSoulFireParticleSystem()
+	{
+
+		soulFireParticles.spawnRate = .05f;
+
+		soulFireParticles.initialVelocity = Tmpl8::vec2(0.f, -20.f);
+		soulFireParticles.initialVelocityDeviation = Tmpl8::vec2(3.f, 2.f);
+
+		soulFireParticles.sizeRangeStart = 7.5f;
+
+		soulFireParticles.sizeRangeEnd = 1.1f;
+
+		soulFireParticles.colorRangeStart = Tmpl8::vec3(59.f, 189.f, 244.f);
+		soulFireParticles.colorRangeEnd = Tmpl8::vec3(24.f, 10.f, 94.f);
+		soulFireParticles.particleLifetime = 1.f;
+	}
+
 public:
 	SoulSweep() = default;
-	~SoulSweep() { delete mainPlayer; }
 
 	void Initialize()
 	{
 		setSoulParticleSystem();
 		setDevourerParticleSystem();
-		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff); // initially done from config but I find this almost easier maybe later adding it back to config
+		setSoulFireParticleSystem();
+
+
+		// currently loading textures here, maybe later we can move it back to config but this seems to work for now..
+		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff); 
 		playerSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/playerSheet.png", 32, 32, 0xff00ff);
 
-		
-		mainPlayer = new Player(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
+		soulConduitSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/SoulConduit.png", 94, 72, 0xff00ff);
 
-		level = std::make_unique<Level>(terrainSpriteSheet, "assets/Maps/level1.json");
+		
+		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
+
+		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, "assets/Maps/level1.json", soulFireParticles);
 
 
 		spawnRandomDevourer(500.f);
@@ -89,15 +110,20 @@ private:
 	
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
 	std::shared_ptr<Engine::SpriteSheet> playerSpriteSheet{ nullptr };
-	std::unique_ptr<Level> level{ nullptr };
+
+	std::shared_ptr<Engine::SpriteSheet> soulConduitSpriteSheet{ nullptr };
 
 	
-	Player* mainPlayer{ nullptr };
+
+	std::unique_ptr<Level> level{ nullptr };
+
+	std::unique_ptr<Player> mainPlayer{ nullptr };
 
 	std::vector<Soul> souls;
 	std::vector<Devourer> devourers;
 	Engine::ParticleSystemParams soulParticles;
 	Engine::ParticleSystemParams devourerParticles;
+	Engine::ParticleSystemParams soulFireParticles;
 
 
 
@@ -108,8 +134,8 @@ private:
 	bool terrainDebug = false;
 	bool playerDebug = false;
 	bool soulsDebug = false;
-	bool devourerDebug = true;
-	bool soulsConduitDebug = true;
+	bool devourerDebug = false;
+	bool soulsConduitDebug = false;
 
 	
 };

@@ -1,6 +1,5 @@
 #include "Player.hpp"
 #include "Camera.hpp"
-#include "Tilemap.hpp"
 #include "InputManager.hpp"
 #include <format>
 #include <string>
@@ -143,7 +142,6 @@ void Player::draw(Engine::Camera& camera, bool debug)
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
 	camera.drawLineWorldSpace(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
 	
-	camera.drawText(std::format("Souls: {} / {}", m_currentSouls, m_maxSouls), 10, 10, 0x00ffff);
 }
 
 void Player::updateAABB()

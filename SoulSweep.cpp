@@ -73,7 +73,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		level->updateFogOfWar(mainPlayer->getPosition(), Config::viewDistanceMin, Config::viewDistanceMax);
 	}
 
-	level->updateSoulConduit(mainPlayer->getPosition());
+	level->updateSoulConduit(deltaTime, mainPlayer->getPosition());
 
 	mainPlayer->handleInput(im);
 
@@ -101,13 +101,15 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		if (soulIter->isEaten)
 			removeSoul = true;
 		
-		if (level->isSoulConduitActivated() && level->getConduit().contains(soulIter->getPosition()))
+		
+
+		if (!mainPlayer->isDead() &&level->isSoulCollectable(soulIter->getPosition()))
 		{
 			collectedSouls++;
 			removeSoul = true;
 		}
 
-		if (mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
+		if (!mainPlayer->isDead() && mainPlayer->isVacuumEnabled() && mainPlayer->canCollectSoul())
 		{
 			// calculate it the collect radius of the players hits the soul
 			float rad = mainPlayer->getCollectRadius() + soulIter->getCollisionRadius();
@@ -167,9 +169,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	// draw order
 	// terrain -> SoulConduit -> souls -> ?(monster) -> player -> ?(fog of war)
 	level->draw(camera);
-	if (terrainDebug)
-		level->drawCollision(camera);
-
+	
 	for (auto& soul : souls)
 	{
 		soul.draw(camera, soulsDebug);
@@ -188,9 +188,22 @@ void SoulSweep::render(Engine::Camera& camera)
 		level->drawFogOfWar(camera);
 	}
 
-	// UI
 
-	collectedSoulsBar.draw(camera, Tmpl8::vec2(10.f, 10.f), 0x6600ff);
+	// DEBUG STUFF
+
+
+	if (terrainDebug)
+		level->drawCollision(camera);
+
+
+
+	// UI
+	
+
+
+	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2, 10.f), 0x6600ff);
+
+
 
 
 	// -- fog of war --

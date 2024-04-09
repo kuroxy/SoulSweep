@@ -20,6 +20,8 @@ namespace Engine
             , max{ std::max<float>(a.x, b.x), std::max<float>(a.y, b.y) }
         {}
 
+        void setPosition(const Tmpl8::vec2& newPosition);
+
         // Translate AABB.
         AABB operator+(const Tmpl8::vec2& rhs) const noexcept
         {

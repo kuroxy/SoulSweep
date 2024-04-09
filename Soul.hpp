@@ -2,7 +2,6 @@
 #include "template.h"
 #include "surface.h"
 #include "Player.hpp"
-#include "Tilemap.hpp"
 #include "ParticleSystem.hpp"
 #include "SimpleMovement.hpp"
 #include "Devourer.hpp"
