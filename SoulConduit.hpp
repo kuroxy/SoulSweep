@@ -19,7 +19,7 @@ public:
 	SoulConduit(Tmpl8::vec2 position, std::shared_ptr<Engine::SpriteSheet> colliderSheet, Engine::ParticleSystemParams SoulFireParams)
 	{
 		conduitSheet = colliderSheet;
-		conduitCollider = Engine::AABB( position,position + Tmpl8::vec2(colliderSheet->getSpriteWidth(), colliderSheet->getSpriteHeight()));
+		conduitCollider = Engine::AABB( position,position + Tmpl8::vec2((float)colliderSheet->getSpriteWidth(), (float)colliderSheet->getSpriteHeight()));
 
 
 		particleNorth = new Engine::BaseParticleSystem(SoulFireParams, 50);

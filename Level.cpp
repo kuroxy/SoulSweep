@@ -70,8 +70,8 @@ void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::P
 			if (!terrainColliders[y * levelWidth + x])
 				continue;
 
-			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * terrainSpriteSheet->getSpriteWidth(), y * terrainSpriteSheet->getSpriteWidth());
-			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(terrainSpriteSheet->getSpriteWidth() - 1), (int)(terrainSpriteSheet->getSpriteHeight() - 1)), terrainColor);
+			Tmpl8::vec2 drawpos = Tmpl8::vec2((float)x * (float)terrainSpriteSheet->getSpriteWidth(), (float)y * (float)terrainSpriteSheet->getSpriteWidth());
+			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(terrainSpriteSheet->getSpriteWidth() - 1.f), (float)(terrainSpriteSheet->getSpriteHeight() - 1.f)), terrainColor);
 			
 		}
 	}
@@ -118,11 +118,13 @@ void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance,
 				// backwards logic a bit 
 				// we check the 4 midpoints of each side of the square it one has side is visible this means this tile is visiable.
 				bool hidden = true;
+
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f));
 				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f));
 
+				
 
 				if (hidden)
 					newVis = Visibility::Unknown;
@@ -150,7 +152,7 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 	{
 		for (int x = 0; x < levelWidth; x++)
 		{
-			Tmpl8::vec2 drawpos = Tmpl8::vec2(x * tileSize, y * tileSize);
+			Tmpl8::vec2 drawpos = Tmpl8::vec2((float)(x * tileSize),(float)(y * tileSize));
 			
 			// can be done better maybe a switch case to get the amount of darkener
 			// magic numbers?
@@ -159,13 +161,13 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 			{
 
 			case Visibility::Unknown:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(tileSize - 1), 255);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)tileSize - 1.f), 255);
 				break;
 			case Visibility::Dark:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(tileSize - 1), 100);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)tileSize - 1.f), 100);
 				break;
 			case Visibility::Dim:
-				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2(tileSize - 1), 40);
+				c.drawBarDarkenWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)tileSize - 1.f), 40);
 				break;
 			case Visibility::Light:
 				break;
@@ -202,11 +204,11 @@ bool Level::isCollider(int x, int y) const
 
 bool Level::aabbCollision(const Engine::AABB& aabb) const
 {
-	int minX = aabb.min.x / terrainSpriteSheet->getSpriteWidth();
-	int minY = aabb.min.y / terrainSpriteSheet->getSpriteHeight();
+	int minX = (int)(aabb.min.x / terrainSpriteSheet->getSpriteWidth());
+	int minY = (int)(aabb.min.y / terrainSpriteSheet->getSpriteHeight());
 
-	int maxX = ceil(aabb.max.x / terrainSpriteSheet->getSpriteWidth());
-	int maxY = ceil(aabb.max.y / terrainSpriteSheet->getSpriteHeight());
+	int maxX = (int)ceil(aabb.max.x / terrainSpriteSheet->getSpriteWidth());
+	int maxY = (int)ceil(aabb.max.y / terrainSpriteSheet->getSpriteHeight());
 
 	for (int y = minY; y < maxY; y++)
 	{
@@ -239,7 +241,7 @@ bool Level::lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 	Tmpl8::vec2 dir = (p2 - p1).normalized();
 
 	Tmpl8::vec2 vRayUnitStepSize = { std::sqrt(1.f + (dir.y / dir.x) * (dir.y / dir.x)), std::sqrt(1.f + (dir.x / dir.y) * (dir.x / dir.y)) };
-	Tmpl8::vec2 vMapCheck = Tmpl8::vec2((int)lineStart.x, (int)lineStart.y);
+	Tmpl8::vec2 vMapCheck = Tmpl8::vec2(floor(lineStart.x), floor(lineStart.y));
 	Tmpl8::vec2 vRayLength1D{ 0 };
 	Tmpl8::vec2 vStep{ 0 };
 
@@ -306,8 +308,8 @@ Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::ve
 	int minX = (int)(aabb.min.x / terrainSpriteSheet->getSpriteWidth());
 	int minY = (int)(aabb.min.y / terrainSpriteSheet->getSpriteHeight());
 
-	int maxX = ceil(aabb.max.x / terrainSpriteSheet->getSpriteWidth());
-	int maxY = ceil(aabb.max.y / terrainSpriteSheet->getSpriteHeight());
+	int maxX = (int)ceil(aabb.max.x / terrainSpriteSheet->getSpriteWidth());
+	int maxY = (int)ceil(aabb.max.y / terrainSpriteSheet->getSpriteHeight());
 
 	for (int y = minY; y < maxY; y++)
 	{
@@ -315,7 +317,7 @@ Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::ve
 		{
 			if (isCollider(x, y))
 			{
-				Tmpl8::vec2 min = Tmpl8::vec2(x * terrainSpriteSheet->getSpriteWidth(), y * terrainSpriteSheet->getSpriteWidth());
+				Tmpl8::vec2 min = Tmpl8::vec2((float)(x * terrainSpriteSheet->getSpriteWidth()), (float)(y * terrainSpriteSheet->getSpriteWidth()));
 				Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(terrainSpriteSheet->getSpriteWidth() - 1.f));
 
 
