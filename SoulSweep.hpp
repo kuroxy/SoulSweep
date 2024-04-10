@@ -46,22 +46,6 @@ class SoulSweep {
 		devourerParticles.particleLifetime = 1.f;
 	}
 
-	void setSoulFireParticleSystem()
-	{
-
-		soulFireParticles.spawnRate = .05f;
-
-		soulFireParticles.initialVelocity = Tmpl8::vec2(0.f, -20.f);
-		soulFireParticles.initialVelocityDeviation = Tmpl8::vec2(3.f, 2.f);
-
-		soulFireParticles.sizeRangeStart = 7.5f;
-
-		soulFireParticles.sizeRangeEnd = 1.1f;
-
-		soulFireParticles.colorRangeStart = Tmpl8::vec3(59.f, 189.f, 244.f);
-		soulFireParticles.colorRangeEnd = Tmpl8::vec3(24.f, 10.f, 94.f);
-		soulFireParticles.particleLifetime = 1.f;
-	}
 
 public:
 	SoulSweep() = default;
@@ -70,7 +54,6 @@ public:
 	{
 		setSoulParticleSystem();
 		setDevourerParticleSystem();
-		setSoulFireParticleSystem();
 
 
 		// currently loading textures here, maybe later we can move it back to config but this seems to work for now..
@@ -82,7 +65,7 @@ public:
 		
 		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
 
-		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, "assets/Maps/level1.json", soulFireParticles);
+		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, "assets/Maps/level1.json");
 
 
 		spawnRandomDevourer(500.f);
@@ -123,7 +106,6 @@ private:
 	std::vector<Devourer> devourers;
 	Engine::ParticleSystemParams soulParticles;
 	Engine::ParticleSystemParams devourerParticles;
-	Engine::ParticleSystemParams soulFireParticles;
 
 
 

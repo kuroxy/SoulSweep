@@ -7,7 +7,7 @@
 // for convenience
 using json = nlohmann::json;
 
-Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, std::string_view filename, Engine::ParticleSystemParams soulFire)
+Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, std::string_view filename)
 {
 
 
@@ -47,7 +47,7 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_
 
 
 
-	soulConduit = std::make_unique<SoulConduit>(Tmpl8::vec2(conduitPositionX, conduitPositionY), spriteSheetConduit, soulFire);
+	soulConduit = std::make_unique<SoulConduit>(Tmpl8::vec2(conduitPositionX, conduitPositionY), spriteSheetConduit);
 
 
 }

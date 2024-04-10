@@ -27,7 +27,7 @@ void BaseParticleSystem::spawnParticle()
     float lifetimeDiff = Rand(parameters.particleLifetimeDeviation * 2) - parameters.particleLifetimeDeviation;
 
     newParticle->maxLifeTime = parameters.particleLifetime + lifetimeDiff;
-    newParticle->currentLifeTime = 0;
+    newParticle->currentLifeTime = newParticle->maxLifeTime;
 
 
     // size & color will be calculated in the updateloop.
@@ -53,15 +53,15 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
             continue;  
 
         particle.position += particle.velocity * deltaTime;
-        particle.currentLifeTime += deltaTime;
+        particle.currentLifeTime -= deltaTime;
 
-        if (particle.currentLifeTime > particle.maxLifeTime)
+        if (particle.currentLifeTime <= 0.f)
         {
             resetParticle(&particle);
             continue;
         }
 
-        float lifeTimePercentage = particle.currentLifeTime / particle.maxLifeTime;
+        float lifeTimePercentage = (particle.maxLifeTime-particle.currentLifeTime) / particle.maxLifeTime;
 
 
         particle.size = (parameters.sizeRangeEnd-parameters.sizeRangeStart) * lifeTimePercentage + parameters.sizeRangeStart;
@@ -81,12 +81,7 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
 
     std::sort(particlePool.begin(), particlePool.end(), [](const Particle& lhs, const Particle& rhs)
     {
-            if (!lhs.enabled && rhs.enabled)
-                return false;
-            else if (lhs.enabled && !rhs.enabled)
-                return true;
-
-            return lhs.currentLifeTime > rhs.currentLifeTime;
+            return lhs.currentLifeTime < rhs.currentLifeTime;
     });
 
 }
@@ -107,9 +102,9 @@ BaseParticleSystem::Particle* BaseParticleSystem::getNewParticle()
 {
     // current system we can only get 1 particle per frame
 
-    if (!particlePool.back().enabled)
+    if (!particlePool.front().enabled)
     {
-        return &particlePool.back();
+        return &particlePool.front();
     }
     return nullptr; // we also can increase the poolSize dynamically but I will leave it for now.
 }

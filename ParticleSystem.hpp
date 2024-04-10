@@ -82,12 +82,9 @@ namespace Engine
 		ParticleSystemParams parameters;
 		float timeTillNextSpawn = parameters.spawnRate;
 
-
-		// todo: sorting particles instead of queue the when we need one just get the last one, and when it dies put it at the end
-
 		std::vector<Particle> particlePool;
 
-
+		// Currently does not work when you try to call more than 1 particle per frame
 		Particle* getNewParticle(); // gets a available particle and returns a pointer to it, if there is none returns nullptr
 
 		void resetParticle(Particle* particle);

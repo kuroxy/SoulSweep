@@ -6,18 +6,20 @@
 void SoulConduit::setPosition(const Tmpl8::vec2& position)
 {
 	conduitCollider.setPosition(position);
-	particleNorth->setPosition(position + Tmpl8::vec2(conduitSheet->getSpriteWidth() / 2, 0));
-	particleEast->setPosition (position + Tmpl8::vec2(conduitSheet->getSpriteWidth()    , conduitSheet->getSpriteHeight() / 2));
-	particleSouth->setPosition(position + Tmpl8::vec2(conduitSheet->getSpriteWidth() / 2, conduitSheet->getSpriteHeight()));
-	particleWest->setPosition (position + Tmpl8::vec2(0									, conduitSheet->getSpriteHeight() / 2));
+
+	// magic numbers??!?!?!
+	particleNorth.setPosition(position + Tmpl8::vec2(47, 5));
+	particleEast.setPosition(position + Tmpl8::vec2(86, 32));
+	particleSouth.setPosition(position + Tmpl8::vec2(47 , 59));
+	particleWest.setPosition(position + Tmpl8::vec2(8, 32));
 }
 
 void SoulConduit::update(float deltaTime, Tmpl8::vec2 playerPosition)
 {
-	particleNorth->updateParticles(deltaTime);
-	particleEast->updateParticles(deltaTime);
-	particleSouth->updateParticles(deltaTime);
-	particleWest->updateParticles(deltaTime);
+	particleNorth.update(deltaTime);
+	particleEast.update(deltaTime);
+	particleSouth.update(deltaTime);
+	particleWest.update(deltaTime);
 
 	conduitActivated = conduitCollider.contains(playerPosition);
 }
@@ -30,10 +32,10 @@ void SoulConduit::draw(Engine::Camera& camera, bool debug) const
 	else
 		camera.renderSpriteWorldSpace(*conduitSheet.get(), 0, conduitCollider.min);
 
-	particleNorth->renderParticles(camera);
-	particleEast->renderParticles(camera);
-	particleSouth->renderParticles(camera);
-	particleWest->renderParticles(camera);
+	particleNorth.render(camera);
+	particleEast.render(camera);
+	particleSouth.render(camera);
+	particleWest.render(camera);
 	
 	
 	if (debug)
