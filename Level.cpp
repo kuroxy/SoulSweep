@@ -71,7 +71,7 @@ void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::P
 				continue;
 
 			Tmpl8::vec2 drawpos = Tmpl8::vec2((float)x * (float)terrainSpriteSheet->getSpriteWidth(), (float)y * (float)terrainSpriteSheet->getSpriteWidth());
-			c.drawBoxWorldSpace(drawpos, drawpos + Tmpl8::vec2((float)(terrainSpriteSheet->getSpriteWidth() - 1.f), (float)(terrainSpriteSheet->getSpriteHeight() - 1.f)), terrainColor);
+			c.drawRectangle(drawpos, drawpos + Tmpl8::vec2((float)(terrainSpriteSheet->getSpriteWidth() - 1.f), (float)(terrainSpriteSheet->getSpriteHeight() - 1.f)), terrainColor, 1);
 			
 		}
 	}
@@ -183,13 +183,13 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 
 
 	//left side
-	c.drawBarWorldSpace(Tmpl8::vec2(-10.f*tileSize, -10.f * tileSize), Tmpl8::vec2(0.f, (levelHeight + 10.f) * tileSize), 0);
+	c.drawRectangle(Tmpl8::vec2(-10.f*tileSize, -10.f * tileSize), Tmpl8::vec2(0.f, (levelHeight + 10.f) * tileSize), 0, 0);
 	//right side
-	c.drawBarWorldSpace(Tmpl8::vec2(levelWidth * tileSize, -10.f * tileSize), Tmpl8::vec2((levelWidth+10.f) * tileSize, (levelHeight + 10.f) * tileSize), 0);
+	c.drawRectangle(Tmpl8::vec2(levelWidth * tileSize, -10.f * tileSize), Tmpl8::vec2((levelWidth+10.f) * tileSize, (levelHeight + 10.f) * tileSize), 0, 0);
 	//top side
-	c.drawBarWorldSpace(Tmpl8::vec2(0, -10.f * tileSize), Tmpl8::vec2(levelWidth * tileSize, 0.f), 0);
+	c.drawRectangle(Tmpl8::vec2(0, -10.f * tileSize), Tmpl8::vec2(levelWidth * tileSize, 0.f), 0, 0);
 	//bottom side
-	c.drawBarWorldSpace(Tmpl8::vec2(0, levelHeight * tileSize), Tmpl8::vec2(levelWidth * tileSize, (levelHeight+10.f)*tileSize), 0);
+	c.drawRectangle(Tmpl8::vec2(0, levelHeight * tileSize), Tmpl8::vec2(levelWidth * tileSize, (levelHeight+10.f)*tileSize), 0, 0);
 
 }
 

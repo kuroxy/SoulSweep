@@ -77,7 +77,7 @@ void SoulConduit::draw(Engine::Camera& camera, bool debug) const
 	
 	if (debug)
 	{
-		camera.drawBoxWorldSpace(conduitCollider.min, conduitCollider.max, 0x00ff00);
+		camera.drawRectangle(conduitCollider.min, conduitCollider.max, 0x00ff00, 1);
 	}
 
 }

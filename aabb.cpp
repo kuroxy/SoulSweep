@@ -84,5 +84,5 @@ void Engine::AABB::draw(Tmpl8::Surface& screen, Tmpl8::Pixel color) const
 
 void Engine::AABB::draw(Camera& c, Tmpl8::Pixel color) const
 {
-    c.drawBoxWorldSpace(min, max, color);
+    c.drawRectangle(min, max, color, 1);
 }

@@ -68,20 +68,32 @@ public:
 	int GetHeight() { return m_Height; }
 	int GetPitch() { return m_Pitch; }
 	void SetPitch( int a_Pitch ) { m_Pitch = a_Pitch; }
+
 	// Special operations
-	void InitCharset();
+	void LoadImage(const char* a_File);						// Loads image from disk. Removes all previous data 
+	void CopyTo(Surface* a_Dst, int a_X, int a_Y);			// Copies this surface onto another, with an offset (Not sure if clipped) 
+	void BlendCopyTo(Surface* a_Dst, int a_X, int a_Y);		// Same as Copy to but blends them with a ADD-blend
+	void ScaleColor(unsigned int a_Scale);					// Todo:: 
+
+	// Text methods
+	void InitCharset();	
 	void SetChar( int c, const char* c1, const char* c2, const char* c3, const char* c4, const char* c5 );
-	void Centre( const char* a_String, int y1, Pixel color );
 	void Print(std::string_view text, int x1, int y1, Pixel color, int width = 1);
-	void Clear( Pixel a_Color );
-	void Line(float x1, float y1, float x2, float y2, Pixel c);
-	void Plot( int x, int y, Pixel c );
-	void LoadImage( const char* a_File );
-	void CopyTo( Surface* a_Dst, int a_X, int a_Y );
-	void BlendCopyTo( Surface* a_Dst, int a_X, int a_Y );
-	void ScaleColor( unsigned int a_Scale );
-	void Box( int x1, int y1, int x2, int y2, Pixel color );
-	void Bar( int x1, int y1, int x2, int y2, Pixel color );
+
+	// Drawing methods
+	void Clear( Pixel a_Color );								// Fills the surface with a_Color
+	void Plot(int x, int y, Pixel c);							// Draws one pixel on x.y (Clipped)
+	void Line(float x1, float y1, float x2, float y2, Pixel c); // Draws line between x1,y1 to x2,y2 (Clipped)
+	
+	void Box( int x1, int y1, int x2, int y2, Pixel color );	// Draws a rectangle with a width of 1 pixel
+	void Bar( int x1, int y1, int x2, int y2, Pixel color );	// Draws a rectangle that is filled
+
+	void Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width = 0); 
+	// if width == 0, (default) fill the rectangle, else used for line thickness
+
+	void Circle(int x, int y, int radius, Pixel color, int width = 0); 
+	// if width == 0, (default) fill the circle, else used for line thickness
+
 	void Resize( Surface* a_Orig );
 private:
 	// Attributes
@@ -92,7 +104,9 @@ private:
 	// Static attributes for the buildin font
 	static char s_Font[51][5][6];
 	static bool fontInitialized;
-	int s_Transl[256]{};		
+
+	// translates ascii into position on the s_Font
+	int s_Transl[256]{};
 };
 
 class Sprite

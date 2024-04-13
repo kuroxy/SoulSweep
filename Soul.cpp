@@ -128,17 +128,17 @@ void Soul::draw(Engine::Camera& camera, bool debug)
 
 	if (debug)
 	{
-		Tmpl8::vec2 local = camera.worldToLocal(getPosition() + Tmpl8::vec2(-20, -20));
+		Tmpl8::vec2 local = camera.worldToScreen(getPosition() + Tmpl8::vec2(-20, -20));
 		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
 
 		// collision circle
-		camera.drawCircleWorldSpace(position, collideRadius, 0x00ffff, 10);
+		camera.drawCircle(position, collideRadius, 0x00ffff, 1);
 
 
 		// todo other saved positions
 
-		camera.drawCircleWorldSpace(position, minPlayerDistance, 0xffff00);
-		camera.drawCircleWorldSpace(position, maxPlayerDistance, 0xffff00);
+		camera.drawCircle(position, minPlayerDistance, 0xffff00, 1);
+		camera.drawCircle(position, maxPlayerDistance, 0xffff00, 1);
 
 	}
 }

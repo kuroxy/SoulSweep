@@ -1,8 +1,9 @@
 #pragma once
 #include <memory>
+#include <string>
+
 #include "template.h"
 #include "surface.h"
-#include <string>
 
 namespace Engine {
 
@@ -10,53 +11,60 @@ namespace Engine {
 	class Texture;
 	class SpriteSheet;
 
+
 	class Camera
 	{
 	public:
-		Camera(int screenWidth, int screenHeight);
+		Camera() = delete;
+		Camera(int screenWidth, int screenHeight)
+			: cameraSurface{ std::make_unique<Tmpl8::Surface>(screenWidth, screenHeight) }
+		{
+		}
 
-		int getWidth() const;
-		int getHeight() const;
-		const Tmpl8::vec2 getPosition() const;
+		// Getters
+		Tmpl8::Surface* getSurface() const { return cameraSurface.get(); }
 
-		Tmpl8::vec2 worldToLocal(const Tmpl8::vec2& worldSpace) const;
+		int getWidth() const { return cameraSurface->GetWidth(); }
+		int getHeight() const { return cameraSurface->GetHeight(); }
+
+		const Tmpl8::vec2& getPosition() const { return position; }
+
+		// Setters
+		void setPosition(const Tmpl8::vec2& pos) { position = pos; }
+
+
+		// Special methods
+		Tmpl8::vec2 worldToScreen(const Tmpl8::vec2& worldPosition) const;
 		Tmpl8::vec2 localToWorld(const Tmpl8::vec2& localSpace) const;
 
 		
-		void setPosition(const Tmpl8::vec2& pos);
+		// Drawing methods
+		void clearScreen(const Tmpl8::Pixel& color) { cameraSurface->Clear(color); }
 
-		void Fill(Tmpl8::Pixel c);
+		void drawPixel(const Tmpl8::vec2& position, Tmpl8::Pixel color);
+		void drawLine(const Tmpl8::vec2& pos1, const Tmpl8::vec2& pos2, Tmpl8::Pixel color);
+		
+		void drawRectangle(const Tmpl8::vec2& pos1, const Tmpl8::vec2& pos2, Tmpl8::Pixel color, int width = 0); // width==0 filled in
+		void drawCircle(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color, int width = 0); // width==0 filled in
 
-		void drawText(std::string_view str, int x, int y, Tmpl8::Pixel color);
+		void drawText(std::string_view, const Tmpl8::vec2& position, Tmpl8::Pixel color, int width = 0);
+
+
 
 		void darkenPixel(int x, int y, int amount);
 
 
-		//Scaling before translationk, scale must be positive
+		//Scaling before translation, scale must be positive
 		void renderToSurface(Tmpl8::Surface* surface, int scale = 1, int xOffset = 0, int yOffset = 0) const; 
 
 		// drawing textures
 		void blitTexture(Texture* texture, int x, int y);
-
 		void renderTextureWorldSpace(const Texture& texture, const Tmpl8::vec2& WorldSpace);
-
-		void drawLine(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
-		void drawLineWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
-
-		void drawBox(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
-		void drawBoxWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
-
-		void drawBar(int x1, int y1, int x2, int y2, Tmpl8::Pixel color);
-		void drawBarWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, Tmpl8::Pixel color);
-
+		
+		
 		void drawBarDarken(int x1, int y1, int x2, int y2, int amount);
+
 		void drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, int amount);
-
-		void drawCircle(float x, float y, float radius, Tmpl8::Pixel c, const int segments = 50);
-		void drawCircleWorldSpace(const Tmpl8::vec2& worldSpace, float radius, Tmpl8::Pixel c, const int segments = 50);
-
-		void drawFillCircle(float x, float y, float radius, Tmpl8::Pixel color, bool alpha=false);
-		void drawFillCircleWorldSpace(const Tmpl8::vec2& position, float radius, Tmpl8::Pixel color, bool alpha=false);
 
 		void renderSpriteWorldSpace(const SpriteSheet& spriteSheet,int x, int y, const Tmpl8::vec2& worldSpace, bool flip = false);
 
@@ -65,11 +73,8 @@ namespace Engine {
 
 
 	private:
-		Tmpl8::vec2 m_position;
-		int m_cameraWidth;
-		int m_cameraHeight;
-		std::unique_ptr<Tmpl8::Surface> m_cameraBuffer;
-
+		std::unique_ptr<Tmpl8::Surface> cameraSurface;
+		Tmpl8::vec2 position = { 0.f };
 	};
 
 };

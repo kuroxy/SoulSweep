@@ -20,8 +20,6 @@ namespace Tmpl8
 
 	void Game::Init()
 	{
-		
-		
 
 		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);
 
@@ -83,13 +81,17 @@ namespace Tmpl8
 
 
 		// rendering
-		mainCamera.Fill(0x72751b);
+		mainCamera.clearScreen(0x72751b);
 
 		
 
 		game.render(mainCamera);
 		mainCamera.renderToSurface(screen);
 	
+		//screen->Print("Hallo", im.getLocalMouse().x, im.getLocalMouse().y, 0xffff00, 10);
+
+		int mX = im.getLocalMouse().x;
+		int mY = im.getLocalMouse().y;
 
 
 		// update inputmanager for next keypresses

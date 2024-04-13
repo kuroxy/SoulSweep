@@ -1,6 +1,6 @@
 // Template, BUAS version https://www.buas.nl/games
 // IGAD/BUAS(NHTV)/UU - Jacco Bikker - 2006-2020
-
+#include <stdexcept>
 #include "surface.h"
 #include "template.h"
 #include <cassert>
@@ -91,34 +91,71 @@ void Surface::Clear( Pixel a_Color )
 }
 
 
-
-void Surface::Centre( const char* a_String, int y1, Pixel color )
+void Surface::Print(std::string_view str, int x1, int y1, Pixel color, int width)
 {
-	int x = (m_Width - (int)strlen( a_String ) * 6) / 2;
-	Print( a_String, x, y1, color );
-}
-
-void Surface::Print( std::string_view text, int x1, int y1, Pixel color, int width)
-{
+	// can still be improved:
+	// clipping based on letters. instead only checking on letters
+	// if a letter is left of the screen the other letters will be also outside view
 	if (!fontInitialized)
 	{
 		InitCharset();
 		fontInitialized = true;
 	}
-	Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
-	for (int i = 0; i < (int)(text.size()); i++, t += 6 * width)
+
+	for (int i = 0; i < str.length(); i++)
 	{
-		long pos = 0;
-		if ((text[i] >= 'A') && (text[i] <= 'Z')) pos = s_Transl[(unsigned short)(text[i] - ('A' - 'a'))];
-		else pos = s_Transl[(unsigned short)text[i]];
-		Pixel* a = t;
-		char* c = (char*)s_Font[pos];
-		for (int v = 0; v < 5; v++, c++, a += width * m_Pitch) {
-			for (int h = 0; h < 5 * width; h += width) {
-				if (*c++ == 'o') {
-					for (int w = 0; w < width; w++)
-						for (int j = 0; j < width; j++)
-							a[w + h + j * m_Pitch] = color, a[w + h + (j + 1) * m_Pitch] = 0;
+
+		long characterIndex = 0;
+		if ((str[i] >= 'A') && (str[i] <= 'Z'))
+		{
+			// setting uppercase letters to be the same as lowercase
+			characterIndex = s_Transl[(unsigned short)(str[i] - ('A' - 'a'))];
+		}
+		else
+		{
+			characterIndex = s_Transl[(unsigned short)str[i]];
+		}
+
+		char* characterArray = (char*)s_Font[characterIndex];
+		// v: index in the characterArray. I.E the vertical part of the letter
+		// w: index in the string of the characterArray.  I.E the horizontal part of the letter
+		// tv: width vertical, we need to do each pixel width amount of times.
+		// th: width height, we need to do each pixel width amount of times.
+		for (int v = 0; v < 5; v++) {
+			
+			for (int w = 0; w < 5; w++)
+			{
+				// times 6 because each char array has a null terminator 
+				if (characterArray[v*6+w] != 'o')
+					continue;
+
+				for (int tv = 0; tv < width; tv++)
+				{
+					int yPosition = y1 + v * width + tv;
+
+					if (yPosition >= GetHeight())
+						break; // we will only go bigger to the right so if this one is too big all after will be too big too
+					if ((yPosition < 0))
+						continue; // this is smaller then the left side so we continue it bc it can be true that it will come into view
+
+
+					for (int th = 0; th < width; th++)
+					{
+						int xPosition = x1 + i * 6 * width + w * width + th;
+						
+
+						if (xPosition >= GetWidth())
+							break; // we will only go bigger to the right so if this one is too big all after will be too big too
+						if ((xPosition < 0))
+							continue; // this is smaller then the left side so we continue it bc it can be true that it will come into view
+
+						m_Buffer[xPosition + yPosition * m_Pitch] = color;
+
+						if (yPosition+1 >= GetHeight())
+							continue; // special check because shadow can still be outside window while the rest is inside
+
+						m_Buffer[xPosition + (yPosition + 1) * m_Pitch] = 0;
+					}
 				}
 			}
 		}
@@ -220,6 +257,191 @@ void Surface::Bar( int x1, int y1, int x2, int y2, Pixel c )
 	{
 		for ( int x = 0; x <= (x2 - x1); x++ ) a[x] = c;
 		a += m_Pitch;
+	}
+}
+
+void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
+{
+	int minWidth = std::min(abs(y1 - y2), abs(x1 - x2)) / 2;
+	if (width > minWidth)
+		width = 0; // or throw std::invalid_argument("width > minDist/2. If you want to fill a rect use width = 0.");
+
+	int drawWidth = width == 0 ? abs(y1 - y2) : width; // if width is 0 fill in rect
+
+	if (x1 > x2)
+		std::swap(x1, x2);
+
+	if (y1 > y2)
+		std::swap(y1, y2);
+
+	for (int i = 0; i < drawWidth; i++)
+	{
+		if (y1 + i >= GetHeight()) // clipping check
+			break;
+
+		Line(x1, y1+ i, x2, y1+ i, color);
+	}
+
+	// we can return here because we just filled in the whole rect if width==0
+	if (width == 0)
+		return;
+
+
+	// bottom-side
+	// reverse for clipping check can be written more clearly
+	for (int i = 0; i < drawWidth; i++)
+	{
+		if (y2 - drawWidth + i + 1 >= GetHeight()) // clipping check
+			break;
+
+		Line(x1, y2 - drawWidth + i + 1, x2, y2 - drawWidth + i + 1, color);
+	}
+
+
+	// left-side
+	for (int i = 0; i < drawWidth; i++)
+	{
+		if (x1 + i >= GetWidth()) // clipping check
+			break;
+
+		// y1 + drawWidth... because this way we dont draw on pixels that already are drawn
+		Line(x1+i, y1 + drawWidth, x1+i, y2 - drawWidth, color);
+	}
+
+	// right-side
+	for (int i = 0; i < drawWidth; i++)
+	{
+		if (x2 - drawWidth + i + 1 >= GetWidth()) // clipping check
+			break;
+
+		// y1 + drawWidth... because this way we dont draw on pixels that already are drawn
+		Line(x2 - drawWidth + i + 1, y1 + drawWidth, x2 - drawWidth + i + 1, y2 - drawWidth, color);
+	}
+
+}
+
+void Surface::Circle(int posX, int posY, int r, Pixel color, int width)
+{
+	// based on:
+	// https://www.geeksforgeeks.org/mid-point-circle-drawing-algorithm
+	// there are some bugs within the geeksforgeeks article, so with some trail and error I finally came to this
+	// https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+	// then if we have a width we go inwards.
+	// we draw 2 circles if there is a width>1 and not being filled
+	// then we set all the pixels inbetween the two circles to the color.
+	// This function can definetly be improved, performence& cleanliness wise. But this functions is already way better than the old camera drawCircleClass
+
+	if (width > r)
+		width = 0;
+		//throw std::invalid_argument("width > radius. If you want to fill a circle use width = 0.");
+
+	auto drawOctants = [](int x, int y, Pixel color, int centerX, int centerY, Surface* surface)
+		{
+			surface->Plot(x + centerX, y + centerY, color);
+			surface->Plot(-x + centerX, y + centerY, color);
+			surface->Plot(x + centerX, -y + centerY, color);
+			surface->Plot(-x + centerX, -y + centerY, color);
+
+			// If the generated point is on the line x = y then 
+			// the perimeter points have already been printed
+			if (x != y)
+			{
+				surface->Plot(y + centerX, x + centerY, color);
+				surface->Plot(-y + centerX, x + centerY, color);
+				surface->Plot(y + centerX, -x + centerY, color);
+				surface->Plot(-y + centerX, -x + centerY, color);
+			}
+		};
+
+	width = width == 0 ? r+1 : width -1;
+
+	int x = r;
+	int y = 0;
+
+	// we add the thickness to the radius because we want the thickness to go outward
+
+	// Initialising the value of P
+	int p = 1 - r;
+
+	
+	for (int i = 0; i <= width; i++)
+	{
+		drawOctants(r - i, 0, color, posX, posY, this);
+	}
+
+	while (x > y)
+	{
+		y++;
+
+		// Mid-point is inside or on the perimeter
+		if (p <= 0)
+		{
+			p = p + 2 * y + 1;
+		}
+		else
+		{
+			// Mid-point is outside the perimeter
+			x--;
+			p = p + 2 * y - 2 * x + 1;
+		}
+
+		// All the perimeter points have already been printed
+		if (x < y)
+			break;
+
+
+
+		for (int i = 0; i <= width; i++)
+		{
+			drawOctants(x-i, y, color, posX, posY, this);
+		}
+		
+		
+	}
+	
+	
+	if (width == 0 || width >r)
+		return;
+
+	x = r - width;
+	y = 0;
+
+	p = 1 - (r - width);
+
+	for (int i = 0; i <= width; i++)
+	{
+		drawOctants(r - width + i, 0, color, posX, posY, this);
+	}
+
+	while (x > y)
+	{
+		y++;
+
+		// Mid-point is inside or on the perimeter
+		if (p <= 0)
+		{
+			p = p + 2 * y + 1;
+		}
+		else
+		{
+			// Mid-point is outside the perimeter
+			x--;
+			p = p + 2 * y - 2 * x + 1;
+		}
+
+		// All the perimeter points have already been printed
+		if (x < y)
+			break;
+
+
+
+		for (int i = 0; i <= width; i++)
+		{
+			drawOctants(x + i, y, color, posX, posY, this);
+			drawOctants(x, y + i, color, posX, posY, this);
+		}
+
+
 	}
 }
 
@@ -345,7 +567,9 @@ void Surface::InitCharset()
 	char c[] = "abcdefghijklmnopqrstuvwxyz0123456789!?:=,.-() #'*/";
 	int i;
 	for ( i = 0; i < 256; i++ ) s_Transl[i] = 45;
+	// sets every char to 45 meaning empty space
 	for ( i = 0; i < 50; i++ ) s_Transl[(unsigned char)c[i]] = i;
+	// sets all the available characters. asscii -> position on s_Font
 }
 
 void Surface::ScaleColor( unsigned int a_Scale )

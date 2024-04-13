@@ -117,7 +117,7 @@ void Engine::BaseParticleSystem::renderParticles(Camera& camera) const
         if (!particle.enabled)
             continue;
         
-        camera.drawFillCircleWorldSpace(particle.position, particle.size, particle.color, true);
+        camera.drawCircle(particle.position, particle.size, particle.color, 0);
     }
     
 }

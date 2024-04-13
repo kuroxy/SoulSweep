@@ -20,7 +20,7 @@ void SimpleMovement::addForce(Tmpl8::vec2 force)
 
 void SimpleMovement::draw(Engine::Camera& camera, Tmpl8::Pixel color)
 {
-	camera.drawFillCircleWorldSpace(position, 5, color, false);
+	camera.drawCircle(position, 5, color, 0);
 }
 
 Tmpl8::vec2 SimpleMovement::seek(Tmpl8::vec2 pos)

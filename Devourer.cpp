@@ -184,24 +184,24 @@ void Devourer::draw(Engine::Camera& camera, bool debug)
 
 	if (debug)
 	{
-		Tmpl8::vec2 local = camera.worldToLocal(getPosition() + Tmpl8::vec2(-20, -20));
+		Tmpl8::vec2 local = camera.worldToScreen(getPosition() + Tmpl8::vec2(-20, -20));
 		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
 
 		// collision circle
-		camera.drawCircleWorldSpace(position, collideRadius, 0x00ffff, 10); 
+		camera.drawCircle(position, collideRadius, 0x00ffff, 1); 
 
 
 		Tmpl8::Pixel soulLineColor = newSoulPosition ? 0x00ff00 : 0xff0000;
 		Tmpl8::Pixel playerLineColor = newPlayerPosition ? 0x00ff00 : 0xff0000;
 
-		camera.drawLineWorldSpace(position, soulPosition, soulLineColor);
-		camera.drawCircleWorldSpace(soulPosition, seekRadius, soulLineColor);
+		camera.drawLine(position, soulPosition, soulLineColor);
+		camera.drawCircle(soulPosition, seekRadius, soulLineColor, 1);
 
-		camera.drawLineWorldSpace(position, playerPosition, playerLineColor);
-		camera.drawCircleWorldSpace(playerPosition, seekRadius, playerLineColor);
+		camera.drawLine(position, playerPosition, playerLineColor);
+		camera.drawCircle(playerPosition, seekRadius, playerLineColor, 1);
 
 
-		camera.drawCircleWorldSpace(position, maxPlayerDistance, 0xffff00);
+		camera.drawCircle(position, maxPlayerDistance, 0xffff00, 1);
 
 
 	}
