@@ -105,7 +105,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 		if (!mainPlayer->isDead() &&level->isSoulCollectable(soulIter->getPosition()))
 		{
-			collectedSouls++;
+			level->collectSoul(soulIter->getPosition());
 			removeSoul = true;
 		}
 
@@ -159,7 +159,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	//UI
 
-	collectedSoulsBar.setValue(collectedSouls);
+	collectedSoulsBar.setValue(level->getSoulAmount());
 
 
 }
@@ -201,7 +201,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	
 
 
-	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2, 10.f), 0x6600ff);
+	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2.f, 10.f), 0x6600ff);
 
 
 

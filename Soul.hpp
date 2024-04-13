@@ -17,7 +17,7 @@ class Soul : public SimpleMovement
 public:
 	Soul() : SimpleMovement() {}
 
-	Soul(const Tmpl8::vec2& pos, const Engine::ParticleSystemParams& particleParams)
+	Soul(const Tmpl8::vec2& pos, const Engine::BaseParticleSystemParams& particleParams)
 		: SimpleMovement{pos, 50.f, 100.f }
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
@@ -31,7 +31,7 @@ public:
 		float maxPlayerDistance,
 		float wanderSpeed,
 		float collisionRadius,
-		const Engine::ParticleSystemParams& particleParams)
+		const Engine::BaseParticleSystemParams& particleParams)
 		: SimpleMovement{ pos, defaultSpeed, maxForce }
 		, vacuumMaxSpeed{ vacuumSpeed }
 		, fleeMaxSpeed{ fleeSpeed }

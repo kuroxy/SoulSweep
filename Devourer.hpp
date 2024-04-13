@@ -17,7 +17,7 @@ class Devourer : public SimpleMovement
 public:
 	Devourer() : SimpleMovement() {}
 
-	Devourer(const Tmpl8::vec2& pos, const Engine::ParticleSystemParams& particleParams) 
+	Devourer(const Tmpl8::vec2& pos, const Engine::BaseParticleSystemParams& particleParams) 
 		: SimpleMovement(pos, 50.f, 100.f)
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
@@ -28,7 +28,7 @@ public:
 		float visitRadius,
 		float maxPlayerDist,
 		float collideSize,
-		const Engine::ParticleSystemParams& particleParams)
+		const Engine::BaseParticleSystemParams& particleParams)
 		: SimpleMovement(pos, maxSpeed, maxForce)
 		, consumingSoulTime{ consumingTime }
 		, seekRadius { visitRadius }

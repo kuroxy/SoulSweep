@@ -135,7 +135,7 @@ void Player::draw(Engine::Camera& camera, bool debug)
 		camera.drawCircleWorldSpace(m_position, m_collectRadius, 0xffffff);
 	}
 		
-	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2, sprites.getSpriteHeight() / 2), flipCharacter);
+	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f), flipCharacter);
 
 	//camera.renderSpriteWorldSpace(&sprites, 0, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2, sprites.getSpriteHeight() / 2));
 

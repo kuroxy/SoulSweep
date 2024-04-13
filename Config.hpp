@@ -69,9 +69,42 @@ namespace Config
 
 	// Particles
 
+
+	static Engine::BaseParticleSystemParams soulParticleParams
+	{
+		.spawnRate = .05f,
+		.initialPositionDeviation = 0.f,
+
+		.initialVelocity = Tmpl8::vec2(0.f),
+		.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f),
+
+
+
+		.particleLifetime = 1.f,
+		.particleLifetimeDeviation = .0f,
+
+
+		.particleMass = .1f,
+		.particleMassDeviation = 0.f,
+
+		.colorRangeStart = Tmpl8::vec3(255.f),
+		.colorRangeEnd = Tmpl8::vec3(200.f),
+
+		// Here transparency can be set.
+		// but not needed so not set
+
+
+
+		.sizeRangeStart = 10.5f,
+		.sizeRangeEnd = 2.5f,
+
+	};
+
 	
 
-	static Engine::ParticleSystemParams blueFlamesParameters
+	
+
+	static Engine::BaseParticleSystemParams blueFlamesParameters
 	{
 		.spawnRate = .05f,
 
@@ -96,7 +129,7 @@ namespace Config
 
 	};
 
-	static Engine::ParticleSystemParams blueCoreParameters
+	static Engine::BaseParticleSystemParams blueCoreParameters
 	{
 		.spawnRate = .05f,
 
@@ -123,6 +156,9 @@ namespace Config
 		.sizeRangeEnd = 7.2f
 
 	};
+
+
+
 
 
 

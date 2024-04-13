@@ -29,6 +29,13 @@ public:
 
 	bool isSoulCollectable(const Tmpl8::vec2& soulPosition) const { return soulConduit->isConduitActive() && soulConduit->contains(soulPosition); }
 
+	void collectSoul(const Tmpl8::vec2& soulPosition)
+	{
+		soulConduit->spawnCollectedSoul(soulPosition);
+	}
+
+	int getSoulAmount() const { return soulConduit->getCollectedSouls(); };
+
 
 	void draw(Engine::Camera& c) const;
 	void drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor=0xff0000, Tmpl8::Pixel conduitColor=0x00ff00) const;

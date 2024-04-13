@@ -9,7 +9,7 @@ namespace Engine
 	class Camera;
 
 
-	struct ParticleSystemParams
+	struct BaseParticleSystemParams
 	{
 		
 		float spawnRate{ 0.f }; //time between new particles // zero for no automatic spawning
@@ -20,6 +20,10 @@ namespace Engine
 
 		float particleLifetime{ 1.f }; // in seconds
 		float particleLifetimeDeviation{ 0.f }; // biggest amount it can deviate from particleLifetime
+
+
+		float particleMass{ 1.f };
+		float particleMassDeviation{ 0.f }; // max deviation from the mass given by the particleMass
 
 
 		// Appearance 
@@ -47,8 +51,23 @@ namespace Engine
 
 	class BaseParticleSystem {
 	public:
-		BaseParticleSystem(const ParticleSystemParams& params, int poolSize)
-			: parameters{ params } 
+		struct Particle
+		{
+			bool enabled = false;
+			Tmpl8::vec2 position;
+			Tmpl8::vec2 velocity;
+
+			float size = 0;
+			Tmpl8::Pixel color = 0;
+
+			float maxLifeTime = 1.f;
+			float currentLifeTime = 0.f;
+
+			float mass = 1.f;
+		};
+
+		BaseParticleSystem(const BaseParticleSystemParams& params, int poolSize)
+			: parameters{ params }
 		{
 			particlePool.resize(poolSize);
 		}
@@ -62,27 +81,39 @@ namespace Engine
 		const Tmpl8::vec2& getPosition() const { return position; }
 		void setPosition(Tmpl8::vec2 newPosition) { position = newPosition; }
 
-	private:
-		
-		struct Particle
+		void setAttractor(const Tmpl8::vec2 position, float strenth)
 		{
-			bool enabled = false;
-			Tmpl8::vec2 position;
-			Tmpl8::vec2 velocity;
+			attractorPosition = position;
+			attractorStrength = strenth;
+		} // sets the attractor position and enables attractor logic.
 
-			float size = 0;
-			Tmpl8::Pixel color = 0;
+		void setAttractorPostion(const Tmpl8::vec2 position)
+		{
+			attractorPosition = position;
+		}
 
-			float maxLifeTime = 1.f;
-			float currentLifeTime = 0.f;
+		void setAttractorStrenth(float strength)
+		{
+			attractorStrength = strength;
+		}
 
-		};
+		std::vector<Particle>& getParticles() { return particlePool; }
+		
+
+		BaseParticleSystemParams parameters;
+	private:
+
+		
 
 		Tmpl8::vec2 position;
-		ParticleSystemParams parameters;
+		
 		float timeTillNextSpawn = parameters.spawnRate;
 
 		std::vector<Particle> particlePool;
+
+		Tmpl8::vec2 attractorPosition{ 0.f }; 
+		float attractorStrength{ 0.f };
+
 
 		// Currently does not work when you try to call more than 1 particle per frame
 		Particle* getNewParticle(); // gets a available particle and returns a pointer to it, if there is none returns nullptr

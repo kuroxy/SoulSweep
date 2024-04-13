@@ -104,8 +104,8 @@ private:
 
 	std::vector<Soul> souls;
 	std::vector<Devourer> devourers;
-	Engine::ParticleSystemParams soulParticles;
-	Engine::ParticleSystemParams devourerParticles;
+	Engine::BaseParticleSystemParams soulParticles;
+	Engine::BaseParticleSystemParams devourerParticles;
 
 
 
