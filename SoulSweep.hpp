@@ -18,55 +18,18 @@ namespace Engine
 };
 
 class SoulSweep {
-	void setSoulParticleSystem()
-	{
-		soulParticles.spawnRate = .05f;
-		soulParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
-
-		soulParticles.sizeRangeStart = 10.5f;
-
-		soulParticles.sizeRangeEnd = 2.5f;
-		
-		soulParticles.colorRangeEnd = Tmpl8::vec3(200.f);
-		soulParticles.particleLifetime = 1.f;
-	}
-
-	void setDevourerParticleSystem()
-	{
-		
-		devourerParticles.spawnRate = .05f;
-		devourerParticles.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f);
-
-		devourerParticles.sizeRangeStart = 10.5f;
-
-		devourerParticles.sizeRangeEnd = 2.5f;
-
-		devourerParticles.colorRangeStart = Tmpl8::vec3(40.f, 15.f, 15.f);
-		devourerParticles.colorRangeEnd = Tmpl8::vec3(20.f, 5.f , 5.f);
-		devourerParticles.particleLifetime = 1.f;
-	}
-
-
 public:
-	SoulSweep() = default;
-
-	void Initialize()
+	SoulSweep() = delete;
+	SoulSweep(std::string_view levelPath)
 	{
-		setSoulParticleSystem();
-		setDevourerParticleSystem();
-
-
-		// currently loading textures here, maybe later we can move it back to config but this seems to work for now..
-		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff); 
+		// Loading Assets
+		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff);
 		playerSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/playerSheet.png", 32, 32, 0xff00ff);
-
 		soulConduitSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/SoulConduit.png", 94, 72, 0xff00ff);
-
-		
-		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
 
 		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, "assets/Maps/level1.json");
 
+		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
 
 		spawnRandomDevourer(500.f);
 	}
@@ -82,8 +45,10 @@ public:
 	void update(float deltaTime, Engine::InputManager im, Engine::Camera& camera);
 
 	void render(Engine::Camera& camera);
-
 	
+	bool victoryState() const { return victoryTimer <= 0; }
+	bool deathState() const { return deathTimer <= 0; }
+
 private:
 
 	int collectSoulsGoal{ 10 };
@@ -104,8 +69,11 @@ private:
 
 	std::vector<Soul> souls;
 	std::vector<Devourer> devourers;
-	Engine::BaseParticleSystemParams soulParticles;
-	Engine::BaseParticleSystemParams devourerParticles;
+
+	// -- game state -- 
+	// when you have died or won there is a delay between changes in game state
+	float victoryTimer = 2.f;
+	float deathTimer = 2.f;
 
 
 

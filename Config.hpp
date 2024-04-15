@@ -78,11 +78,8 @@ namespace Config
 		.initialVelocity = Tmpl8::vec2(0.f),
 		.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f),
 
-
-
 		.particleLifetime = 1.f,
 		.particleLifetimeDeviation = .0f,
-
 
 		.particleMass = .1f,
 		.particleMassDeviation = 0.f,
@@ -90,17 +87,31 @@ namespace Config
 		.colorRangeStart = Tmpl8::vec3(255.f),
 		.colorRangeEnd = Tmpl8::vec3(200.f),
 
-		// Here transparency can be set.
-		// but not needed so not set
-
-
-
 		.sizeRangeStart = 10.5f,
 		.sizeRangeEnd = 2.5f,
 
 	};
 
-	
+	static Engine::BaseParticleSystemParams devourerParticleParams
+	{
+		.spawnRate = .05f,
+		.initialPositionDeviation = 0.f,
+
+		.initialVelocity = Tmpl8::vec2(0.f),
+		.initialVelocityDeviation = Tmpl8::vec2(5.f, 5.f),
+
+		.particleLifetime = 1.f,
+		.particleLifetimeDeviation = .0f,
+
+		.particleMass = .1f,
+		.particleMassDeviation = 0.f,
+
+		.colorRangeStart = Tmpl8::vec3(40.f, 15.f, 15.f),
+		.colorRangeEnd = Tmpl8::vec3(20.f, 5.f , 5.f),
+
+		.sizeRangeStart = 10.5f,
+		.sizeRangeEnd = 2.5f,
+	};
 
 	
 
@@ -119,10 +130,6 @@ namespace Config
 
 		.colorRangeStart = Tmpl8::vec3(59.f, 189.f, 244.f),
 		.colorRangeEnd = Tmpl8::vec3(24.f, 10.f, 94.f),
-
-		// Here transparency can be set.
-		// but not needed so not set
-
 
 		.sizeRangeStart = 7.5f,
 		.sizeRangeEnd = 1.1f
@@ -147,6 +154,7 @@ namespace Config
 
 		.transparencyStartTime = 0.f, // will be in a percentage of the total lifespan
 		.transparencyStartValue = 1.f, // 0-1 (transparent-solid)
+
 		// endtime is when the transparency range ends (after this time the particle will have the endvalue);
 		.transparencyEndTime = 1.f,
 		.transparencyEndValue = 1.f,

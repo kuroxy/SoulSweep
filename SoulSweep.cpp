@@ -23,7 +23,7 @@ Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& 
 		Config::soulMaxPlayerDistance,
 		Config::soulWanderSpeed,
 		Config::soulCollisionRadius,
-		soulParticles));
+		Config::soulParticleParams));
 	
 	souls.back().setVelocity(initialVelocity);
 	return souls.back();
@@ -38,7 +38,7 @@ Devourer& SoulSweep::spawnDevourer(const Tmpl8::vec2& spawnPosition)
 		Config::devourerVisitRadius, 
 		Config::devourerMaxPlayerDistance, 
 		Config::devourerCollideRadius, 
-		devourerParticles));
+		Config::devourerParticleParams));
 
 	return devourers.back();
 }
@@ -154,6 +154,15 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 	{
 		spawnRandomSoul(Config::spawnDistance);
 	}
+
+
+	// game state
+
+	if (mainPlayer->isDead() && deathTimer > 0.f)
+		deathTimer -= deltaTime;
+
+	if (level->getSoulAmount() >= collectSoulsGoal && victoryTimer > 0.f)
+		victoryTimer -= deltaTime;
 
 
 

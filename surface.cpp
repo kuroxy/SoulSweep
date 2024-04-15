@@ -7,6 +7,7 @@
 #include <cstring>
 #include "FreeImage.h"
 
+
 namespace Tmpl8 {
 
 void NotifyUser( const char* s );
@@ -91,6 +92,7 @@ void Surface::Clear( Pixel a_Color )
 }
 
 
+
 void Surface::Print(std::string_view str, int x1, int y1, Pixel color, int width)
 {
 	// can still be improved:
@@ -160,6 +162,19 @@ void Surface::Print(std::string_view str, int x1, int y1, Pixel color, int width
 			}
 		}
 	}
+}
+
+Tmpl8::vec2 Surface::GetTextCenterPosition(std::string_view str, int y, int width)
+{
+	int textWidth = str.length() * 6 * width;
+	return Tmpl8::vec2((GetWidth() - textWidth) / 2, y);
+}
+
+void Surface::PrintCenter(std::string_view str, int y, Pixel color, int width)
+{
+	Tmpl8::vec2 position = GetTextCenterPosition(str,y,width);
+
+	Print(str, static_cast<int>(position.x), static_cast<int>(position.y), color, width);
 }
 
 void Surface::Resize( Surface* a_Orig )

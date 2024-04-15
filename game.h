@@ -1,6 +1,7 @@
 #pragma once
 #include "InputManager.hpp"
 #include "Camera.hpp"
+#include "SoulSweep.hpp"
 
 namespace Tmpl8 {
 
@@ -22,11 +23,29 @@ public:
 	void MouseDown(int button) { im.handleMouseDown(button); }
 	void KeyUp(int key) { im.handleKeyUp(key); }
 	void KeyDown(int key) { im.handleKeyDown(key); }
+
+	void loadGame(std::string_view levelPath);
 private:
+	enum class gameState
+	{
+		TitleScreen,
+		GameScreen,
+		DeathScreen,
+		VictoryScreen
+	};
+
+	void titleScreenTick(float deltaTime);
+	void gameScreenTick(float deltaTime);
+	void deathScreenTick(float deltaTime);
+	void victoryScreenTick(float deltaTime);
+
 	Surface* screen;
 
 	Engine::InputManager im;
 	Engine::Camera mainCamera{ ScreenWidth, ScreenHeight};
+
+	gameState currentState = gameState::TitleScreen;
+	SoulSweep* game = nullptr;
 
 };
 

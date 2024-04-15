@@ -3,7 +3,7 @@
 
 #pragma once
 #include <string_view>
-
+#include "template.h"
 
 
 namespace Tmpl8 {
@@ -78,7 +78,9 @@ public:
 	// Text methods
 	void InitCharset();	
 	void SetChar( int c, const char* c1, const char* c2, const char* c3, const char* c4, const char* c5 );
-	void Print(std::string_view text, int x1, int y1, Pixel color, int width = 1);
+	void Print(std::string_view text, int x, int y, Pixel color, int width = 1);
+	Tmpl8::vec2 GetTextCenterPosition(std::string_view str, int y, int width);
+	void PrintCenter(std::string_view str, int y, Pixel color, int width=1);
 
 	// Drawing methods
 	void Clear( Pixel a_Color );								// Fills the surface with a_Color

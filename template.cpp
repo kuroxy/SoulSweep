@@ -366,7 +366,7 @@ int main( int argc, char **argv )
 		float elapsedTime = t.elapsed();
 		t.reset();
 
-		game->Tick( elapsedTime );
+		game->Tick(	Min(elapsedTime / 1000, .032f) );	// based in seconds and clamping it so we can bigger delta time then 0.32 = 32fps.
 		// event loop
 		SDL_Event event;
 		while (SDL_PollEvent( &event )) 
