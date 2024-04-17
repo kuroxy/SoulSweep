@@ -96,6 +96,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		// Soul Behavior
 		soulIter->chooseBehavior(*level.get(), *mainPlayer, souls, devourers);
 		soulIter->update(deltaTime, *mainPlayer); //updates position based on velocity and acceleration
+		soulIter->setPosition(level->resolveBoundryLevelCollision(soulIter->getPosition(), soulIter->getCollisionRadius()));
 
 		// if eaten remove it from the game.
 		if (soulIter->isEaten)
@@ -152,7 +153,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	if (souls.size() < Config::minSouls)
 	{
-		spawnRandomSoul(Config::spawnDistance);
+		spawnRandomSoul(10.f);
 	}
 
 

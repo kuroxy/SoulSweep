@@ -388,3 +388,19 @@ Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::ve
 
 	return change;
 }
+
+Tmpl8::vec2 Level::resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const
+{
+	Tmpl8::vec2 newPos = position;
+	if (position.x- radius < 0.f)
+		newPos.x = radius;
+	else if (position.x + radius > levelWidth * terrainSpriteSheet->getSpriteWidth())
+		newPos.x = levelWidth * terrainSpriteSheet->getSpriteWidth() - radius;
+
+	if (position.y - radius < 0.f)
+		newPos.y = radius;
+	else if (position.y + radius > levelHeight * terrainSpriteSheet->getSpriteHeight())
+		newPos.y = levelHeight * terrainSpriteSheet->getSpriteHeight() - radius;
+
+	return newPos;
+}

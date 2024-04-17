@@ -5,7 +5,7 @@
 namespace Config
 {
 	//-- Game Settings --
-	constexpr int minSouls = 10;
+	constexpr int minSouls = 1;
 	constexpr float spawnDistance = 600.f;
 
 	//World

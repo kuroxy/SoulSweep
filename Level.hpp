@@ -55,6 +55,8 @@ public:
 
 	Tmpl8::vec2 resolveBoxCollision(const Engine::AABB& box, const Tmpl8::vec2 dir) const; //returns a vector to add to fix position
 
+	Tmpl8::vec2 resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const; //returns the corrected position. Used to clamp the position within the level.
+
 private:
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
 
