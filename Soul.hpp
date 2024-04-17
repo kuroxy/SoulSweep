@@ -5,6 +5,7 @@
 #include "ParticleSystem.hpp"
 #include "SimpleMovement.hpp"
 #include "Devourer.hpp"
+#include "aabb.hpp"
 
 namespace Engine
 {
@@ -27,9 +28,8 @@ public:
 		float fleeSpeed,
 		float defaultSpeed,
 		float maxNeighbourRadius,
-		float minPlayerDist,
-		float maxPlayerDistance,
-		float wanderSpeed,
+		const Engine::AABB& levelArea,
+		float wanderPointDist,
 		float collisionRadius,
 		const Engine::BaseParticleSystemParams& particleParams)
 		: SimpleMovement{ pos, defaultSpeed, maxForce }
@@ -37,9 +37,8 @@ public:
 		, fleeMaxSpeed{ fleeSpeed }
 		, defaultMaxSpeed{ defaultSpeed }
 		, seekRadius{ maxNeighbourRadius }
-		, minPlayerDistance { minPlayerDist }
-		, maxPlayerDistance { maxPlayerDistance }
-		, wanderStrength { wanderSpeed }
+		, wanderArea { levelArea }
+		, wanderPointDistance { wanderPointDist }
 		, collideRadius{ collisionRadius }
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
@@ -54,17 +53,26 @@ public:
 
 	void update(float deltaTime, const Player& player);
 
-	void draw(Engine::Camera& camera, bool debug);
+	void draw(Engine::Camera& camera);
+	void drawDebug(Engine::Camera& camera);
 
 	bool isEaten{ false }; // souls with isEaten to true will be removed from soulList
 private:
+
+	void setFlee();
+	void setAvoidNeighbours();
+	void setWandering();
+
+	void generateWanderingPoint();
+
 	bool beingVacuumed{ false };
+	float collideRadius{ 10.f };
+
 
 	enum class BehaviorState {
-		Flee,
-		SeekPlayer,
-		AvoidNeigbours,
-		Wandering
+		Flee,					// Highest priority, if able to see devourer flee from it.
+		AvoidNeigbours,			// To close to neightbours flee from them so they don't overlap
+		Wandering				// Nothing else to do, go to a random point on the map.
 	};
 
 	BehaviorState currentState = BehaviorState::Wandering;
@@ -76,17 +84,18 @@ private:
 	
 	float seekRadius{ 40.f }; // the distance between neighbours to go in AvoidNeigbours state
 
-	float minPlayerDistance{ 100.f }; // will end seekplayer behaviour if inside this range
-	float maxPlayerDistance{ 400.f }; // will start seekplayer behaviour if outside this range
+	float wanderPointDistance{40.f }; // distance to point to say it has been reached
 
-	float wanderStrength{ .5f };
+	float wanderTime{ 5.f };
+	float currentWanderTime{ 0.f };
 
-	float collideRadius{ 10.f };
-
+	Engine::AABB wanderArea{ 0.f, 0.f };
 
 	Tmpl8::vec2 fleePosition{ 0.f };
 	Tmpl8::vec2 neigboursPosition{ 0.f };
 	Tmpl8::vec2 playerPosition{ 0.f };
+
+	Tmpl8::vec2 wanderPosition{ 0.f };
 
 	// visuals
 	std::unique_ptr<Engine::BaseParticleSystem> particleSystem;

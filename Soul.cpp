@@ -12,7 +12,7 @@ void Soul::chooseBehavior(const Level& level, const Player& player, std::vector<
 		if (!level.lineSegmentCollision(position, devourer.getPosition()))
 		{
 			fleePosition = devourer.getPosition();
-			currentState = BehaviorState::Flee;
+			setFlee();
 			return;
 		}
 	}
@@ -21,16 +21,7 @@ void Soul::chooseBehavior(const Level& level, const Player& player, std::vector<
 	if (player.isVacuumEnabled() && !level.lineSegmentCollision(position, player.getPosition()))
 	{
 		fleePosition = player.getPosition();
-		currentState = BehaviorState::Flee;
-		return;
-	}
-
-	// player too far away movetoward the player
-	float playerDist = (player.getPosition() - getPosition()).length();
-	if ((currentState == BehaviorState::SeekPlayer && playerDist > minPlayerDistance) || playerDist > maxPlayerDistance)
-	{
-		playerPosition = player.getPosition();
-		currentState = BehaviorState::SeekPlayer;
+		setFlee();
 		return;
 	}
 
@@ -48,12 +39,12 @@ void Soul::chooseBehavior(const Level& level, const Player& player, std::vector<
 	
 	if (sqrt(distance) < seekRadius)
 	{
-		currentState = BehaviorState::AvoidNeigbours;
+		setAvoidNeighbours();
 		return;
 	}
 
-	// wander
-	currentState = BehaviorState::Wandering;
+	// if nothing else we will wander;
+	setWandering();
 
 }
 
@@ -67,21 +58,20 @@ void Soul::actBehavior(float deltaTime)
 	case Soul::BehaviorState::Flee:
 		force = flee(fleePosition);
 		break;
-	case Soul::BehaviorState::SeekPlayer:
-		force = seek(playerPosition);
-		break;
 	case Soul::BehaviorState::AvoidNeigbours:
 		force = flee(neigboursPosition);
 		break;
 	case Soul::BehaviorState::Wandering:
-		force = wander(wanderStrength);
+		currentWanderTime -= deltaTime;
+		if (currentWanderTime <= 0.f || (wanderPosition - getPosition()).length() < wanderPointDistance)
+			generateWanderingPoint();
+
+		force = seek(wanderPosition);
 		break;
 	default:
 		break;
 	}
 
-
-	
 	addForce(force);
 }
 
@@ -105,7 +95,6 @@ void Soul::update(float deltaTime, const Player& player)
 	case Soul::BehaviorState::Flee:
 		setMaxSpeed(fleeMaxSpeed);
 		break;
-	case Soul::BehaviorState::SeekPlayer:
 	case Soul::BehaviorState::AvoidNeigbours:
 	case Soul::BehaviorState::Wandering:
 	default:
@@ -120,25 +109,83 @@ void Soul::update(float deltaTime, const Player& player)
 	particleSystem->updateParticles(deltaTime);
 }
 
-void Soul::draw(Engine::Camera& camera, bool debug)
+void Soul::draw(Engine::Camera& camera)
 {
 	particleSystem->renderParticles(camera);
+}
 
+void Soul::drawDebug(Engine::Camera& camera)
+{
+	// collision circle
+	camera.drawCircle(position, collideRadius, 0x00ffff, 1);
 
+	camera.drawCircle(fleePosition, 1, 0xff0000); // flee position
+	camera.drawCircle(neigboursPosition, 1, 0xffff00); // neighbour pos
+	camera.drawCircle(playerPosition, 1, 0x00ff00);
+	camera.drawCircle(wanderPosition, wanderPointDistance, 0x0000ff, 2);
+	camera.drawLine(getPosition(), wanderPosition, 0x0000ff);
+}
 
-	if (debug)
+void Soul::setFlee() 
+{
+
+	// no special behaviour
+	switch (currentState)
 	{
-		Tmpl8::vec2 local = camera.worldToScreen(getPosition() + Tmpl8::vec2(-20, -20));
-		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
-
-		// collision circle
-		camera.drawCircle(position, collideRadius, 0x00ffff, 1);
-
-
-		// todo other saved positions
-
-		camera.drawCircle(position, minPlayerDistance, 0xffff00, 1);
-		camera.drawCircle(position, maxPlayerDistance, 0xffff00, 1);
-
+	case Soul::BehaviorState::Flee:
+		break;
+	case Soul::BehaviorState::AvoidNeigbours:
+		break;
+	case Soul::BehaviorState::Wandering:
+		break;
+	default:
+		break;
 	}
+
+
+	currentState = BehaviorState::Flee;
+}
+
+void Soul::setAvoidNeighbours()
+{
+	switch (currentState)
+	{
+	case Soul::BehaviorState::Flee:
+		break;
+	case Soul::BehaviorState::AvoidNeigbours:
+		break;
+	case Soul::BehaviorState::Wandering:
+		break;
+	default:
+		break;
+	}
+
+	currentState = BehaviorState::AvoidNeigbours;
+}
+
+void Soul::setWandering()
+{
+	switch (currentState)
+	{
+	case Soul::BehaviorState::Flee:
+		// only here special behaviour, when getting out of the flee state we generate a new wanderpoint
+		generateWanderingPoint();
+		break;
+	case Soul::BehaviorState::AvoidNeigbours:
+		break;
+	case Soul::BehaviorState::Wandering:
+		break;
+	default:
+		break;
+	}
+
+	currentState = BehaviorState::Wandering;
+}
+
+void Soul::generateWanderingPoint()
+{
+	// Generates a point within the the wanderArea (which is the level area)
+	wanderPosition = Tmpl8::vec2(Rand(wanderArea.max.x - wanderArea.min.x) + wanderArea.min.x, Rand(wanderArea.max.y - wanderArea.min.y) + wanderArea.min.y);
+	currentWanderTime = wanderTime;
+
 }

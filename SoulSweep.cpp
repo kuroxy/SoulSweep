@@ -19,9 +19,8 @@ Soul& SoulSweep::spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& 
 		Config::soulFleeSpeed,
 		Config::soulDefaultSpeed,
 		Config::soulMaxNeighbourRadius,
-		Config::soulMinPlayerDist,
-		Config::soulMaxPlayerDistance,
-		Config::soulWanderSpeed,
+		level->getLevelArea(), 
+		Config::soulWanderDist,
 		Config::soulCollisionRadius,
 		Config::soulParticleParams));
 	
@@ -153,7 +152,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	if (souls.size() < Config::minSouls)
 	{
-		spawnRandomSoul(10.f);
+		spawnRandomSoul(Config::spawnDistance);
 	}
 
 
@@ -182,7 +181,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	
 	for (auto& soul : souls)
 	{
-		soul.draw(camera, soulsDebug);
+		soul.draw(camera);
 	}
 
 	for (auto& devourer : devourers)
@@ -205,6 +204,14 @@ void SoulSweep::render(Engine::Camera& camera)
 	if (terrainDebug)
 		level->drawCollision(camera);
 
+
+	if (soulsDebug)
+	{
+		for (auto& soul : souls)
+		{
+			soul.drawDebug(camera);
+		}
+	}
 
 
 	// UI

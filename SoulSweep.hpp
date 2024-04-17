@@ -31,7 +31,7 @@ public:
 
 		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
 
-		//spawnRandomDevourer(500.f);
+		spawnRandomDevourer(500.f);
 	}
 
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);
@@ -83,7 +83,7 @@ private:
 
 	bool terrainDebug = false;
 	bool playerDebug = false;
-	bool soulsDebug = true;
+	bool soulsDebug = false;
 	bool devourerDebug = false;
 	bool soulsConduitDebug = false;
 

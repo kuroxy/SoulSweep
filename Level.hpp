@@ -11,6 +11,7 @@
 #include <memory>
 #include "ParticleSystem.hpp"
 #include "SoulConduit.hpp"
+#include "aabb.hpp"
 
 class Level
 {
@@ -36,6 +37,8 @@ public:
 
 	int getSoulAmount() const { return soulConduit->getCollectedSouls(); };
 
+	Engine::AABB getLevelArea() const { 
+		return Engine::AABB({ 0.f }, { (float)(levelWidth * terrainSpriteSheet->getSpriteWidth()),(float)(levelHeight * terrainSpriteSheet->getSpriteHeight()) }); }
 
 	void draw(Engine::Camera& c) const;
 	void drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor=0xff0000, Tmpl8::Pixel conduitColor=0x00ff00) const;

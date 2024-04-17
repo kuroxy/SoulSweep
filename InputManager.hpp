@@ -28,7 +28,7 @@ namespace Engine {
 		void handleKeyUp(int key);
 		void handleKeyDown(int key);
 
-		const Tmpl8::vec2& getLocalMouse() const { return Tmpl8::vec2((float)m_mouseX, (float)m_mouseY); }
+		Tmpl8::vec2 getLocalMouse() const { return Tmpl8::vec2((float)m_mouseX, (float)m_mouseY); }
 		const Tmpl8::vec2& getWorldMouse() const { return m_mouseWorld; }
 
 		void setMousePos(int x, int y, const Camera& c);

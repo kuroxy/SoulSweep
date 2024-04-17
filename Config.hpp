@@ -5,7 +5,7 @@
 namespace Config
 {
 	//-- Game Settings --
-	constexpr int minSouls = 1;
+	constexpr int minSouls = 10;
 	constexpr float spawnDistance = 600.f;
 
 	//World
@@ -45,9 +45,7 @@ namespace Config
 	constexpr float soulFleeSpeed = 45.f;
 	constexpr float soulDefaultSpeed = 30.f;
 	constexpr float soulMaxNeighbourRadius = 20.f;
-	constexpr float soulMinPlayerDist = 400.f;
-	constexpr float soulMaxPlayerDistance = 600.f;
-	constexpr float soulWanderSpeed = .5f;
+	constexpr float soulWanderDist = 40.f;
 	constexpr float soulCollisionRadius = 10.f;
 
 
