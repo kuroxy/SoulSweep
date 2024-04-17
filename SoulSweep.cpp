@@ -146,7 +146,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		}
 	}
 
-
+	playerRadar.update(deltaTime, mainPlayer->getPosition(), souls);
 
 	// spawn regulator
 
@@ -178,7 +178,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	// draw order
 	// terrain -> SoulConduit -> souls -> ?(monster) -> player -> ?(fog of war)
 	level->draw(camera);
-	
+
 	for (auto& soul : souls)
 	{
 		soul.draw(camera);
@@ -191,6 +191,8 @@ void SoulSweep::render(Engine::Camera& camera)
 
 	mainPlayer->draw(camera, playerDebug);
 
+	if (!mainPlayer->isDead())
+		playerRadar.draw(camera);
 
 	if (!fogOfWarDisabled)
 	{
@@ -213,6 +215,11 @@ void SoulSweep::render(Engine::Camera& camera)
 		}
 	}
 
+
+	if (playerDebug)
+	{
+		playerRadar.drawDebug(camera, souls);
+	}
 
 	// UI
 	

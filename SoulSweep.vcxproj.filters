@@ -59,6 +59,9 @@
     <ClCompile Include="ResourceBar.cpp">
       <Filter>Source\SoulSweep</Filter>
     </ClCompile>
+    <ClCompile Include="Radar.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -123,6 +126,9 @@
       <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="ResourceBar.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="Radar.hpp">
       <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
   </ItemGroup>

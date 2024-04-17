@@ -11,6 +11,7 @@
 #include "Devourer.hpp"
 #include "Level.hpp"
 #include "ResourceBar.hpp"
+#include "Radar.hpp"
 
 namespace Engine
 {
@@ -66,6 +67,8 @@ private:
 	std::unique_ptr<Level> level{ nullptr };
 
 	std::unique_ptr<Player> mainPlayer{ nullptr };
+	Radar playerRadar = Radar(20.f, Tmpl8::PI*.7f);
+
 
 	std::vector<Soul> souls;
 	std::vector<Devourer> devourers;

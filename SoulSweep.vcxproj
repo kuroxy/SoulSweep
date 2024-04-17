@@ -235,6 +235,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Radar.cpp" />
     <ClCompile Include="RawTilemap.cpp" />
     <ClCompile Include="ResourceBar.cpp" />
     <ClCompile Include="SimpleMovement.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Radar.hpp" />
     <ClInclude Include="RawTilemap.hpp" />
     <ClInclude Include="ResourceBar.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />
