@@ -14,7 +14,7 @@ void Radar::update(float deltaTime, const Tmpl8::vec2& playerPos, std::vector<So
 	positionDraw = { positionCenter.x + std::cos(currentAngle) * orbitRadius, positionCenter.y + std::sin(currentAngle) * orbitRadius };
 
 	Tmpl8::vec2 direction = (positionDraw - positionCenter).normalized();
-	float biggestDot = 0;
+	float biggestDot = 0.f;
 	for (auto& soul : souls)
 	{
 		float product = direction.dot((soul.getPosition() - positionCenter).normalized());
@@ -24,7 +24,7 @@ void Radar::update(float deltaTime, const Tmpl8::vec2& playerPos, std::vector<So
 	}
 
 
-	if (biggestDot > .9)
+	if (biggestDot > .9f)
 	{
 		currentSize = (maxSize - minSize) * ((biggestDot - .9f)/.1f) + minSize;
 	}

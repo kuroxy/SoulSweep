@@ -7,11 +7,17 @@
 // for convenience
 using json = nlohmann::json;
 
-Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, std::string_view filename)
+Level::Level(
+	std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel,
+	std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit,
+	std::shared_ptr<Engine::SpriteSheet> spriteSheetGraveStone,
+	std::string_view filename)
 {
+	// setting spriteSheets
+	terrainSpriteSheet = spriteSheetLevel;
+	graveStoneSpriteSheet = spriteSheetGraveStone;
 
-
-
+	// opening and parsing files
 	std::ifstream file(std::string{ filename });
 	if (!file.is_open()) {
 		std::cerr << "Error opening file!" << std::endl;
@@ -21,12 +27,15 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_
 	file.close();
 
 
-	terrainSpriteSheet = spriteSheetLevel;
+	// setting level data
+
 
 	levelWidth = data["levelWidth"];
 	levelHeight = data["levelHeight"];
 
 	terrainTilemap = std::make_unique<Engine::RawTilemap>(terrainSpriteSheet, levelWidth, levelHeight);
+	
+
 	terrainColliders.resize(levelWidth * levelHeight);
 	terrainColliders.assign(levelWidth * levelHeight, false);
 
@@ -45,9 +54,15 @@ Level::Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_
 	float conduitPositionX = (float)data["conduitPosition"][0] * terrainSpriteSheet->getSpriteWidth();
 	float conduitPositionY = (float)data["conduitPosition"][1] * terrainSpriteSheet->getSpriteHeight();
 
+	for (auto& spawnLocation : data["spawnLocations"])
+	{
+		spawnLocations.push_back({ (float)spawnLocation[0] * terrainSpriteSheet->getSpriteWidth(),(float)spawnLocation[1] * terrainSpriteSheet->getSpriteHeight() });
+	}
 
 
 	soulConduit = std::make_unique<SoulConduit>(Tmpl8::vec2(conduitPositionX, conduitPositionY), spriteSheetConduit);
+
+	
 
 
 }
@@ -58,6 +73,11 @@ void Level::draw(Engine::Camera& c) const
 
 	// objects
 	soulConduit->draw(c);
+
+	for (auto& location : spawnLocations)
+	{
+		c.renderSpriteWorldSpace(*graveStoneSpriteSheet.get(), 0, location, false);
+	}
 
 }
 
@@ -78,6 +98,11 @@ void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::P
 
 	// also a collider
 	soulConduit->draw(c, true);
+
+	for (auto& location : spawnLocations)
+	{
+		c.drawRectangle(location, location + Tmpl8::vec2(10.f), 0x00ffff);
+	}
 }
 
 void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance, float maxDistance)

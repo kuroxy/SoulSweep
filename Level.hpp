@@ -26,7 +26,12 @@ class Level
 
 public:
 	Level() = default;
-	Level(std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, std::string_view filename);
+	Level(	std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel, 
+			std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit, 
+			std::shared_ptr<Engine::SpriteSheet> spriteSheetGraveStone,
+			std::string_view filename);
+
+	const std::vector<Tmpl8::vec2>& getSpawnLocations() const {return spawnLocations;}
 
 	bool isSoulCollectable(const Tmpl8::vec2& soulPosition) const { return soulConduit->isConduitActive() && soulConduit->contains(soulPosition); }
 
@@ -62,6 +67,7 @@ public:
 
 private:
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
+	std::shared_ptr<Engine::SpriteSheet> graveStoneSpriteSheet{ nullptr };
 
 	int levelWidth{ 0 };
 	int levelHeight{ 0 };
@@ -72,7 +78,7 @@ private:
 
 	
 	std::unique_ptr<SoulConduit> soulConduit{ nullptr };
-
+	std::vector<Tmpl8::vec2> spawnLocations;
 
 	// Textures
 

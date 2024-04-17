@@ -23,7 +23,7 @@ static const char* TemplateVersion = "Template_v2019.08";
 //#include "immintrin.h"
 
 inline float Rand( float range ) { return ((float)rand() / RAND_MAX) * range; }
-inline int IRand( int range ) { return rand() % range; }
+inline int IRand( int range ) { return rand() % range; } // exclusive
 int filesize( FILE* f );
 #define MALLOC64(x) _aligned_malloc(x,64)
 #define FREE64(x) _aligned_free(x)

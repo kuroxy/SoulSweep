@@ -3,11 +3,23 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Tileset.tsx",
+    "activeFile": "C:/Users/okker/Desktop/newMap.tmx",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "C:/Users/okker/Desktop/large.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/okker/Desktop/newMap.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 840,
+                "y": 1422
+            }
+        },
         "Tileset.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 2
@@ -15,12 +27,14 @@
     },
     "last.imagePath": "C:/dev/cpp/SoulSweep/assets/Textures",
     "openFiles": [
-        "Tileset.tsx"
+        "Tileset.tsx",
+        "C:/Users/okker/Desktop/newMap.tmx"
     ],
     "project": "SoulSweep.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "Tileset.tsx"
+        "Tileset.tsx",
+        "C:/Users/okker/Desktop/newMap.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.useTransparentColor": true

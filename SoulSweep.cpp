@@ -42,18 +42,49 @@ Devourer& SoulSweep::spawnDevourer(const Tmpl8::vec2& spawnPosition)
 	return devourers.back();
 }
 
-Soul& SoulSweep::spawnRandomSoul(float distance)
+Soul& SoulSweep::spawnRandomSoul()
 {
-	float i = Rand(Tmpl8::PI);
-	Tmpl8::vec2 position(cos(i), sin(i));
-	return spawnSoul(mainPlayer->getPosition() + position * distance, Tmpl8::vec2(0));
+	std::vector<Tmpl8::vec2> spawnLocations = level->getSpawnLocations();
+	
+	int closestIndex = 0;
+	float sqDist = INFINITY;
+	
+	for (int i = 0; i < spawnLocations.size(); i++)
+	{
+		float dist = (mainPlayer->getPosition() - spawnLocations.at(i)).sqrLentgh();
+		if (dist < sqDist)
+		{
+			sqDist = dist;
+			closestIndex = i;
+		}
+	}
+
+	
+	int random = IRand(spawnLocations.size()-1);
+	random = random == closestIndex ? random + 1 : random; // if the random index is the same as the closest we add 1 to get the next one instead, this will always work because the the if the closestIndex is the last, IRand will never generate that value because it is excluse the parameter
+
+
+	return spawnSoul(spawnLocations.at(random), Tmpl8::vec2(0));
 }
 
-Devourer& SoulSweep::spawnRandomDevourer(float distance)
+Devourer& SoulSweep::spawnRandomDevourer()
 {
-	float i = Rand(Tmpl8::PI);
-	Tmpl8::vec2 position(cos(i), sin(i));
-	return spawnDevourer(mainPlayer->getPosition() + position * distance);
+	std::vector<Tmpl8::vec2> spawnLocations = level->getSpawnLocations();
+
+	int furthestIndex = 0;
+	float sqDist = 0;
+
+	for (int i = 0; i < spawnLocations.size(); i++)
+	{
+		float dist = (mainPlayer->getPosition() - spawnLocations.at(i)).sqrLentgh();
+		if (dist > sqDist)
+		{
+			sqDist = dist;
+			furthestIndex = i;
+		}
+	}
+
+	return spawnDevourer(spawnLocations.at(furthestIndex));
 }
 
 void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera& camera)
@@ -152,7 +183,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	if (souls.size() < Config::minSouls)
 	{
-		spawnRandomSoul(Config::spawnDistance);
+		spawnRandomSoul();
 	}
 
 
