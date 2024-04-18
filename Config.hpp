@@ -68,7 +68,7 @@ namespace Config
 	// Particles
 
 
-	static Engine::BaseParticleSystemParams soulParticleParams
+	const static Engine::BaseParticleSystemParams soulParticleParams
 	{
 		.spawnRate = .05f,
 		.initialPositionDeviation = 0.f,
@@ -90,7 +90,7 @@ namespace Config
 
 	};
 
-	static Engine::BaseParticleSystemParams devourerParticleParams
+	const static Engine::BaseParticleSystemParams devourerParticleParams
 	{
 		.spawnRate = .05f,
 		.initialPositionDeviation = 0.f,
@@ -113,7 +113,7 @@ namespace Config
 
 	
 
-	static Engine::BaseParticleSystemParams blueFlamesParameters
+	const static Engine::BaseParticleSystemParams blueFlamesParameters
 	{
 		.spawnRate = .05f,
 
@@ -134,7 +134,7 @@ namespace Config
 
 	};
 
-	static Engine::BaseParticleSystemParams blueCoreParameters
+	const static Engine::BaseParticleSystemParams blueCoreParameters
 	{
 		.spawnRate = .05f,
 
