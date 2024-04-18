@@ -83,7 +83,7 @@ void Camera::renderToSurface(Tmpl8::Surface* surface, int scale, int xOffset, in
 {
 	if (scale <= 0)
 	{
-		printf("IsoCamera::renderToSurface, Scale is smaller or equal to zero.");
+		printf("Camera::renderToSurface, Scale is smaller or equal to zero.");
 		return;
 	}
 
@@ -189,62 +189,17 @@ void Camera::drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::
 
 void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int x, int y, const Tmpl8::vec2& worldSpace, bool flip)
 {
-	int localSpaceX = (int)worldSpace.x - (int)position.x;
-	int localSpaceY = (int)worldSpace.y - (int)position.y;
+	Tmpl8::vec2 local = worldToScreen(worldSpace);
 
-	spritesheet.drawSprite(cameraSurface.get(), x, y, localSpaceX, localSpaceY);
+	spritesheet.drawSprite(cameraSurface.get(), x, y, static_cast<int>(local.x), static_cast<int>(local.y), true, flip );
 }
 
 void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace, bool flip)
 {
-	int localSpaceX = (int)worldSpace.x - (int)position.x;
-	int localSpaceY = (int)worldSpace.y - (int)position.y;
+	Tmpl8::vec2 local = worldToScreen(worldSpace);
 
-	spritesheet.drawSprite(cameraSurface.get(), spriteIndex, localSpaceX, localSpaceY, true, flip);
+	spritesheet.drawSprite(cameraSurface.get(), spriteIndex, static_cast<int>(local.x), static_cast<int>(local.y), true, flip);
 }
 
 
 };
-
-/*
-Tmpl8::vec2 Camera::worldToIsometric(const Tmpl8::vec2& worldSpace) const
-{
-	int halfWidth = m_tileWidth / 2;
-	int quarterWidth = halfWidth / 2;
-
-	// magic math
-	float isoX = (worldSpace.x / halfWidth + worldSpace.y / quarterWidth) / 2;
-	float isoY = worldSpace.y / quarterWidth - isoX;
-
-
-	return Tmpl8::vec2(isoX, isoY);
-}
-
-Tmpl8::vec2 Camera::isometricToWorld(const Tmpl8::vec2& isometricSpace) const
-{
-	int halfWidth = m_tileWidth / 2;
-	int quarterWidth = halfWidth / 2;
-
-	float worldX = (isometricSpace.x - isometricSpace.y) * halfWidth;
-	float worldY = (isometricSpace.y + isometricSpace.x) * quarterWidth;
-
-	return Tmpl8::vec2(worldX, worldY);
-}
-
-void Camera::renderSpriteIsometric(SpriteSheet* spriteSheet, int x, int y, const Tmpl8::vec2& isoSpace)
-{
-	vec2 worldSpace = isometricToWorld(isoSpace);
-	renderSpriteWorldSpace(spriteSheet, x, y, worldSpace);
-}
-
-void Camera::renderTextureIsometric(Texture* texture, const Tmpl8::vec2& IsoSpace)
-{
-	vec2 worldSpace = isometricToWorld(IsoSpace);
-	renderTextureIsometric(texture, worldSpace);
-}
-
-void Camera::renderTextureIsometric(Texture* texture, float xIsoSpace, float yIsoSpace)
-{
-	renderTextureIsometric(texture, vec2{ xIsoSpace,yIsoSpace });
-}
-*/
