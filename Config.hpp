@@ -6,7 +6,7 @@ namespace Config
 {
 	//-- Game Settings --
 	constexpr int minSouls = 5;
-	constexpr float spawnDistance = 600.f;
+
 
 	//World
 	// the spritesheet texture (fullpath e.i "assets/large.png")
@@ -65,7 +65,7 @@ namespace Config
 
 
 
-	// Particles
+	// -- ParticlesSystems --
 
 
 	const static Engine::BaseParticleSystemParams soulParticleParams

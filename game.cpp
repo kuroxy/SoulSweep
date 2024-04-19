@@ -28,12 +28,15 @@ namespace Tmpl8
 		im.addMouseMap("vacuum", SDL_BUTTON_LEFT);
 		im.addMouseMap("dropsoul", SDL_BUTTON_RIGHT);
 
-		im.addKeyMap("space", SDL_SCANCODE_SPACE);
+		im.addKeyMap("enter", SDL_SCANCODE_RETURN);
+		im.addKeyMap("enter", SDL_SCANCODE_SPACE);
 
-		im.addKeyMap("debugup", SDL_SCANCODE_UP);
-		im.addKeyMap("debugdown", SDL_SCANCODE_DOWN);
-		im.addKeyMap("debugleft", SDL_SCANCODE_LEFT);
-		im.addKeyMap("debugright", SDL_SCANCODE_RIGHT);
+		//arrow keys
+		im.addKeyMap("up", SDL_SCANCODE_UP);
+		im.addKeyMap("down", SDL_SCANCODE_DOWN);
+		im.addKeyMap("left", SDL_SCANCODE_LEFT);
+		im.addKeyMap("right", SDL_SCANCODE_RIGHT);
+
 
 		im.addKeyMap("debugfogofwar", SDL_SCANCODE_Z);
 
@@ -41,6 +44,9 @@ namespace Tmpl8
 
 		//im.addMouseMap("left", SDL_BUTTON_LEFT);
 
+
+		htpSoul.setPosition(Tmpl8::vec2(735.f, 75.f));
+		htpSoul.setAttractor(Tmpl8::vec2(785.f, 125.f), 450.f);
 	}
 
 	void Game::Shutdown()
@@ -61,6 +67,9 @@ namespace Tmpl8
 		{
 		case Tmpl8::Game::gameState::TitleScreen:
 			titleScreenTick(deltaTime);
+			break;
+		case Tmpl8::Game::gameState::HelpScreen:
+			helpScreenTick(deltaTime);
 			break;
 
 		case Tmpl8::Game::gameState::GameScreen:
@@ -111,10 +120,47 @@ namespace Tmpl8
 		mainCamera.getSurface()->Print("SoulSweep", static_cast<int>(drawPos.x) - 1, static_cast<int>(drawPos.y) - 1, 0xffffff, 10);
 		mainCamera.getSurface()->Print("SoulSweep", static_cast<int>(drawPos.x), static_cast<int>(drawPos.y), 0x55abd4, 10);
 
-		mainCamera.getSurface()->PrintCenter("Press SPACE to start", 420, 0xc7d5eb, 4);
+		if (mainScreenSelectedMenu == 0)
+		{
+			mainCamera.getSurface()->PrintCenter("( Start Game )", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("How to play", 350, 0xc7d5eb, 4);
+		}
+		else
+		{
+			mainCamera.getSurface()->PrintCenter("Start Game", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("( How to play )", 350, 0xc7d5eb, 4);
+		}
+			
 
-		if (im.isActionReleased("space"))
-			loadGame("assets/Maps/level1.json");
+		if (im.isActionReleased("down") || im.isActionReleased("up"))
+		{
+			// actually for up +2 -1 (+2 because to get positive modulo then -1 because we want to go back, leading to the same as ++;
+			mainScreenSelectedMenu++;
+			mainScreenSelectedMenu %= 2;
+		}
+
+
+		if (im.isActionReleased("enter") )
+		{
+			if (mainScreenSelectedMenu == 0)
+				loadGame("assets/Maps/level1.json");
+			else
+				currentState = gameState::HelpScreen;
+		}
+
+	}
+
+	void Game::helpScreenTick(float deltaTime)
+	{
+		htpSoul.updateParticles(deltaTime);
+
+		mainCamera.clearScreen(0x1f1d1d);
+		howToPlayTexture.CopyToSurface(mainCamera.getSurface(), 0, 0);
+		htpSoul.renderParticles(mainCamera);
+		mainCamera.getSurface()->PrintCenter("( back to title screen )", 450, 0xc7d5eb, 3);
+
+		if (im.isActionReleased("enter"))
+			currentState = gameState::TitleScreen;
 	}
 
 	void Game::gameScreenTick(float deltaTime)
@@ -144,9 +190,9 @@ namespace Tmpl8
 		mainCamera.clearScreen(0x1f1d1d);
 		mainCamera.getSurface()->PrintCenter("You have been devoured", 100, 0xeb4034, 5);
 
-		mainCamera.getSurface()->PrintCenter("Press SPACE to restart", 420, 0xc7d5eb, 4);
+		mainCamera.getSurface()->PrintCenter("Press ENTER to restart", 420, 0xc7d5eb, 4);
 
-		if (im.isActionReleased("space"))
+		if (im.isActionReleased("enter"))
 			loadGame("assets/Maps/level1.json");
 	}
 
@@ -156,9 +202,9 @@ namespace Tmpl8
 		mainCamera.getSurface()->PrintCenter("Congratulations", 100, 0xcfad40, 5);
 		mainCamera.getSurface()->PrintCenter("you have extracted enough souls", 160, 0xcfad40, 4);
 
-		mainCamera.getSurface()->PrintCenter("Press SPACE to restart", 420, 0xc7d5eb, 4);
+		mainCamera.getSurface()->PrintCenter("Press ENTER to restart", 420, 0xc7d5eb, 4);
 
-		if (im.isActionReleased("space"))
+		if (im.isActionReleased("enter"))
 			loadGame("assets/Maps/level1.json");
 	}
 
