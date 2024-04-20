@@ -93,8 +93,6 @@ namespace Tmpl8
 	
 		//screen->Print("Hallo", im.getLocalMouse().x, im.getLocalMouse().y, 0xffff00, 10);
 
-		int mX = im.getLocalMouse().x;
-		int mY = im.getLocalMouse().y;
 
 
 		// update inputmanager for next keypresses
