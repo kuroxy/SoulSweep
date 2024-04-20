@@ -38,7 +38,7 @@ namespace Tmpl8
 		im.addKeyMap("right", SDL_SCANCODE_RIGHT);
 
 
-		im.addKeyMap("debugfogofwar", SDL_SCANCODE_Z);
+		im.addKeyMap("debugfogofwar", SDL_SCANCODE_L);
 
 		im.addMouseMap("leftmouse", SDL_BUTTON_LEFT);
 
@@ -152,6 +152,7 @@ namespace Tmpl8
 
 	void Game::helpScreenTick(float deltaTime)
 	{
+		mainCamera.setPosition(Tmpl8::vec2(0.f));
 		htpSoul.updateParticles(deltaTime);
 
 		mainCamera.clearScreen(0x1f1d1d);
@@ -190,10 +191,31 @@ namespace Tmpl8
 		mainCamera.clearScreen(0x1f1d1d);
 		mainCamera.getSurface()->PrintCenter("You have been devoured", 100, 0xeb4034, 5);
 
-		mainCamera.getSurface()->PrintCenter("Press ENTER to restart", 420, 0xc7d5eb, 4);
+		if (victorySelectedMenu == 0)
+		{
+			mainCamera.getSurface()->PrintCenter("( Play Again )", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("Main Menu", 350, 0xc7d5eb, 4);
+		}
+		else
+		{
+			mainCamera.getSurface()->PrintCenter("Play Again", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("( Main Menu )", 350, 0xc7d5eb, 4);
+		}
+
+		if (im.isActionReleased("down") || im.isActionReleased("up"))
+		{
+			// actually for up +2 -1 (+2 because to get positive modulo then -1 because we want to go back, leading to the same as ++;
+			victorySelectedMenu++;
+			victorySelectedMenu %= 2;
+		}
 
 		if (im.isActionReleased("enter"))
-			loadGame("assets/Maps/level1.json");
+		{
+			if (victorySelectedMenu == 0)
+				loadGame("assets/Maps/level1.json");
+			else
+				currentState = gameState::TitleScreen;
+		}
 	}
 
 	void Game::victoryScreenTick(float deltaTime)
@@ -202,10 +224,32 @@ namespace Tmpl8
 		mainCamera.getSurface()->PrintCenter("Congratulations", 100, 0xcfad40, 5);
 		mainCamera.getSurface()->PrintCenter("you have extracted enough souls", 160, 0xcfad40, 4);
 
-		mainCamera.getSurface()->PrintCenter("Press ENTER to restart", 420, 0xc7d5eb, 4);
+		
+		if (victorySelectedMenu == 0)
+		{
+			mainCamera.getSurface()->PrintCenter("( Play Again )", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("Main Menu", 350, 0xc7d5eb, 4);
+		}
+		else
+		{
+			mainCamera.getSurface()->PrintCenter("Play Again", 300, 0xc7d5eb, 4);
+			mainCamera.getSurface()->PrintCenter("( Main Menu )", 350, 0xc7d5eb, 4);
+		}
+
+		if (im.isActionReleased("down") || im.isActionReleased("up"))
+		{
+			// actually for up +2 -1 (+2 because to get positive modulo then -1 because we want to go back, leading to the same as ++;
+			victorySelectedMenu++;
+			victorySelectedMenu %= 2;
+		}
 
 		if (im.isActionReleased("enter"))
-			loadGame("assets/Maps/level1.json");
+		{
+			if (victorySelectedMenu == 0)
+				loadGame("assets/Maps/level1.json");
+			else
+				currentState = gameState::TitleScreen;
+		}
 	}
 
 };

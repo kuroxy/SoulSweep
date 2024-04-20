@@ -53,6 +53,7 @@ private:
 
 	int mainScreenSelectedMenu = 0;
 
+	int victorySelectedMenu = 0;
 
 	Engine::Texture howToPlayTexture{ "assets/Textures/htp.png" }; // how to play instruction Image
 
