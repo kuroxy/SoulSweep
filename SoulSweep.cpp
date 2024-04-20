@@ -220,7 +220,7 @@ void SoulSweep::render(Engine::Camera& camera)
 		devourer.draw(camera, devourerDebug);
 	}
 
-	mainPlayer->draw(camera, playerDebug);
+	mainPlayer->draw(camera);
 
 	if (!mainPlayer->isDead())
 		playerRadar.draw(camera);
@@ -250,6 +250,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	if (playerDebug)
 	{
 		playerRadar.drawDebug(camera, souls);
+		mainPlayer->drawDebug(camera);
 	}
 
 	// UI

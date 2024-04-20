@@ -111,6 +111,31 @@ namespace Config
 		.sizeRangeEnd = 2.5f,
 	};
 
+
+
+	const static Engine::BaseParticleSystemParams vacuumParticles
+	{
+		.spawnRate = 0.f,
+
+		.initialPositionDeviation = Tmpl8::vec2(40.f, 40.f),
+
+		.initialVelocity = Tmpl8::vec2(0.f,0.f),
+		.initialVelocityDeviation = Tmpl8::vec2(0.f,0.f),
+
+		.particleLifetime = 1.0f,
+		.particleLifetimeDeviation = .2f,
+
+
+		.colorRangeStart = Tmpl8::vec3(150.f, 150.f, 150.f),
+		.colorRangeEnd = Tmpl8::vec3(230.f, 230.f, 230.f),
+
+
+		.sizeRangeStart = 1.f,
+		.sizeRangeEnd = 1.f
+
+	};
+
+
 	
 
 	const static Engine::BaseParticleSystemParams blueFlamesParameters

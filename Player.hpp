@@ -3,7 +3,8 @@
 #include "aabb.hpp"
 #include "SpriteSheet.hpp"
 #include "Animator.hpp"
-
+#include "ParticleSystem.hpp"
+#include "Config.hpp"
 
 //forward declaration
 namespace Engine
@@ -66,7 +67,8 @@ public:
 	bool vacuumRange(const Tmpl8::vec2 pos) const;
 	const Tmpl8::vec2 calculateVacuumForce(const Tmpl8::vec2 pos) const;
 
-	void draw(Engine::Camera& camera, bool debug=false);
+	void draw(Engine::Camera& camera);
+	void drawDebug(Engine::Camera& camera);
 
 	bool isDead() const { return dead; }
 	void setDeath(bool val) { dead = val; }
@@ -75,6 +77,11 @@ private:
 	Engine::SpriteSheet sprites;
 	Engine::Animator anim;
 	bool flipCharacter = false;
+
+	Engine::BaseParticleSystem vacuumParticles{Config::vacuumParticles, 50};
+	float spawnTime = .2f;
+	float timeTillNextSpawn = 0.f;
+
 
 
 	Tmpl8::vec2 m_position{ 0 };

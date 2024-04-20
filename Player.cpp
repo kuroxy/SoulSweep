@@ -78,6 +78,42 @@ void Player::update(float deltaTime, const Level& level)
 	}
 
 
+	vacuumParticles.setPosition(m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance);
+	vacuumParticles.setAttractorPostion(m_collisionBox.center());
+
+	vacuumParticles.setAttractorStrenth(0.f);
+	
+	if (m_vacuumEnabled)
+	{
+		vacuumParticles.setAttractorStrenth(30000.f);
+		timeTillNextSpawn -= deltaTime;
+		if (timeTillNextSpawn <= 0.f)
+		{
+			timeTillNextSpawn = spawnTime;
+			vacuumParticles.spawnParticle();
+		}
+	}
+
+	for (auto& p : vacuumParticles.getParticles())
+	{
+		if (!p.enabled)
+			continue;
+
+		Tmpl8::vec2 direction = (m_collisionBox.center() - p.position);
+
+		// if moves to far away from the 
+		if ((direction.normalized().dot(p.velocity.normalized()) < .5 && p.velocity.length() > 1.f) || direction.length() < 30.f)
+		{
+			p.currentLifeTime = 0.f;
+			p.enabled = false;
+		}
+
+	}
+
+
+
+	vacuumParticles.updateParticles(deltaTime);
+
 	anim.update(deltaTime);
 	move(deltaTime);
 
@@ -126,23 +162,21 @@ const Tmpl8::vec2 Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 
 }
 
-
-void Player::draw(Engine::Camera& camera, bool debug)
-{
-	if (debug)
-	{
-		m_collisionBox.draw(camera, 0xff00ff);
-		camera.drawCircle(m_position, m_collectRadius, 0xffffff, 1);
-	}
-		
+void Player::draw(Engine::Camera& camera)
+{	
 	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f), flipCharacter);
 
-	//camera.renderSpriteWorldSpace(&sprites, 0, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2, sprites.getSpriteHeight() / 2));
+	vacuumParticles.renderParticles(camera);
+}
 
+void Player::drawDebug(Engine::Camera& camera)
+{
+	m_collisionBox.draw(camera, 0xff00ff);
+	camera.drawCircle(m_position, m_collectRadius, 0xffffff, 1);
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
 	camera.drawLine(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
-	
 }
+
 
 void Player::updateAABB()
 {
