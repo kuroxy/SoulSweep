@@ -249,8 +249,12 @@ void SoulSweep::render(Engine::Camera& camera)
 
 	if (playerDebug)
 	{
-		playerRadar.drawDebug(camera, souls);
 		mainPlayer->drawDebug(camera);
+	}
+
+	if (playerRadarDebug)
+	{
+		playerRadar.drawDebug(camera, souls);
 	}
 
 	// UI

@@ -366,7 +366,10 @@ int main( int argc, char **argv )
 		float elapsedTime = t.elapsed();
 		t.reset();
 
-		game->Tick(	Min(elapsedTime / 1000, .032f) );	// based in seconds and clamping it so we can bigger delta time then 0.32 = 32fps.
+		game->Tick(	Min(elapsedTime / 1000, .032f) );	// based in seconds and clamping it so we can't bigger delta time then 0.32 = 32fps.
+
+		if (game->done())
+			exitapp = 1;
 		// event loop
 		SDL_Event event;
 		while (SDL_PollEvent( &event )) 
@@ -377,11 +380,6 @@ int main( int argc, char **argv )
 				exitapp = 1;
 				break;
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_ESCAPE) 
-				{
-					exitapp = 1;
-					// find other keys here: http://sdl.beuc.net/sdl.wiki/SDLKey
-				}
 				game->KeyDown( event.key.keysym.scancode );
 				break;
 			case SDL_KEYUP:

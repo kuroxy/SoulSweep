@@ -19,6 +19,7 @@ namespace Tmpl8
 	{
 
 		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);
+		im.addKeyMap("escape", SDL_SCANCODE_ESCAPE);
 
 		im.addKeyMap("up", SDL_SCANCODE_W);
 		im.addKeyMap("down", SDL_SCANCODE_S);
@@ -53,9 +54,6 @@ namespace Tmpl8
 	{
 	}
 	
-
-	
-
 
 	// -----------------------------------------------------------
 	// Main application tick function
@@ -129,6 +127,11 @@ namespace Tmpl8
 			mainCamera.getSurface()->PrintCenter("( How to play )", 350, 0xc7d5eb, 4);
 		}
 			
+		if (im.isActionReleased("escape"))
+		{
+			closeGame = true;
+		}
+
 
 		if (im.isActionReleased("down") || im.isActionReleased("up"))
 		{
@@ -158,8 +161,10 @@ namespace Tmpl8
 		htpSoul.renderParticles(mainCamera);
 		mainCamera.getSurface()->PrintCenter("( back to title screen )", 450, 0xc7d5eb, 3);
 
-		if (im.isActionReleased("enter"))
+		if (im.isActionReleased("enter") || im.isActionReleased("escape"))
 			currentState = gameState::TitleScreen;
+
+
 	}
 
 	void Game::gameScreenTick(float deltaTime)
@@ -181,6 +186,8 @@ namespace Tmpl8
 		if (game->victoryState())
 			currentState = gameState::VictoryScreen;
 
+		if (im.isActionReleased("escape"))
+			currentState = gameState::TitleScreen;
 
 	}
 
@@ -214,6 +221,9 @@ namespace Tmpl8
 			else
 				currentState = gameState::TitleScreen;
 		}
+
+		if (im.isActionReleased("escape"))
+			currentState = gameState::TitleScreen;
 	}
 
 	void Game::victoryScreenTick(float deltaTime)
@@ -248,6 +258,9 @@ namespace Tmpl8
 			else
 				currentState = gameState::TitleScreen;
 		}
+
+		if (im.isActionReleased("escape"))
+			currentState = gameState::TitleScreen;
 	}
 
 };

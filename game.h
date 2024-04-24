@@ -15,6 +15,7 @@ public:
 	void Init();
 	void Shutdown();
 	void Tick( float deltaTime );
+	bool done() const { return closeGame; }
 
 	void MouseMove(int x, int y) {
 		im.setMousePos
@@ -28,6 +29,7 @@ public:
 
 	void loadGame(std::string_view levelPath);
 private:
+	bool closeGame = false;
 	enum class gameState
 	{
 		TitleScreen,

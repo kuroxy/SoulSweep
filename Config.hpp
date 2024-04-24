@@ -44,7 +44,7 @@ namespace Config
 	constexpr float soulVacuumSpeed = 1000.f;
 	constexpr float soulFleeSpeed = 45.f;
 	constexpr float soulDefaultSpeed = 30.f;
-	constexpr float soulMaxNeighbourRadius = 20.f;
+	constexpr float soulMaxNeighbourRadius = 100.f;
 	constexpr float soulWanderDist = 40.f;
 	constexpr float soulCollisionRadius = 10.f;
 

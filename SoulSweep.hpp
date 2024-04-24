@@ -88,6 +88,7 @@ private:
 
 	bool terrainDebug = false;
 	bool playerDebug = false;
+	bool playerRadarDebug = false;
 	bool soulsDebug = false;
 	bool devourerDebug = false;
 	bool soulsConduitDebug = false;
