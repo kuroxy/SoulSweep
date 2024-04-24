@@ -164,7 +164,8 @@ const Tmpl8::vec2 Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 
 void Player::draw(Engine::Camera& camera)
 {	
-	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f), flipCharacter);
+	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f+5.f), flipCharacter);
+	// +5 is offset for the sprite to align the feet with the bottom of the hitbox
 
 	vacuumParticles.renderParticles(camera);
 }
