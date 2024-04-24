@@ -17,21 +17,23 @@ namespace Tmpl8
 class ResourceBar
 {
 public:
-	ResourceBar(std::shared_ptr < Engine::Texture > texture,int barLeft, int barTop, int barRight, int barBottom, float minValue, float maxValue)
+	ResourceBar(std::shared_ptr < Engine::Texture > texture, int barLeft, int barTop, int barRight, int barBottom, float maxValue, Tmpl8::Pixel barColor)
 		: barTexture{ texture }
 		, barLeft{ barLeft }
 		, barTop{ barTop }
 		, barRight{ barRight }
 		, barBottom{ barBottom }
-		, maxValue{ maxValue } {}
+		, maxValue{ maxValue } 
+		, barColor{ barColor}  {}
 
-	ResourceBar(std::shared_ptr < Engine::Texture > texture, int barLeft, int barTop, int barRight, int barBottom, float maxValue)
-		: barTexture{ texture }
-		, barLeft{ barLeft }
+	ResourceBar(int barLeft, int barTop, int barRight, int barBottom, float maxValue, Tmpl8::Pixel barColor)
+		: barLeft{ barLeft }
 		, barTop{ barTop }
 		, barRight{ barRight }
 		, barBottom{ barBottom }
-		, maxValue{ maxValue } {}
+		, maxValue{ maxValue }
+		, barColor{ barColor } {}
+
 
 	void setMaxValue(float maxValue) {
 		this->maxValue = maxValue;
@@ -45,7 +47,7 @@ public:
 	float getValue() const { return currentValue; }
 
 
-	void draw(Engine::Camera& camera, Tmpl8::vec2 screenPosition, Tmpl8::Pixel barColor) const;
+	void draw(Engine::Camera& camera, Tmpl8::vec2 screenPosition) const;
 
 private:
 	std::shared_ptr < Engine::Texture > barTexture;
@@ -63,5 +65,7 @@ private:
 	// the range of the resource bar
 	float maxValue = 100.f;
 	float currentValue = 0.f;
+
+	Tmpl8::Pixel barColor = 0;
 
 };

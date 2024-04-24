@@ -55,7 +55,7 @@ public:
 private:
 
 	int collectSoulsGoal{ 10 };
-	ResourceBar collectedSoulsBar{ std::make_shared<Engine::Texture>("assets/Textures/Bar.png", 0xff00ff), 15, 4, 635, 27, (float)collectSoulsGoal };
+	ResourceBar collectedSoulsBar{ std::make_shared<Engine::Texture>("assets/Textures/Bar.png", 0xff00ff), 15, 4, 635, 27, (float)collectSoulsGoal, 0x6600ff };
 	int collectedSouls{ 0 }; 
 
 	

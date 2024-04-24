@@ -261,7 +261,7 @@ void SoulSweep::render(Engine::Camera& camera)
 	
 
 
-	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2.f, 10.f), 0x6600ff);
+	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2.f, 10.f));
 
 
 
