@@ -61,7 +61,7 @@ public:
 	bool aabbCollision(const Engine::AABB& aabb) const;
 	bool lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) const;
 
-	Tmpl8::vec2 resolveBoxCollision(const Engine::AABB& box, const Tmpl8::vec2 dir) const; //returns a vector to add to fix position
+	std::vector<Engine::AABB> getAABBs(const Engine::AABB& size) const;
 
 	Tmpl8::vec2 resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const; //returns the corrected position. Used to clamp the position within the level.
 

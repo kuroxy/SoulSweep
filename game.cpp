@@ -25,6 +25,8 @@ namespace Tmpl8
 		im.addKeyMap("down", SDL_SCANCODE_S);
 		im.addKeyMap("left", SDL_SCANCODE_A);
 		im.addKeyMap("right", SDL_SCANCODE_D);
+		im.addKeyMap("space", SDL_SCANCODE_SPACE);
+
 		im.addKeyMap("vacuum", SDL_SCANCODE_F);
 		im.addMouseMap("vacuum", SDL_BUTTON_LEFT);
 		im.addMouseMap("dropsoul", SDL_BUTTON_RIGHT);

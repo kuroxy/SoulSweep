@@ -54,9 +54,14 @@ public:
 
 private:
 
+	// UI BARS
+
 	int collectSoulsGoal{ 10 };
 	ResourceBar collectedSoulsBar{ std::make_shared<Engine::Texture>("assets/Textures/Bar.png", 0xff00ff), 15, 4, 635, 27, (float)collectSoulsGoal, 0x6600ff };
 	int collectedSouls{ 0 }; 
+
+
+	ResourceBar dashResource{ std::make_shared<Engine::Texture>("assets/Textures/DashBar.png", 0xff00ff),3,5,347,11,1.f,0xffffff };
 
 	
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };

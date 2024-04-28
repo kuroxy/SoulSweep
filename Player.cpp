@@ -17,66 +17,58 @@ void Player::handleInput(const Engine::InputManager& im)
 	if (dead)
 		return;
 
-	m_direction = vec2(0);
-	if (im.isActionHeld("up"))
-		m_direction.y -= 1.f;
-	if (im.isActionHeld("down"))
-		m_direction.y += 1.f;
-	if (im.isActionHeld("left"))
-		m_direction.x -= 1.f;
-	if (im.isActionHeld("right"))
-		m_direction.x += 1.f;
-
-	if (m_direction.x == 0.f && m_direction.y == 0.f)
-	{
-		anim.changeAnimation("idle");
-	}
-	else
-	{
-		anim.changeAnimation("walk");
-		flipCharacter = m_direction.x < 0.f;
-	}
-
-	
-
 
 	m_vacuumEnabled = im.isActionHeld("vacuum") && !im.isActionHeld("dropsoul");
 	m_dropSoul = im.isActionPressed("dropsoul");
 	m_vacuumDirection = (im.getWorldMouse() - m_position).normalized();
 
-}
 
-void Player::move(float deltaTime)
-{
-	float length = m_direction.length();
-	if (length == 0)
-		return;
-
-	m_position.x += m_direction.x / length * deltaTime * m_playerSpeed;
-	m_position.y += m_direction.y / length * deltaTime * m_playerSpeed;
-	updateAABB();
-}
-
-void Player::update(float deltaTime, const Level& level)
-{
 	
 
-	// this means there is no animation playing meaning the death animation has finished 
-	if (anim.getCurrentAnim() == "")
-		return;
+	if (im.isActionPressed("space") && dashResource >= dashCost && currentDashDuration <= 0.f)
+	{
+		dashResource -= dashCost;
+		currentDashDuration = dashDuration;
 
+		dashDirection = (im.getWorldMouse() - m_position).normalized();
+		return;	// If we dash other info will be ignored so we can return
+	}
+
+
+	moveDirection = vec2(0.f);
+	
+	if (im.isActionHeld("up"))
+		moveDirection.y -= 1.f;
+	if (im.isActionHeld("down"))
+		moveDirection.y += 1.f;
+	if (im.isActionHeld("left"))
+		moveDirection.x -= 1.f;
+	if (im.isActionHeld("right"))
+		moveDirection.x += 1.f;
+
+	moveDirection.normalize();
+}
+
+void Player::update(float deltaTime)
+{
 	// if the player is dead just or the animation is not finished
 	// change animation to dead (this will not reset the animation)
 	if (dead)
 	{
 		anim.changeAnimation("death");
-
-		if (anim.isLastFrame()) // if this is the last frame of the animation set animation to empty
-			anim.changeAnimation("");
 		anim.update(deltaTime);
 		return;
 	}
 
+	// Dash
+
+	dashResource += dashRechargeSpeed * deltaTime;
+	dashResource = std::clamp(dashResource, 0.f, 1.f);
+	if (currentDashDuration > 0.f)
+		currentDashDuration -= deltaTime;
+
+
+	// Vacuum Particles
 
 	vacuumParticles.setPosition(m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance);
 	vacuumParticles.setAttractorPostion(m_collisionBox.center());
@@ -110,32 +102,65 @@ void Player::update(float deltaTime, const Level& level)
 
 	}
 
-
-
 	vacuumParticles.updateParticles(deltaTime);
 
+
+	// Movement
+	velocity = Tmpl8::vec2(0.f);
+
+	if (currentDashDuration > 0.f)
+		velocity = dashDirection * dashSpeed;
+	else
+		velocity = moveDirection * m_playerSpeed;
+
+	m_position += velocity * deltaTime;
+	updateAABB();
+
+
+	// update animations
+
 	anim.update(deltaTime);
-	move(deltaTime);
 
-	if (level.aabbCollision(m_collisionBox))
+	if (velocity.sqrLentgh() < .001f)
+		anim.changeAnimation("idle");
+	else
 	{
-		// there is a collisions
-		m_position+= level.resolveBoxCollision(m_collisionBox, m_direction);
-		updateAABB();
+		anim.changeAnimation("walk");
+
+		if (velocity.x > 0.f)
+			flipCharacter = false;
+		else if (velocity.x < 0.f)
+			flipCharacter = true;
 	}
 
-	// double collision check
-	// because the first can the player into a new collider, this one resolves this one.
-	if (level.aabbCollision(m_collisionBox)) 
+
+}
+
+void Player::checkCollisions(std::vector<Engine::AABB> colliders)
+{
+	Engine::AABB aabb = getAABB();
+	Tmpl8::vec2 vel = getVelocity();
+
+	// Check if the player is colliding with any of the colliders.
+	for (auto& collider : colliders)
 	{
-		m_position += level.resolveBoxCollision(m_collisionBox, m_direction);
-		updateAABB();
+		if (!aabb.intersect(collider)) continue; // Optimize collisions.
+
+		if (fabs(vel.x) > fabs(vel.y))
+		{
+			checkHorizontalCollisions(collider, aabb, vel);
+			checkVerticalCollisions(collider, aabb, vel);
+		}
+		else
+		{
+			checkVerticalCollisions(collider, aabb, vel);
+			checkHorizontalCollisions(collider, aabb, vel);
+		}
+
 	}
 
-	// most of the times this will be enough.
-	// if not player has a frame inside a collider 
-	// next frame will solve this collision
-
+	setPosition(aabb.min+ vec2(m_width / 2, m_height / 2));
+	velocity = vel;
 }
 
 
@@ -177,6 +202,76 @@ void Player::drawDebug(Engine::Camera& camera)
 	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
 	camera.drawLine(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
 }
+
+bool Player::checkVerticalCollisions(const Engine::AABB& collider, Engine::AABB& aabb, Tmpl8::vec2& vel) const
+{
+	// Written by Jeremiah
+	// https://github.com/jpvanoosten/tmpl8/blob/Physics_Test
+	// Explained in the discord events
+
+	if (vel.y > 0) // Moving down...
+	{
+		if (aabb.intersect(collider.topEdge().shrink(3)))
+		{
+			// Compute intersection.
+			const float overlap = collider.min.y - aabb.max.y;
+			aabb += vec2{ 0, overlap };
+
+			vel.y = 0.0f;
+
+			return true;
+		}
+	}
+	else if (vel.y < 0) // Moving up
+	{
+		if (aabb.intersect(collider.bottomEdge().shrink(3)))
+		{
+			// Compute intersection.
+			const float overlap = collider.max.y - aabb.min.y;
+			aabb += vec2{ 0, overlap };
+
+			vel.y = 0.0f;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Player::checkHorizontalCollisions(const Engine::AABB& collider, Engine::AABB& aabb, Tmpl8::vec2& vel) const
+{
+	// Written by Jeremiah
+	// https://github.com/jpvanoosten/tmpl8/blob/Physics_Test
+	// Explained in the discord events
+
+	if (vel.x > 0) // Moving Right...
+	{
+		if (aabb.intersect(collider.leftEdge().shrink(3)))
+		{
+			// Compute intersection.
+			const float overlap = collider.min.x - aabb.max.x;
+			aabb += vec2{ overlap, 0 };
+
+			vel.x = 0.0f;
+			return true;
+		}
+	}
+	else if (vel.x < 0) // Moving left...
+	{
+		if (aabb.intersect(collider.rightEdge().shrink(3)))
+		{
+			// Compute intersection.
+			const float overlap = collider.max.x - aabb.min.x;
+			aabb += vec2{ overlap, 0 };
+
+			vel.x = 0.0f;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 
 void Player::updateAABB()

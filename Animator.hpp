@@ -7,6 +7,19 @@
 namespace Engine
 {
 
+	struct animationData
+	{
+		animationData(std::vector<int> frames = {}, float animSpeed = 1.f, bool looping = true)
+			: frames{ frames }
+			, animationSpeed{ animSpeed }
+			, isLooping{ looping } {}
+
+		std::vector<int> frames{};
+		float animationSpeed{ 1.f };
+		bool isLooping{ true };
+	};
+
+
 	class Animator
 	{
 	public:
@@ -14,14 +27,13 @@ namespace Engine
 			: sprites{ spriteSheet } {};
 
 		std::string getCurrentAnim() const { return currentAnimation; }
-		float getAnimationSpeed() const { return animationSpeed; }
 
 		bool isFirstFrame() const { return currentAnimation != "" && currentFrame == 0; }
-		bool isLastFrame() const { return currentAnimation != "" && currentFrame == (animations.at(currentAnimation).size() - 1); }
+		bool isLastFrame() const { return currentAnimation != "" && currentFrame == (animations.at(currentAnimation).frames.size() - 1); }
 
-		void setAnimationSpeed(float speed) { animationSpeed = speed; }
+		void addAnimation(std::string_view animationName, animationData animation);
+		void addAnimation(std::string_view animationName, std::vector<int> frames,float animSpeed, bool loops);
 
-		void addAnimation(std::string_view animationName, std::vector<int> frames);
 		void changeAnimation(std::string_view animationName);
 
 		void update(float deltaTime);
@@ -31,13 +43,12 @@ namespace Engine
 	private:
 		SpriteSheet sprites;
 
-		std::unordered_map<std::string, std::vector<int>> animations{};
+		std::unordered_map<std::string, animationData> animations{};
 
 		std::string currentAnimation = "";
 		int currentFrame = 0;
 
-		float animationSpeed = 1.f; // this is how long each frame will be shown.
-		float currentTime = animationSpeed;
+		float currentTime = 0.f;
 
 	};
 

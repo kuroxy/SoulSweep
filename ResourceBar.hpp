@@ -26,15 +26,6 @@ public:
 		, maxValue{ maxValue } 
 		, barColor{ barColor}  {}
 
-	ResourceBar(int barLeft, int barTop, int barRight, int barBottom, float maxValue, Tmpl8::Pixel barColor)
-		: barLeft{ barLeft }
-		, barTop{ barTop }
-		, barRight{ barRight }
-		, barBottom{ barBottom }
-		, maxValue{ maxValue }
-		, barColor{ barColor } {}
-
-
 	void setMaxValue(float maxValue) {
 		this->maxValue = maxValue;
 	}

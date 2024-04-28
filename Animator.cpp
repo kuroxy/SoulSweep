@@ -1,9 +1,14 @@
 #include "Animator.hpp"
 
-void Engine::Animator::addAnimation(std::string_view animationName, std::vector<int> frames)
+void Engine::Animator::addAnimation(std::string_view animationName, animationData animation)
 {
 	std::string name = std::string{ animationName };
-	animations[name] = frames;
+	animations[name] = animation;
+}
+
+void Engine::Animator::addAnimation(std::string_view animationName, std::vector<int> frames, float animSpeed, bool isLooping)
+{
+	addAnimation(animationName, { frames, animSpeed, isLooping });
 }
 
 void Engine::Animator::changeAnimation(std::string_view animationName)
@@ -12,25 +17,27 @@ void Engine::Animator::changeAnimation(std::string_view animationName)
 	if (anim == currentAnimation)
 		return;
 
-	currentTime = animationSpeed;
+	currentAnimation = anim;
+	currentTime = animations[currentAnimation].animationSpeed;
 	currentFrame = 0;
 
-	currentAnimation = anim;
 }
 
 void Engine::Animator::update(float deltaTime)
 {
 	// we skip if no animation is selected since then nothing should happen
-	if (currentAnimation == "")
+	// or if the animation is not looping and on its last frame
+	if (currentAnimation == "" || (!animations[currentAnimation].isLooping && currentFrame == animations[currentAnimation].frames.size()-1))
 		return;
 
+	
 	currentTime -= deltaTime;
 	if (currentTime <= 0.f)
 	{
-		currentTime = animationSpeed;
+		currentTime = animations[currentAnimation].animationSpeed;
 		currentFrame++;
 
-		if (currentFrame >= animations[currentAnimation].size())
+		if (currentFrame >= animations[currentAnimation].frames.size())
 		{
 			currentFrame = 0;
 		}
@@ -45,7 +52,7 @@ void Engine::Animator::draw(Camera& camera, const Tmpl8::vec2& worldPosition, bo
 		return;
 
 
-	int frameIndex = animations[currentAnimation][currentFrame];
+	int frameIndex = animations[currentAnimation].frames[currentFrame];
 	camera.renderSpriteWorldSpace(sprites, frameIndex, worldPosition, flip);
 
 }

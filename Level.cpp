@@ -321,14 +321,9 @@ bool Level::lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) c
 	return false;
 }
 
-
-Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::vec2 dir) const
+std::vector<Engine::AABB> Level::getAABBs(const Engine::AABB& aabb) const
 {
-	// While this function does work in the current situtation.
-	// This can generate some unexpected behaviour if tile width is different from the tile height, 
-	// luckily most tilesheets tiles are square so I don't think it is worth to look at collisions again.
-	// this algorithm is based on this : https://www.youtube.com/watch?v=LYrge3ylccQ
-	Tmpl8::vec2 change{ 0 };
+	std::vector<Engine::AABB> colliders{};
 
 	int minX = (int)(aabb.min.x / terrainSpriteSheet->getSpriteWidth());
 	int minY = (int)(aabb.min.y / terrainSpriteSheet->getSpriteHeight());
@@ -343,75 +338,12 @@ Tmpl8::vec2 Level::resolveBoxCollision(const Engine::AABB& aabb, const Tmpl8::ve
 			if (isCollider(x, y))
 			{
 				Tmpl8::vec2 min = Tmpl8::vec2((float)(x * terrainSpriteSheet->getSpriteWidth()), (float)(y * terrainSpriteSheet->getSpriteWidth()));
-				Engine::AABB tileBox = Engine::AABB(min, min + Tmpl8::vec2(terrainSpriteSheet->getSpriteWidth() - 1.f));
-
-
-				if (std::abs(dir.x) > std::abs(dir.y))
-				{
-
-					if (dir.x > 0)// we are going to the right so this means max.x = tile.min.
-					{
-						change.x = tileBox.min.x - aabb.width() - aabb.min.x - 1;
-
-					}
-					else// we are going to the left so this means min.x = tile.max.x
-					{
-						change.x = tileBox.max.x - aabb.min.x + 1;
-					}
-				}
-				else if (std::abs(dir.x) < std::abs(dir.y))
-				{
-
-					if (dir.y > 0)// we are going down so this means max.y = tile.min.y
-					{
-						change.y = tileBox.min.y - aabb.height() - aabb.min.y - 1;
-
-					}
-					else// we are going up so this means min.y = tile.max.y
-					{
-						change.y = tileBox.max.y - aabb.min.y + 1;
-					}
-				}
-				else
-				{
-					Tmpl8::vec2 centerdist = tileBox.center() - aabb.center();
-
-					if (centerdist.y * centerdist.y > centerdist.x * centerdist.x)
-					{
-						if (centerdist.y > 0) //top collision
-						{
-							change.y = tileBox.min.y - aabb.height() - aabb.min.y - 1;
-						}
-						else
-						{
-							change.y = tileBox.max.y - aabb.min.y + 1;
-						}
-
-					}
-					else
-					{
-						if (centerdist.x > 0) //top collision
-						{
-							change.x = tileBox.min.x - aabb.width() - aabb.min.x - 1;
-
-						}
-						else
-						{
-							change.x = tileBox.max.x - aabb.min.x + 1;
-						}
-					}
-
-					// now they are the same so checking based on center
-				}
-
-				return change;
+				colliders.push_back({ min, min + Tmpl8::vec2(terrainSpriteSheet->getSpriteWidth() - 1.f) });
 			}
-
 		}
 	}
 
-
-	return change;
+	return colliders;
 }
 
 Tmpl8::vec2 Level::resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const

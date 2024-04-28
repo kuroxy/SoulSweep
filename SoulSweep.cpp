@@ -93,7 +93,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	camera.setPosition(lerp(camera.getPosition(), mainPlayer->getPosition()-Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f, deltaTime*2) );
 
-
+	// Update level
 
 	if (im.isActionPressed("debugfogofwar"))
 		fogOfWarDisabled = !fogOfWarDisabled;
@@ -105,9 +105,14 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	level->updateSoulConduit(deltaTime, mainPlayer->getPosition());
 
+
+	// Update player
+
 	mainPlayer->handleInput(im);
 
-	mainPlayer->update(deltaTime, *level.get()); // handles collision
+	mainPlayer->update(deltaTime); // handles collision
+
+	mainPlayer->checkCollisions(level->getAABBs(mainPlayer->getAABB()));
 
 	if (mainPlayer->shouldDropSoul())
 	{
@@ -116,9 +121,8 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 	}
 
 
-	//terrainTileMap->updateVisibility(mainPlayer->getPosition());
-
-	// TODO: maybe can clean this up?
+	// Update souls
+	
 	for (auto soulIter = souls.begin(); soulIter != souls.end();/*no increase we do it manually, bc we can also remove souls*/)
 	{
 		bool removeSoul = false;
@@ -164,6 +168,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	}
 
+	// Update devourers
 
 	for (auto& devourer : devourers)
 	{
@@ -176,6 +181,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 			mainPlayer->setDeath(true);
 		}
 	}
+
 
 	playerRadar.update(deltaTime, mainPlayer->getPosition(), souls);
 
@@ -201,6 +207,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	collectedSoulsBar.setValue(level->getSoulAmount());
 
+	dashResource.setValue(mainPlayer->getDashResource());
 
 }
 
@@ -235,7 +242,14 @@ void SoulSweep::render(Engine::Camera& camera)
 
 
 	if (terrainDebug)
+	{
 		level->drawCollision(camera);
+		for (auto aabb : level->getAABBs(mainPlayer->getAABB()))
+		{
+			aabb.draw(camera, 0x00ff00);
+		}
+	}
+		
 
 
 	if (soulsDebug)
@@ -263,8 +277,7 @@ void SoulSweep::render(Engine::Camera& camera)
 
 	collectedSoulsBar.draw(camera, Tmpl8::vec2((camera.getWidth() - collectedSoulsBar.getFullWidth()) / 2.f, 10.f));
 
-
-
+	dashResource.draw(camera, Tmpl8::vec2((camera.getWidth() - dashResource.getFullWidth()) / 2.f, 470.f));
 
 	// -- fog of war --
 
