@@ -13,7 +13,7 @@ But beware there is a monster following you.
 *Left mouse button* for vacuuming
 *Right mouse button* for dropping souls
 
-*J* for disabling fog of war. (The game is intented with fog of war on)
+*J* for disabling fog of war. (The game is intended with fog of war on)
 
 ### Assets
 #### Visuals:
