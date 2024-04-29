@@ -1,5 +1,5 @@
 # Soul Sweep
-SoulSweep is a game made arround the theme "Collect", this game has been made for the BUAS CMGT PR intake.
+SoulSweep is a game made with the theme "Collect", this game has been made for the BUAS CMGT PR intake.
 
 ### How to play
 You need to vacuum souls up and drop them over the soul-conduit.
@@ -7,11 +7,13 @@ But beware there is a monster following you.
 
 #### Keybinds
 *WASD or arrowkeys* for movement
-*Mouse* for aiming you vacuum.
+*Spacebar or LShift* for dash
+
+*Mouse* for aiming you vacuum
 *Left mouse button* for vacuuming
 *Right mouse button* for dropping souls
 
-*L* for disabling fog of war. (The game is intented with fog of war on)
+*J* for disabling fog of war. (The game is intented with fog of war on)
 
 ### Assets
 #### Visuals:
