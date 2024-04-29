@@ -90,6 +90,8 @@ Devourer& SoulSweep::spawnRandomDevourer()
 void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera& camera)
 {
 	// update camera
+	
+
 
 	camera.setPosition(lerp(camera.getPosition(), mainPlayer->getPosition()-Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f, deltaTime*2) );
 
@@ -198,9 +200,11 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 	if (mainPlayer->isDead() && deathTimer > 0.f)
 		deathTimer -= deltaTime;
 
+
 	if (level->getSoulAmount() >= collectSoulsGoal && victoryTimer > 0.f)
 		victoryTimer -= deltaTime;
-
+	else
+		gameTime += deltaTime;
 
 
 	//UI

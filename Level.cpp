@@ -46,8 +46,10 @@ Level::Level(
 	{
 		int x = i % levelWidth;
 		int y = i / levelWidth;
-		terrainTilemap->setTile(x, y, data["visualData"][i]);
-		terrainColliders[i] = ((int)data["colliderData"][i] == 255);
+		terrainTilemap->setTile(x, y, data["visualData"][i] - 1); 
+		// we do -1 because if you export it from tiled to json. 0 represents nothing while here 0 reprsents the first tile
+
+		terrainColliders[i] = ((int)data["colliderData"][i] == 256);
 	}
 
 
@@ -65,6 +67,11 @@ Level::Level(
 	
 
 
+}
+
+Tmpl8::vec2 Level::getPlayerSpawnPosition() const
+{
+	return soulConduit->getPosition()+ Tmpl8::vec2(soulConduit->getWidth()/2.f, soulConduit->getHeight() / 2.f);
 }
 
 void Level::draw(Engine::Camera& c) const

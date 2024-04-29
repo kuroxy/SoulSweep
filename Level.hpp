@@ -32,6 +32,7 @@ public:
 			std::string_view filename);
 
 	const std::vector<Tmpl8::vec2>& getSpawnLocations() const {return spawnLocations;}
+	Tmpl8::vec2 getPlayerSpawnPosition() const;
 
 	bool isSoulCollectable(const Tmpl8::vec2& soulPosition) const { return soulConduit->isConduitActive() && soulConduit->contains(soulPosition); }
 
@@ -64,6 +65,7 @@ public:
 	std::vector<Engine::AABB> getAABBs(const Engine::AABB& size) const;
 
 	Tmpl8::vec2 resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const; //returns the corrected position. Used to clamp the position within the level.
+
 
 private:
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };

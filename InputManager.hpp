@@ -36,6 +36,7 @@ namespace Engine {
 
 
 	private:
+		// one button can have more actions or two buttons can have the same action, this is why we need a multimap
 		std::unordered_multimap<int, std::string> m_keyMapping;
 		std::unordered_multimap<int, std::string> m_mouseMapping;
 

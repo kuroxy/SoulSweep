@@ -21,13 +21,18 @@ class Level;
 class Player
 {
 public:
-	Player(const Engine::SpriteSheet& playerSheet, const Tmpl8::vec2& pos, float playerSpeed, float width, float height)
+	Player(const Engine::SpriteSheet& playerSheet, const Engine::SpriteSheet& soulCarrySprites, const Tmpl8::vec2& pos, float width, float height, float playerSpeed, float rechargeSpeed, float dashCost, float dashDuration, float dashSpeed)
 		: sprites { playerSheet }
 		, anim { sprites }
+		, soulCarrySprites { soulCarrySprites }
 		, m_position{ pos }
-		, m_playerSpeed{ playerSpeed }
 		, m_width{ width }
 		, m_height{ height }
+		, m_playerSpeed{ playerSpeed }
+		, dashRechargeSpeed{ rechargeSpeed }
+		, dashCost{ dashCost}
+		, dashDuration{ dashDuration}
+		, dashSpeed{ dashSpeed }
 	{
 		updateAABB();
 		
@@ -81,6 +86,7 @@ private:
 	Engine::Animator anim;
 	bool flipCharacter = false;
 
+	Engine::SpriteSheet soulCarrySprites;
 
 	// Vacuum particles
 	Engine::BaseParticleSystem vacuumParticles{Config::vacuumParticles, 50};

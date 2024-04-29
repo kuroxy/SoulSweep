@@ -60,7 +60,7 @@ private:
 	Engine::Texture howToPlayTexture{ "assets/Textures/htp.png" }; // how to play instruction Image
 
 	Engine::BaseParticleSystem htpSoul{ Config::soulParticleParams,  50 }; // Soul example in the instruction image
-
+	Engine::BaseParticleSystem htpDevourer{ Config::devourerParticleParams,  50 }; // Devourer example in the instruction image
 };
 
 }; // namespace Tmpl8

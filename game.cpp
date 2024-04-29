@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include "SoulSweep.hpp"
 #include "Level.hpp"
+#include <format>
+#include <cmath>
 
 namespace Tmpl8
 {
@@ -21,35 +23,39 @@ namespace Tmpl8
 		mainCamera = Engine::Camera(ScreenWidth, ScreenHeight);
 		im.addKeyMap("escape", SDL_SCANCODE_ESCAPE);
 
+
+		// Player movement
 		im.addKeyMap("up", SDL_SCANCODE_W);
 		im.addKeyMap("down", SDL_SCANCODE_S);
 		im.addKeyMap("left", SDL_SCANCODE_A);
 		im.addKeyMap("right", SDL_SCANCODE_D);
-		im.addKeyMap("space", SDL_SCANCODE_SPACE);
 
-		im.addKeyMap("vacuum", SDL_SCANCODE_F);
-		im.addMouseMap("vacuum", SDL_BUTTON_LEFT);
-		im.addMouseMap("dropsoul", SDL_BUTTON_RIGHT);
-
-		im.addKeyMap("enter", SDL_SCANCODE_RETURN);
-		im.addKeyMap("enter", SDL_SCANCODE_SPACE);
-
-		//arrow keys
 		im.addKeyMap("up", SDL_SCANCODE_UP);
 		im.addKeyMap("down", SDL_SCANCODE_DOWN);
 		im.addKeyMap("left", SDL_SCANCODE_LEFT);
 		im.addKeyMap("right", SDL_SCANCODE_RIGHT);
 
 
-		im.addKeyMap("debugfogofwar", SDL_SCANCODE_L);
+		im.addKeyMap("dash", SDL_SCANCODE_SPACE);
+		im.addKeyMap("dash", SDL_SCANCODE_LSHIFT);
 
-		im.addMouseMap("leftmouse", SDL_BUTTON_LEFT);
+		im.addKeyMap("vacuum", SDL_SCANCODE_F);
+		im.addMouseMap("vacuum", SDL_BUTTON_LEFT);
+		im.addMouseMap("dropsoul", SDL_BUTTON_RIGHT);
 
-		//im.addMouseMap("left", SDL_BUTTON_LEFT);
+		// UI only
+
+		im.addKeyMap("enter", SDL_SCANCODE_RETURN);
+		im.addKeyMap("enter", SDL_SCANCODE_SPACE);		
+
+		im.addKeyMap("debugfogofwar", SDL_SCANCODE_J);
 
 
 		htpSoul.setPosition(Tmpl8::vec2(735.f, 75.f));
 		htpSoul.setAttractor(Tmpl8::vec2(785.f, 125.f), 450.f);
+
+		htpDevourer.setPosition(Tmpl8::vec2(675.f, 325.f));
+		htpDevourer.setAttractor(Tmpl8::vec2(725.f, 375.f), 450.f);
 	}
 
 	void Game::Shutdown()
@@ -104,8 +110,7 @@ namespace Tmpl8
 		delete game;
 		game = new SoulSweep(levelPath);
 		currentState = gameState::GameScreen;
-		
-		
+		game->initCameraPosition(mainCamera);
 	}
 
 	void Game::titleScreenTick(float deltaTime)
@@ -146,7 +151,7 @@ namespace Tmpl8
 		if (im.isActionReleased("enter") )
 		{
 			if (mainScreenSelectedMenu == 0)
-				loadGame("assets/Maps/level1.json");
+				loadGame("assets/Maps/mainLevel.json");
 			else
 				currentState = gameState::HelpScreen;
 		}
@@ -155,12 +160,21 @@ namespace Tmpl8
 
 	void Game::helpScreenTick(float deltaTime)
 	{
-		mainCamera.setPosition(Tmpl8::vec2(0.f));
+		mainCamera.setPosition(Tmpl8::vec2(0.f)); 
+		// reset camera positon because when playing the game the camera position will change.
+		// Normally we don't care because we can draw text based on screen position
+		// but because these particles are world based it is easier to just reset the camera position.
+
 		htpSoul.updateParticles(deltaTime);
+		htpDevourer.updateParticles(deltaTime);
 
 		mainCamera.clearScreen(0x1f1d1d);
+
 		howToPlayTexture.CopyToSurface(mainCamera.getSurface(), 0, 0);
+
 		htpSoul.renderParticles(mainCamera);
+
+		htpDevourer.renderParticles(mainCamera);
 		mainCamera.getSurface()->PrintCenter("( back to title screen )", 450, 0xc7d5eb, 3);
 
 		if (im.isActionReleased("enter") || im.isActionReleased("escape"))
@@ -219,7 +233,7 @@ namespace Tmpl8
 		if (im.isActionReleased("enter"))
 		{
 			if (victorySelectedMenu == 0)
-				loadGame("assets/Maps/level1.json");
+				loadGame("assets/Maps/mainLevel.json");
 			else
 				currentState = gameState::TitleScreen;
 		}
@@ -233,6 +247,8 @@ namespace Tmpl8
 		mainCamera.clearScreen(0x1f1d1d);
 		mainCamera.getSurface()->PrintCenter("Congratulations", 100, 0xcfad40, 5);
 		mainCamera.getSurface()->PrintCenter("you have extracted enough souls", 160, 0xcfad40, 4);
+
+		mainCamera.getSurface()->PrintCenter(std::format("{}:{:02}", std::floor(game->getGameTime() / 60.f), std::floor(std::fmod(game->getGameTime(), 60.f))), 200, 0xcfcfcf, 4);
 
 		
 		if (victorySelectedMenu == 0)
@@ -256,7 +272,7 @@ namespace Tmpl8
 		if (im.isActionReleased("enter"))
 		{
 			if (victorySelectedMenu == 0)
-				loadGame("assets/Maps/level1.json");
+				loadGame("assets/Maps/mainLevel.json");
 			else
 				currentState = gameState::TitleScreen;
 		}

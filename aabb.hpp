@@ -9,8 +9,11 @@
 
 namespace Engine
 {
+
     // forward declaration
     class Camera;
+
+    // AABB is based on what was made in the discord event
 
     struct AABB
     {

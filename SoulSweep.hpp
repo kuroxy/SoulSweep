@@ -26,15 +26,21 @@ public:
 		// Loading Assets
 		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff);
 		playerSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/playerSheet.png", 32, 32, 0xff00ff);
+		playerCarrySoulSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/soulCarrySheet.png", 14, 7, 0xff00ff);
+
 		soulConduitSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/SoulConduit.png", 94, 72, 0xff00ff);
 		graveStoneSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/GraveStones.png", 30, 41, 0xff00ff);
 
-		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, graveStoneSpriteSheet, "assets/Maps/level1.json");
+		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, graveStoneSpriteSheet, levelPath);
 
-		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), Tmpl8::vec2(200.f), Config::PLAYER_SPEED, Config::PLAYER_SIZE, Config::PLAYER_SIZE);
+		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), *playerCarrySoulSheet.get(), level->getPlayerSpawnPosition(), Config::PLAYER_SIZE, Config::PLAYER_SIZE, Config::PLAYER_SPEED, Config::playerDashRecharge, Config::playerDashCost, Config::playerDashDuration, Config::playerDashSpeed);
+
+		
 
 		spawnRandomDevourer();
 	}
+
+	float getGameTime() const { return gameTime; }
 
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);
 	Devourer& spawnDevourer(const Tmpl8::vec2& spawnPosition);
@@ -43,7 +49,10 @@ public:
 	Soul& spawnRandomSoul();
 	Devourer& spawnRandomDevourer();
 
-
+	void initCameraPosition(Engine::Camera& camera) const
+	{
+		camera.setPosition(mainPlayer->getPosition() - Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f);
+	}
 
 	void update(float deltaTime, Engine::InputManager im, Engine::Camera& camera);
 
@@ -66,6 +75,8 @@ private:
 	
 	std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet{ nullptr };
 	std::shared_ptr<Engine::SpriteSheet> playerSpriteSheet{ nullptr };
+	std::shared_ptr<Engine::SpriteSheet> playerCarrySoulSheet{ nullptr };
+
 
 	std::shared_ptr<Engine::SpriteSheet> soulConduitSpriteSheet{ nullptr };
 	std::shared_ptr<Engine::SpriteSheet> graveStoneSpriteSheet{ nullptr };
@@ -82,6 +93,8 @@ private:
 
 	// -- game state -- 
 	// when you have died or won there is a delay between changes in game state
+	float gameTime = 0.f;
+	
 	float victoryTimer = 2.f;
 	float deathTimer = 2.f;
 

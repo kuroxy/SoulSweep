@@ -48,12 +48,6 @@ struct blueFireParticles
 
 
 
-
-
-
-
-
-
 class SoulConduit
 {
 	struct soulLerping
@@ -135,7 +129,11 @@ public:
 
 	void setPosition(const Tmpl8::vec2& position);
 	Tmpl8::vec2 getPosition() const { return conduitCollider.min; }
-	
+	Tmpl8::vec2 getSize() const { return { conduitCollider.width() ,conduitCollider.height() }; }
+
+	float getWidth() const { return conduitCollider.width(); }
+	float getHeight() const { return conduitCollider.height(); }
+
 	void spawnCollectedSoul(const Tmpl8::vec2& position);
 	int getCollectedSouls() const { return collectedSouls; }
 

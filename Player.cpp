@@ -9,8 +9,6 @@
 using namespace Tmpl8;
 
 
-
-
 void Player::handleInput(const Engine::InputManager& im)
 {
 	// if player is dead we will ignore player input
@@ -25,7 +23,7 @@ void Player::handleInput(const Engine::InputManager& im)
 
 	
 
-	if (im.isActionPressed("space") && dashResource >= dashCost && currentDashDuration <= 0.f)
+	if (im.isActionPressed("dash") && dashResource >= dashCost && currentDashDuration <= 0.f)
 	{
 		dashResource -= dashCost;
 		currentDashDuration = dashDuration;
@@ -191,6 +189,9 @@ void Player::draw(Engine::Camera& camera)
 {	
 	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f+5.f), flipCharacter);
 	// +5 is offset for the sprite to align the feet with the bottom of the hitbox
+
+	if (m_currentSouls > 0)
+		camera.renderSpriteWorldSpace(soulCarrySprites, m_currentSouls-1, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f - 8.f, sprites.getSpriteHeight() / 2.f + 12.f));
 
 	vacuumParticles.renderParticles(camera);
 }
