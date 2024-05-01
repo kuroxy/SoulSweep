@@ -99,7 +99,6 @@ private:
 	float deathTimer = 2.f;
 
 
-
 	//debug stuff
 	bool fogOfWarDisabled = false;
 

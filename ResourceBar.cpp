@@ -10,6 +10,5 @@ void ResourceBar::draw(Engine::Camera& camera, Tmpl8::vec2 screenPosition) const
 	
 	camera.getSurface()->Rectangle(screenPosition.x + barLeft, screenPosition.y + barTop, screenPosition.x + barLeft + (barRight - barLeft) * progress -1, screenPosition.y + barBottom, barColor, 0);
 
-
-	camera.blitTexture(barTexture.get(), screenPosition.x, screenPosition.y);
+	barTexture->draw(camera.getSurface(), screenPosition.x, screenPosition.y);
 }

@@ -57,10 +57,7 @@ void SoulConduit::update(float deltaTime, const Tmpl8::vec2& playerPosition)
 void SoulConduit::draw(Engine::Camera& camera, bool debug) const
 {
 
-	if (conduitActivated)
-		camera.renderSpriteWorldSpace(*conduitSheet.get(), 1, conduitCollider.min);
-	else
-		camera.renderSpriteWorldSpace(*conduitSheet.get(), 0, conduitCollider.min);
+	conduitSheet->draw(camera, 1, conduitCollider.min);
 
 
 	for (int i = 0; i < 4; i++)

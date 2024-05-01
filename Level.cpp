@@ -74,16 +74,16 @@ Tmpl8::vec2 Level::getPlayerSpawnPosition() const
 	return soulConduit->getPosition()+ Tmpl8::vec2(soulConduit->getWidth()/2.f, soulConduit->getHeight() / 2.f);
 }
 
-void Level::draw(Engine::Camera& c) const
+void Level::draw(Engine::Camera& camera) const
 {
-	terrainTilemap->draw(c);
+	terrainTilemap->draw(camera);
 
 	// objects
-	soulConduit->draw(c);
+	soulConduit->draw(camera);
 
 	for (auto& location : spawnLocations)
 	{
-		c.renderSpriteWorldSpace(*graveStoneSpriteSheet.get(), 0, location, false);
+		graveStoneSpriteSheet->draw(camera, 0, location, false);
 	}
 
 }

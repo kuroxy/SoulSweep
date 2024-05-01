@@ -1,6 +1,10 @@
 #include "ParticleSystem.hpp"
+
+#include <algorithm>
+
 #include "template.h"
 #include "Camera.hpp"
+
 
 using namespace Engine;
 
@@ -109,7 +113,7 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
 
 }
 
-void Engine::BaseParticleSystem::renderParticles(Camera& camera) const
+void Engine::BaseParticleSystem::drawParticles(Camera& camera) const
 {
     for (auto& particle : particlePool)
     {

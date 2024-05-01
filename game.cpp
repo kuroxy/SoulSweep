@@ -170,11 +170,11 @@ namespace Tmpl8
 
 		mainCamera.clearScreen(0x1f1d1d);
 
-		howToPlayTexture.CopyToSurface(mainCamera.getSurface(), 0, 0);
+		howToPlay.draw(mainCamera.getSurface(), 0, 0);
 
-		htpSoul.renderParticles(mainCamera);
+		htpSoul.drawParticles(mainCamera);
 
-		htpDevourer.renderParticles(mainCamera);
+		htpDevourer.drawParticles(mainCamera);
 		mainCamera.getSurface()->PrintCenter("( back to title screen )", 450, 0xc7d5eb, 3);
 
 		if (im.isActionReleased("enter") || im.isActionReleased("escape"))

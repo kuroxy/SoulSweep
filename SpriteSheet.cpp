@@ -1,46 +1,40 @@
 #include "SpriteSheet.hpp"
+#include "Camera.hpp"
 #include <cassert>
 
 
-
-int Engine::SpriteSheet::getSpriteWidth() const
+void Engine::SpriteSheet::draw(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool forceOpaque, bool flip) const
 {
-	return m_cellWidth;
+	assert(!(x < 0 || x > columns));
+	assert(!(y < 0 || y > rows));
+
+	int spriteX = x * cellWidth;
+	int spriteY = y * cellHeight;
+
+	texture->PartialCopyToSurface(surface, xDst, yDst, spriteX, spriteY, spriteX + cellWidth, spriteY + cellHeight, forceOpaque, flip);
 }
 
-int Engine::SpriteSheet::getSpriteHeight() const
+void Engine::SpriteSheet::draw(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool forceOpaque, bool flip) const
 {
-	return m_cellHeight;
+	if (rows == 0 || columns == 0) return;
+	int x = spriteIndex % columns;
+	int y = spriteIndex / columns;
+
+	draw(surface, x, y, xDst, yDst, forceOpaque, flip);
 }
 
-int Engine::SpriteSheet::getColumns() const
+void Engine::SpriteSheet::draw(Engine::Camera& camera, int x, int y, const Tmpl8::vec2& worldSpace, bool flip)
 {
-	return m_columns;
+	Tmpl8::vec2 local = camera.worldToScreen(worldSpace);
+
+	draw(camera.getSurface(), x, y, static_cast<int>(local.x), static_cast<int>(local.y), false, flip);
 }
 
-int Engine::SpriteSheet::getRows() const
+void Engine::SpriteSheet::draw(Engine::Camera& camera, int spriteIndex, const Tmpl8::vec2& worldSpace, bool flip)
 {
-	return m_rows;
-}
+	Tmpl8::vec2 local = camera.worldToScreen(worldSpace);
 
-void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int x, int y, int xDst, int yDst, bool useTransparency, bool flip) const
-{
-	assert(!(x < 0 || x > m_columns));
-	assert(!(y < 0 || y > m_rows));
-
-	int spriteX = x * m_cellWidth;
-	int spriteY = y * m_cellHeight;
-
-	m_sheet->PartialCopyToSurface(surface, xDst, yDst, spriteX, spriteY, spriteX + m_cellWidth, spriteY + m_cellHeight, useTransparency, flip);
-}
-
-void Engine::SpriteSheet::drawSprite(Tmpl8::Surface* surface, int spriteIndex, int xDst, int yDst, bool useTransparency, bool flip) const
-{
-	if (m_rows == 0 || m_columns == 0) return;
-	int x = spriteIndex % m_columns;
-	int y = spriteIndex / m_columns;
-
-	drawSprite(surface, x, y, xDst, yDst, useTransparency, flip);
+	draw(camera.getSurface(), spriteIndex, static_cast<int>(local.x), static_cast<int>(local.y), false, flip);
 }
 
 

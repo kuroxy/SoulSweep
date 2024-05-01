@@ -39,8 +39,8 @@ struct blueFireParticles
 
 	void render(Engine::Camera& camera) const
 	{
-		flames.renderParticles(camera);
-		core.renderParticles(camera);
+		flames.drawParticles(camera);
+		core.drawParticles(camera);
 	}
 
 };
@@ -100,7 +100,7 @@ class SoulConduit
 
 		void render(Engine::Camera& camera) const
 		{
-			pSystem.renderParticles(camera);
+			pSystem.drawParticles(camera);
 		}
 
 		Engine::BaseParticleSystem pSystem{ Config::soulParticleParams, 50 };

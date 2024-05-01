@@ -17,22 +17,20 @@ public:
 		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
-		, mapData{ new int[mapWidth* mapHeight] } {};
+		, mapData{ std::make_unique<int[]>(width * height) } {}
+
 	RawTilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight, const Tmpl8::vec2& offset)
 		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
-		, offset{ offset }
-		, mapData{ new int[mapWidth * mapHeight] } {};
+		, offset{ offset } 
+		, mapData{ std::make_unique<int[]>(width * height) } {}
 
-	~RawTilemap()
-	{
-		delete[] mapData;
-	}
+
 
 	int getWidth() { return width; }
 	int getHeight() { return height; }
-	int* getData() { return mapData; }
+	int* getData() { return mapData.get(); }
 
 	const Tmpl8::vec2& getOffset() { return offset; }
 	void setOffset(const Tmpl8::vec2& newOffset) { offset = newOffset; }
@@ -47,8 +45,9 @@ private:
 
 	int width{ 0 };
 	int height{ 0 };
-	int* mapData{ nullptr };
 
+	std::unique_ptr<int[]> mapData;
+	
 	Tmpl8::vec2 offset{ 0 };
 };
 }

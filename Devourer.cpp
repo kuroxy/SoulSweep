@@ -178,7 +178,7 @@ void Devourer::update(float deltaTime)
 void Devourer::draw(Engine::Camera& camera, bool debug)
 {
 
-	particleSystem->renderParticles(camera);
+	particleSystem->drawParticles(camera);
 
 	
 

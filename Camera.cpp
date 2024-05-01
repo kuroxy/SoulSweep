@@ -32,8 +32,7 @@ void Camera::drawLine(const Tmpl8::vec2& worldPos1, const Tmpl8::vec2& worldPos2
 	Tmpl8::vec2 screenPos1 = worldToScreen(worldPos1);
 	Tmpl8::vec2 screenPos2 = worldToScreen(worldPos2);
 
-	cameraSurface->Line(static_cast<int>(screenPos1.x), static_cast<int>(screenPos1.y),
-						static_cast<int>(screenPos2.x), static_cast<int>(screenPos2.y), color);
+	cameraSurface->Line(screenPos1.x, screenPos1.y, screenPos2.x, screenPos2.y, color);
 }
 
 void Camera::drawRectangle(const Tmpl8::vec2& worldPos1, const Tmpl8::vec2& worldPos2, Tmpl8::Pixel color, int width)
@@ -71,9 +70,9 @@ void Camera::darkenPixel(int x, int y, int amount)
 	int b = color&0x0000ff;
 
 	float f = Tmpl8::Clamp(255-amount, 0, 255) / 255.0f;
-	r *= f;
-	g *= f;
-	b *= f;
+	r = static_cast<int>(r * f);
+	g = static_cast<int>(g * f);
+	b = static_cast<int>(b * f);
 	color = (r << 16) | (g << 8) | b;
 	cameraSurface->GetBuffer()[x + y * getWidth()] = color;
 }
@@ -141,21 +140,6 @@ void Camera::renderToSurface(Tmpl8::Surface* surface, int scale, int xOffset, in
 
 
 
-void Camera::blitTexture(Texture* texture, int x, int y)
-{
-	texture->CopyToSurface(cameraSurface.get(), x, y);
-}
-
-
-void Camera::renderTextureWorldSpace(const Texture& texture, const Tmpl8::vec2& WorldSpace)
-{
-	float localSpaceX = WorldSpace.x - position.x;
-	float localSpaceY = WorldSpace.y - position.y;
-
-	texture.CopyToSurface(cameraSurface.get(), (int)localSpaceX, (int)localSpaceY);
-}
-
-
 
 
 
@@ -183,23 +167,5 @@ void Camera::drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::
 	vec2 local2 = worldToScreen(position2);
 	drawBarDarken((int)local.x, (int)local.y, (int)local2.x, (int)local2.y, amount);
 }
-
-
-
-
-void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int x, int y, const Tmpl8::vec2& worldSpace, bool flip)
-{
-	Tmpl8::vec2 local = worldToScreen(worldSpace);
-
-	spritesheet.drawSprite(cameraSurface.get(), x, y, static_cast<int>(local.x), static_cast<int>(local.y), true, flip );
-}
-
-void Camera::renderSpriteWorldSpace(const SpriteSheet& spritesheet, int spriteIndex, const Tmpl8::vec2& worldSpace, bool flip)
-{
-	Tmpl8::vec2 local = worldToScreen(worldSpace);
-
-	spritesheet.drawSprite(cameraSurface.get(), spriteIndex, static_cast<int>(local.x), static_cast<int>(local.y), true, flip);
-}
-
 
 };

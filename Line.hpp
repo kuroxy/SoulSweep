@@ -2,6 +2,8 @@
 
 #include "template.h"
 
+namespace Engine
+{
 struct Line
 {
     Line(const Tmpl8::vec2& p0, const Tmpl8::vec2& p1)
@@ -19,3 +21,5 @@ struct Line
         return { p0 + dir * size, p1 - dir * size };
     }
 };
+}
+

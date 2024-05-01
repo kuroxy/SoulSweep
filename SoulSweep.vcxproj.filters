@@ -128,7 +128,9 @@
     <ClInclude Include="Radar.hpp">
       <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
-    <ClInclude Include="Line.hpp" />
+    <ClInclude Include="Line.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />

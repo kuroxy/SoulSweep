@@ -111,7 +111,7 @@ void Soul::update(float deltaTime, const Player& player)
 
 void Soul::draw(Engine::Camera& camera)
 {
-	particleSystem->renderParticles(camera);
+	particleSystem->drawParticles(camera);
 }
 
 void Soul::drawDebug(Engine::Camera& camera)

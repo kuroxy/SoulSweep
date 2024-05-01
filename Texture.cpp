@@ -2,6 +2,7 @@
 #include "FreeImage.h"
 #include "surface.h"
 #include "template.h"
+#include "Camera.hpp"
 #include <stdexcept> // For std::runtime_error
 
 namespace Engine
@@ -18,25 +19,25 @@ Texture::Texture(std::string_view filename)
 	FIBITMAP* tmp = FreeImage_Load(fif, filecstr);
 	FIBITMAP* dib = FreeImage_ConvertTo32Bits(tmp);
 	FreeImage_Unload(tmp);
-	m_width = FreeImage_GetWidth(dib);
-	m_height = FreeImage_GetHeight(dib);
-	m_buffer = std::make_unique<Tmpl8::Pixel[]>(m_width * m_height);
+	width = FreeImage_GetWidth(dib);
+	height = FreeImage_GetHeight(dib);
+	pixelBuffer = std::make_unique<Tmpl8::Pixel[]>(width * height);
 
-	Tmpl8::Pixel* raw_pointer = m_buffer.get();
+	Tmpl8::Pixel* raw_pointer = pixelBuffer.get();
 	if (raw_pointer)
 	{
-		for (int y = 0; y < m_height; y++)
+		for (int y = 0; y < height; y++)
 		{
-			if (m_width != 0)
+			if (width != 0)
 			{
-				unsigned char* line = FreeImage_GetScanLine(dib, m_height - 1 - y);
-				memcpy(raw_pointer + (y * m_width), line, m_width * sizeof(Tmpl8::Pixel));
+				unsigned char* line = FreeImage_GetScanLine(dib, height - 1 - y);
+				memcpy(raw_pointer + (y * width), line, width * sizeof(Tmpl8::Pixel));
 			}
 		}
 	}
 	FreeImage_Unload(dib);
 
-	if (m_width == 0 && m_height == 0)
+	if (width == 0 && height == 0)
 	{
 		throw std::runtime_error("Failed to load texture: " + filstr);
 	}
@@ -51,68 +52,44 @@ Texture::Texture(std::string_view filename, Tmpl8::Pixel chromaColor)
 }
 
 Texture::Texture(int width, int height, Tmpl8::Pixel color)
-	: m_width{ width }
-	, m_height{ height }
-	, m_buffer{ std::make_unique<Tmpl8::Pixel[]>(m_width * m_height) }
+	: width{ width }
+	, height{ height }
+	, pixelBuffer{ std::make_unique<Tmpl8::Pixel[]>(width * height) }
 {
-	for (int i = 0; i < m_width*m_height; i++) // fill buffer with given color
+	for (int i = 0; i < width*height; i++) // fill buffer with given color
 	{
-		m_buffer[i] = color;
+		pixelBuffer[i] = color;
 	}
 }
 
-int Texture::getWidth() const
-{
-	return m_width;
-}
-
-int Texture::getHeight() const
-{
-	return m_height;
-}
-
-bool Texture::hasTransparency() const
-{
-	return m_transparent;
-}
 
 void Texture::setChromaKey(Tmpl8::Pixel colorKey)
 {
 	bool changedPixel = false;
 
 	//loops through all pixels checks if they are the same as colorKey, if so set alpha channel to 0 and m_transparent to true
-	for (int i = 0; i < m_width*m_height; i++)
+	for (int i = 0; i < width*height; i++)
 	{
-		Tmpl8::Pixel pixel = m_buffer[i]&0xffffff;
+		Tmpl8::Pixel pixel = pixelBuffer[i]&0xffffff;
 		if (pixel == colorKey)
 		{
-			m_buffer[i] = pixel;
+			pixelBuffer[i] = pixel;
 			changedPixel = true;
 		}
 
 	}
 
-	m_transparent = changedPixel;
+	isTransparent = changedPixel;
 }
 
-void Texture::CopyToSurface(Tmpl8::Surface* surface, int x, int y) const
+void Texture::draw(Tmpl8::Surface* surface, int x, int y, bool forceOpaque) const
 {
-	// if there is a transparent pixel use CopyTransparent else CopyOpaque since copyOpaque is faster?! (Is memcopy faster then for loop?)
-	if (m_transparent)
-		CopyTransparent(surface, x, y);
-	else
-		CopyOpaque(surface, x, y);
-}
-
-void Texture::CopyTransparent(Tmpl8::Surface* surface, int x, int y) const
-{
-	// based on Tmpl8::surface
 	Tmpl8::Pixel* dst = surface->GetBuffer();
-	Tmpl8::Pixel* src = m_buffer.get();
+	Tmpl8::Pixel* src = pixelBuffer.get();
 	if ((src) && (dst))
 	{
-		int srcwidth = m_width;
-		int srcheight = m_height;
+		int srcwidth = width;
+		int srcheight = height;
 		int dstwidth = surface->GetWidth();
 		int dstheight = surface->GetHeight();
 
@@ -126,7 +103,7 @@ void Texture::CopyTransparent(Tmpl8::Surface* surface, int x, int y) const
 			src -= x, srcwidth += x, x = 0;
 
 		if (y < 0)
-			src -= y * m_width, srcheight += y, y = 0;
+			src -= y * width, srcheight += y, y = 0;
 
 
 		if ((srcwidth > 0) && (srcheight > 0))
@@ -136,58 +113,27 @@ void Texture::CopyTransparent(Tmpl8::Surface* surface, int x, int y) const
 			{
 				for (int ix = 0; ix < srcwidth; ix++)
 				{
-					if ((src[ix] & 0xff000000) ) // if this is not zero then alpha channel is not 0
+					// there is no transparency or we force it to be opaque. Or last if the pixel does not contain any transparency
+					if (!isTransparent || forceOpaque || (src[ix] & 0xff000000))
 						dst[ix] = src[ix];
-					
 				}
 				dst += dstwidth;
-				src += m_width;
+				src += width;
 			}
 		}
 	}
 }
 
-void Texture::CopyOpaque(Tmpl8::Surface* surface, int x, int y) const
+void Texture::draw(const Camera& camera, const Tmpl8::vec2& worldSpace)
 {
-	// based on Tmpl8::surface
-	Tmpl8::Pixel* dst = surface->GetBuffer();
-	Tmpl8::Pixel* src = m_buffer.get();
-	if ((src) && (dst))
-	{
-		int srcwidth = m_width;
-		int srcheight = m_height;
-		int dstwidth = surface->GetWidth();
-		int dstheight = surface->GetHeight();
+	Tmpl8::vec2 local = camera.worldToScreen(worldSpace);
 
-		if ((srcwidth + x) > dstwidth) 
-			srcwidth = dstwidth - x;
-
-		if ((srcheight + y) > dstheight) 
-			srcheight = dstheight - y;
-
-		if (x < 0) 
-			src -= x, srcwidth += x, x = 0;
-
-		if (y < 0) 
-			src -= y * m_width, srcheight += y, y = 0;
-
-
-		if ((srcwidth > 0) && (srcheight > 0))
-		{
-			dst += x + dstwidth * y;
-			for (int y = 0; y < srcheight; y++)
-			{
-				memcpy(dst, src, srcwidth * 4);
-				dst += dstwidth;
-				src += m_width;
-			}
-		}
-	}
+	draw(camera.getSurface(), static_cast<int>(local.x), static_cast<int>(local.y));
 }
 
-void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool useTransparency, bool flip)
+void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, int x1, int y1, int x2, int y2, bool forceOpaque, bool flip)
 {
-	Tmpl8::Pixel* src = m_buffer.get();
+	Tmpl8::Pixel* src = pixelBuffer.get();
 	Tmpl8::Pixel* dst = surface->GetBuffer();
 
 	int dstWidth = surface->GetWidth();
@@ -215,12 +161,12 @@ void Texture::PartialCopyToSurface(Tmpl8::Surface* surface, int xDst, int yDst, 
 			int srcPixelX = x1 + x - xDst + xMin;
 			int srcPixelY = y1 + y - yDst + yMin;
 
-			Tmpl8::Pixel c = src[srcPixelY * m_width + srcPixelX]; // should be safe because it was clipped down
+			Tmpl8::Pixel c = src[srcPixelY * width + srcPixelX]; // should be safe because it was clipped down
 
-			if (!(c & 0xff000000) && useTransparency)
+			// we skip if we, do have transparency and we dont force it to we opaque and the pixel is transparent.
+			if ((isTransparent && !forceOpaque) && !(c & 0xff000000))
 				continue;
 
-			
 			if (flip)
 				dst[(y + yMin) * dstWidth + xMax - x] = c;
 			else
