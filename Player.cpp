@@ -190,8 +190,8 @@ void Player::draw(Engine::Camera& camera)
 	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f+5.f), flipCharacter);
 	// +5 is offset for the sprite to align the feet with the bottom of the hitbox
 
-	if (m_currentSouls > 0)
-		soulCarrySprites.draw(camera, m_currentSouls - 1, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f - 8.f, sprites.getSpriteHeight() / 2.f + 12.f));
+
+	soulCarrySprites.draw(camera, m_currentSouls, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f - 8.f, sprites.getSpriteHeight() / 2.f + 12.f));
 
 	vacuumParticles.drawParticles(camera);
 }

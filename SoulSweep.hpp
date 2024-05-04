@@ -26,7 +26,7 @@ public:
 		// Loading Assets
 		terrainSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/terrainSheet.png", 32, 32, 0xff00ff);
 		playerSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/playerSheet.png", 32, 32, 0xff00ff);
-		playerCarrySoulSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/soulCarrySheet.png", 14, 7, 0xff00ff);
+		playerCarrySoulSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/soulCarrySheet.png", 14, 9, 0xff00ff);
 
 		soulConduitSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/SoulConduit.png", 94, 72, 0xff00ff);
 		graveStoneSpriteSheet = std::make_shared<Engine::SpriteSheet>("assets/Textures/GraveStones.png", 30, 41, 0xff00ff);
