@@ -60,7 +60,7 @@ Soul& SoulSweep::spawnRandomSoul()
 	}
 
 	
-	int random = IRand(spawnLocations.size()-1);
+	int random = IRand(spawnLocations.size()-1); 
 	random = random == closestIndex ? random + 1 : random; // if the random index is the same as the closest we add 1 to get the next one instead, this will always work because the the if the closestIndex is the last, IRand will never generate that value because it is excluse the parameter
 
 
@@ -209,7 +209,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	//UI
 
-	collectedSoulsBar.setValue(level->getSoulAmount());
+	collectedSoulsBar.setValue(static_cast<float>(level->getSoulAmount()));
 
 	dashResource.setValue(mainPlayer->getDashResource());
 

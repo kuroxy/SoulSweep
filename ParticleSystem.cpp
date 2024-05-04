@@ -91,11 +91,11 @@ void Engine::BaseParticleSystem::updateParticles(float deltaTime)
 
         particle.size = (parameters.sizeRangeEnd - parameters.sizeRangeStart) * lifeTimePercentage + parameters.sizeRangeStart;
 
-        int r = (parameters.colorRangeEnd.x - parameters.colorRangeStart.x) * lifeTimePercentage + parameters.colorRangeStart.x;
+        int r = static_cast<int>((parameters.colorRangeEnd.x - parameters.colorRangeStart.x) * lifeTimePercentage + parameters.colorRangeStart.x);
 
-        int g = (parameters.colorRangeEnd.y - parameters.colorRangeStart.y) * lifeTimePercentage + parameters.colorRangeStart.y;
+        int g = static_cast<int>((parameters.colorRangeEnd.y - parameters.colorRangeStart.y) * lifeTimePercentage + parameters.colorRangeStart.y);
 
-        int b = (parameters.colorRangeEnd.z - parameters.colorRangeStart.z) * lifeTimePercentage + parameters.colorRangeStart.z;
+        int b = static_cast<int>((parameters.colorRangeEnd.z - parameters.colorRangeStart.z) * lifeTimePercentage + parameters.colorRangeStart.z);
 
         float transparency = (Tmpl8::Clamp(lifeTimePercentage, parameters.transparencyStartTime, parameters.transparencyEndTime) - parameters.transparencyStartTime) / (parameters.transparencyEndTime - parameters.transparencyStartTime); // .5,.1,.7
 

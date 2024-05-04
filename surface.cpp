@@ -166,8 +166,8 @@ void Surface::Print(std::string_view str, int x1, int y1, Pixel color, int width
 
 Tmpl8::vec2 Surface::GetTextCenterPosition(std::string_view str, int y, int width)
 {
-	int textWidth = str.length() * 6 * width;
-	return Tmpl8::vec2((GetWidth() - textWidth) / 2, y);
+	int textWidth = static_cast<int>(str.length()) * 6 * width;
+	return Tmpl8::vec2(static_cast<float>(GetWidth() - textWidth) / 2.f, static_cast<float>(y));
 }
 
 void Surface::PrintCenter(std::string_view str, int y, Pixel color, int width)
@@ -277,19 +277,28 @@ void Surface::Bar( int x1, int y1, int x2, int y2, Pixel c )
 
 void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 {
-	int minWidth = std::min(abs(y1 - y2), abs(x1 - x2)) / 2;
-	if (width > minWidth)
-		width = 0; // or throw std::invalid_argument("width > minDist/2. If you want to fill a rect use width = 0.");
-
-	int drawWidth = width == 0 ? abs(y1 - y2) : width; // if width is 0 fill in rect
-
+	// forces x1 and y1 to be topleft
 	if (x1 > x2)
 		std::swap(x1, x2);
 
 	if (y1 > y2)
 		std::swap(y1, y2);
 
-	for (int i = 0; i < drawWidth; i++)
+
+	int minWidth = std::min(abs(y1 - y2), abs(x1 - x2)) / 2;
+	if (width > minWidth)
+		width = 0; 
+
+	// if width == 0 we want to fill in the whole rect, so bar is more optimized for this
+	if (width == 0)
+	{
+		// simpler variant just fill each pixel.
+		Bar(x1, y1, x2, y2, color);
+		return;
+	}
+	
+
+	for (int i = 0; i < width; i++)
 	{
 		if (y1 + i >= GetHeight()) // clipping check
 			break;
@@ -297,40 +306,35 @@ void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 		Line(x1, y1+ i, x2, y1+ i, color);
 	}
 
-	// we can return here because we just filled in the whole rect if width==0
-	if (width == 0)
-		return;
-
-
 	// bottom-side
 	// reverse for clipping check can be written more clearly
-	for (int i = 0; i < drawWidth; i++)
+	for (int i = 0; i < width; i++)
 	{
-		if (y2 - drawWidth + i + 1 >= GetHeight()) // clipping check
+		if (y2 - width + i + 1 >= GetHeight()) // clipping check
 			break;
 
-		Line(x1, y2 - drawWidth + i + 1, x2, y2 - drawWidth + i + 1, color);
+		Line(x1, y2 - width + i + 1, x2, y2 - width + i + 1, color);
 	}
 
 
 	// left-side
-	for (int i = 0; i < drawWidth; i++)
+	for (int i = 0; i < width; i++)
 	{
 		if (x1 + i >= GetWidth()) // clipping check
 			break;
 
-		// y1 + drawWidth... because this way we dont draw on pixels that already are drawn
-		Line(x1+i, y1 + drawWidth, x1+i, y2 - drawWidth, color);
+		// y1 + width... because this way we dont draw on pixels that already are drawn
+		Line(x1+i, y1 + width, x1+i, y2 - width, color);
 	}
 
 	// right-side
-	for (int i = 0; i < drawWidth; i++)
+	for (int i = 0; i < width; i++)
 	{
-		if (x2 - drawWidth + i + 1 >= GetWidth()) // clipping check
+		if (x2 - width + i + 1 >= GetWidth()) // clipping check
 			break;
 
-		// y1 + drawWidth... because this way we dont draw on pixels that already are drawn
-		Line(x2 - drawWidth + i + 1, y1 + drawWidth, x2 - drawWidth + i + 1, y2 - drawWidth, color);
+		// y1 + width... because this way we dont draw on pixels that already are drawn
+		Line(x2 - width + i + 1, y1 + width, x2 - width + i + 1, y2 - width, color);
 	}
 
 }

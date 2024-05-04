@@ -151,10 +151,15 @@ void Level::updateFogOfWar(const Tmpl8::vec2& playerPosition, float minDistance,
 				// we check the 4 midpoints of each side of the square it one has side is visible this means this tile is visiable.
 				bool hidden = true;
 
-				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize));
-				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize * .5f, y * tileSize + tileSize));
-				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize                 , y * tileSize + tileSize * .5f));
-				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(x * tileSize + tileSize      , y * tileSize + tileSize * .5f));
+
+
+				float centerX = static_cast<float>(x * tileSize) + static_cast<float>(tileSize) * .5f;
+				float centerY = static_cast<float>(y * tileSize) + static_cast<float>(tileSize) * .5f;
+
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(centerX, static_cast<float>(y * tileSize)));			// top edge middle
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(centerX, static_cast<float>(y * tileSize + tileSize))); // bottom edge middle
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(static_cast<float>(x * tileSize), centerY));			// left edge middle 
+				hidden = hidden && lineSegmentCollision(playerPosition, Tmpl8::vec2(static_cast<float>(x * tileSize + tileSize), centerY)); // right edge middle 
 
 				
 
@@ -213,15 +218,18 @@ void Level::drawFogOfWar(Engine::Camera& c) const
 	// outside the level we also draw the fog for 10 more tiles, this seems enough
 	// we do this because the camera can view outside the level, and fog of war is only calculated within the level
 
+	float borderWidth = 100000.f; // should just be large.
+
+
 
 	//left side
-	c.drawRectangle(Tmpl8::vec2(-10.f*tileSize, -10.f * tileSize), Tmpl8::vec2(0.f, (levelHeight + 10.f) * tileSize), 0, 0);
+	c.drawRectangle(Tmpl8::vec2(-borderWidth, -borderWidth), Tmpl8::vec2(0.f, borderWidth), 0, 0);
 	//right side
-	c.drawRectangle(Tmpl8::vec2(levelWidth * tileSize, -10.f * tileSize), Tmpl8::vec2((levelWidth+10.f) * tileSize, (levelHeight + 10.f) * tileSize), 0, 0);
+	c.drawRectangle(Tmpl8::vec2(static_cast<float>(levelWidth * tileSize), -borderWidth), Tmpl8::vec2(borderWidth, borderWidth), 0, 0);
 	//top side
-	c.drawRectangle(Tmpl8::vec2(0, -10.f * tileSize), Tmpl8::vec2(levelWidth * tileSize, 0.f), 0, 0);
+	c.drawRectangle(Tmpl8::vec2(0.f, -borderWidth), Tmpl8::vec2(static_cast<float>(levelWidth * tileSize), 0.f), 0, 0);
 	//bottom side
-	c.drawRectangle(Tmpl8::vec2(0, levelHeight * tileSize), Tmpl8::vec2(levelWidth * tileSize, (levelHeight+10.f)*tileSize), 0, 0);
+	c.drawRectangle(Tmpl8::vec2(0.f, static_cast<float>(levelHeight * tileSize)), Tmpl8::vec2(static_cast<float>(levelWidth * tileSize), borderWidth), 0, 0);
 
 }
 
