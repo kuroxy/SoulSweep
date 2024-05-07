@@ -1,22 +1,19 @@
 #pragma once
-#include "template.h"
-#include "surface.h"
+
 #include <vector>
 
+#include "template.h"
+#include "surface.h"
 
 
-
-// Forward decl
-
+// Forward declaration
 namespace Engine
 {
 	class Camera;
 }
 
-
 class Soul;
 
-// 
 
 class Radar
 {

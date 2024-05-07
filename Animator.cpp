@@ -11,14 +11,14 @@ void Engine::Animator::addAnimation(std::string_view animationName, std::vector<
 	addAnimation(animationName, { frames, animSpeed, isLooping });
 }
 
-void Engine::Animator::changeAnimation(std::string_view animationName)
+void Engine::Animator::changeAnimation(std::string_view animationName, bool reset)
 {
 	std::string anim = std::string{ animationName };
-	if (anim == currentAnimation)
+	if (anim == currentAnimation && !reset)
 		return;
 
 	currentAnimation = anim;
-	currentTime = animations[currentAnimation].animationSpeed;
+	timeUntilNextFrame = animations[currentAnimation].animationSpeed;
 	currentFrame = 0;
 
 }
@@ -31,10 +31,10 @@ void Engine::Animator::update(float deltaTime)
 		return;
 
 	
-	currentTime -= deltaTime;
-	if (currentTime <= 0.f)
+	timeUntilNextFrame -= deltaTime;
+	if (timeUntilNextFrame <= 0.f)
 	{
-		currentTime = animations[currentAnimation].animationSpeed;
+		timeUntilNextFrame = animations[currentAnimation].animationSpeed;
 		currentFrame++;
 
 		if (currentFrame >= animations[currentAnimation].frames.size())
@@ -53,6 +53,6 @@ void Engine::Animator::draw(Camera& camera, const Tmpl8::vec2& worldPosition, bo
 
 
 	int frameIndex = animations[currentAnimation].frames[currentFrame];
-	sprites.draw(camera, frameIndex, worldPosition, flip);
+	sprites->draw(camera, frameIndex, worldPosition, flip);
 
 }

@@ -1,10 +1,12 @@
 #pragma once
+
 #include <vector>
+#include <format>
+
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "Soul.hpp"
 #include "SpriteSheet.hpp"
-#include <format>
 #include "Config.hpp"
 #include "SoulConduit.hpp"
 #include "ParticleSystem.hpp"
@@ -13,10 +15,13 @@
 #include "ResourceBar.hpp"
 #include "Radar.hpp"
 
+
+// Forward declaration
 namespace Engine
 {
 	class InputManager;
 };
+
 
 class SoulSweep {
 public:
@@ -33,7 +38,7 @@ public:
 
 		level = std::make_unique<Level>(terrainSpriteSheet, soulConduitSpriteSheet, graveStoneSpriteSheet, levelPath);
 
-		mainPlayer = std::make_unique<Player>(*playerSpriteSheet.get(), *playerCarrySoulSheet.get(), level->getPlayerSpawnPosition(), Config::PLAYER_SIZE, Config::PLAYER_SIZE, Config::PLAYER_SPEED, Config::playerDashRecharge, Config::playerDashCost, Config::playerDashDuration, Config::playerDashSpeed);
+		mainPlayer = std::make_unique<Player>(playerSpriteSheet, playerCarrySoulSheet, level->getPlayerSpawnPosition(), Config::PLAYER_SIZE, Config::PLAYER_SIZE, Config::PLAYER_SPEED, Config::playerDashRecharge, Config::playerDashCost, Config::playerDashDuration, Config::playerDashSpeed);
 
 		
 
@@ -45,13 +50,14 @@ public:
 	Soul& spawnSoul(const Tmpl8::vec2& spawnPosition, const Tmpl8::vec2& initialVelocity);
 	Devourer& spawnDevourer(const Tmpl8::vec2& spawnPosition);
 
-	// spawns them based on the position of the player but a certain distance from it
+	// spawns a soul on a random spawnpoint except the one closest to the player
+	// spawns a devourer on the spawnpoint furthest from the player
 	Soul& spawnRandomSoul();
 	Devourer& spawnRandomDevourer();
 
 	void initCameraPosition(Engine::Camera& camera) const
 	{
-		camera.setPosition(mainPlayer->getPosition() - Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f);
+		camera.setPosition(mainPlayer->getPosition() - Tmpl8::vec2(static_cast<float>(camera.getWidth()), static_cast<float>(camera.getHeight())) * .5f);
 	}
 
 	void update(float deltaTime, Engine::InputManager im, Engine::Camera& camera);
@@ -94,14 +100,12 @@ private:
 	// -- game state -- 
 	// when you have died or won there is a delay between changes in game state
 	float gameTime = 0.f;
-	
 	float victoryTimer = 2.f;
 	float deathTimer = 2.f;
 
 
 	//debug stuff
 	bool fogOfWarDisabled = false;
-
 
 	bool terrainDebug = false;
 	bool playerDebug = false;

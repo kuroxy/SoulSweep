@@ -1,26 +1,26 @@
 #pragma once
+
 #include <memory>
-#include "SpriteSheet.hpp"
-#include "Template.h"
-#include "RawTilemap.hpp"
-#include <string_view>
 #include <vector>
+
 #include "template.h"
+#include "SpriteSheet.hpp"
+#include "Tilemap.hpp"
 #include "aabb.hpp"
 #include "Texture.hpp"
-#include <memory>
 #include "ParticleSystem.hpp"
 #include "SoulConduit.hpp"
-#include "aabb.hpp"
+
 
 class Level
 {
+	// visibility of a tile in fogOfWar
 	enum class Visibility
 	{
-		Unknown,
-		Dark,
-		Dim,
-		Light
+		Unknown,		
+		Dark,			
+		Dim,		
+		Light			
 	};
 
 
@@ -31,8 +31,10 @@ public:
 			std::shared_ptr<Engine::SpriteSheet> spriteSheetGraveStone,
 			std::string_view filename);
 
+	
 	const std::vector<Tmpl8::vec2>& getSpawnLocations() const {return spawnLocations;}
 	Tmpl8::vec2 getPlayerSpawnPosition() const;
+
 
 	bool isSoulCollectable(const Tmpl8::vec2& soulPosition) const { return soulConduit->isConduitActive() && soulConduit->contains(soulPosition); }
 
@@ -58,11 +60,11 @@ public:
 	void updateSoulConduit(float deltaTime, const Tmpl8::vec2 playerPosition) { soulConduit->update(deltaTime, playerPosition); }
 
 
-	bool isCollider(int x, int y) const; // local x&y should be based on the terrain grid
-	bool aabbCollision(const Engine::AABB& aabb) const;
-	bool lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) const;
+	bool isCollider(int x, int y) const; // x and y are based on tile coordinates
+	bool aabbCollision(const Engine::AABB& aabb) const;	// returns true if an aabb collides with terrain
+	bool lineSegmentCollision(const Tmpl8::vec2& p1, const Tmpl8::vec2& p2) const; // return true if a line collides with a tile
 
-	std::vector<Engine::AABB> getAABBs(const Engine::AABB& size) const;
+	std::vector<Engine::AABB> getAABBs(const Engine::AABB& size) const;		// returns all the aabbs that can collide with the given aabb
 
 	Tmpl8::vec2 resolveBoundryLevelCollision(const Tmpl8::vec2 position, float radius) const; //returns the corrected position. Used to clamp the position within the level.
 
@@ -74,7 +76,7 @@ private:
 	int levelWidth{ 0 };
 	int levelHeight{ 0 };
 
-	std::unique_ptr<Engine::RawTilemap> terrainTilemap{nullptr};
+	std::unique_ptr<Engine::Tilemap> terrainTilemap{nullptr};
 	std::vector<bool> terrainColliders{0};
 	std::vector<Visibility> fogOfWar{ 0 };
 

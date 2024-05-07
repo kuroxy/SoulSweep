@@ -60,7 +60,7 @@ Soul& SoulSweep::spawnRandomSoul()
 	}
 
 	
-	int random = IRand(spawnLocations.size()-1); 
+	int random = IRand(static_cast<int>(spawnLocations.size())-1);
 	random = random == closestIndex ? random + 1 : random; // if the random index is the same as the closest we add 1 to get the next one instead, this will always work because the the if the closestIndex is the last, IRand will never generate that value because it is excluse the parameter
 
 
@@ -91,9 +91,11 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 {
 	// update camera
 	
+	// newPlayerPosition is the position such that the player is in the center of the screen
+	// Then we lerp towards the new position, this way we can have a smooth moving camera that "lags" behind the player, instead of being locked onto the player
+	Tmpl8::vec2 newPlayerPosition = mainPlayer->getPosition() - Tmpl8::vec2(static_cast<float>(camera.getWidth()), static_cast<float>(camera.getHeight())) * .5f;
 
-
-	camera.setPosition(lerp(camera.getPosition(), mainPlayer->getPosition()-Tmpl8::vec2(camera.getWidth(), camera.getHeight()) * .5f, deltaTime*2) );
+	camera.setPosition(lerp(camera.getPosition(), newPlayerPosition, deltaTime*2.f) );
 
 	// Update level
 
@@ -187,6 +189,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 	playerRadar.update(deltaTime, mainPlayer->getPosition(), souls);
 
+
 	// spawn regulator
 
 	if (souls.size() < Config::minSouls)
@@ -196,6 +199,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 
 
 	// game state
+	// We use this timer based because this I wanted a delay before transitioning to the next state/screen.
 
 	if (mainPlayer->isDead() && deathTimer > 0.f)
 		deathTimer -= deltaTime;
@@ -207,8 +211,7 @@ void SoulSweep::update(float deltaTime, Engine::InputManager im, Engine::Camera&
 		gameTime += deltaTime;
 
 
-	//UI
-
+	// update UI
 	collectedSoulsBar.setValue(static_cast<float>(level->getSoulAmount()));
 
 	dashResource.setValue(mainPlayer->getDashResource());
@@ -228,7 +231,7 @@ void SoulSweep::render(Engine::Camera& camera)
 
 	for (auto& devourer : devourers)
 	{
-		devourer.draw(camera, devourerDebug);
+		devourer.draw(camera);
 	}
 
 	mainPlayer->draw(camera);
@@ -261,6 +264,14 @@ void SoulSweep::render(Engine::Camera& camera)
 		for (auto& soul : souls)
 		{
 			soul.drawDebug(camera);
+		}
+	}
+
+	if (devourerDebug)
+	{
+		for (auto& devourer : devourers)
+		{
+			devourer.drawDebug(camera);
 		}
 	}
 

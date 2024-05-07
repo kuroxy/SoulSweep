@@ -7,6 +7,7 @@
 // for convenience
 using json = nlohmann::json;
 
+
 Level::Level(
 	std::shared_ptr<Engine::SpriteSheet> spriteSheetLevel,
 	std::shared_ptr<Engine::SpriteSheet> spriteSheetConduit,
@@ -33,7 +34,7 @@ Level::Level(
 	levelWidth = data["levelWidth"];
 	levelHeight = data["levelHeight"];
 
-	terrainTilemap = std::make_unique<Engine::RawTilemap>(terrainSpriteSheet, levelWidth, levelHeight);
+	terrainTilemap = std::make_unique<Engine::Tilemap>(terrainSpriteSheet, levelWidth, levelHeight);
 	
 
 	terrainColliders.resize(levelWidth * levelHeight);
@@ -104,7 +105,7 @@ void Level::drawCollision(Engine::Camera& c, Tmpl8::Pixel terrainColor, Tmpl8::P
 	}
 
 	// also a collider
-	soulConduit->draw(c, true);
+	soulConduit->drawDebug(c);
 
 	for (auto& location : spawnLocations)
 	{

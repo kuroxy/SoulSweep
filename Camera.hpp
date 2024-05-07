@@ -1,9 +1,10 @@
 #pragma once
+
 #include <memory>
-#include <string>
 
 #include "template.h"
 #include "surface.h"
+
 
 namespace Engine {
 
@@ -17,15 +18,12 @@ public:
 	{
 	}
 
-	// Getters
 	Tmpl8::Surface* getSurface() const { return cameraSurface.get(); }
 
 	int getWidth() const { return cameraSurface->GetWidth(); }
 	int getHeight() const { return cameraSurface->GetHeight(); }
 
 	const Tmpl8::vec2& getPosition() const { return position; }
-
-	// Setters
 	void setPosition(const Tmpl8::vec2& pos) { position = pos; }
 
 
@@ -46,17 +44,14 @@ public:
 	void drawText(std::string_view, const Tmpl8::vec2& position, Tmpl8::Pixel color, int width = 0);
 
 
-
 	void darkenPixel(int x, int y, int amount);
+	void drawBarDarken(int x1, int y1, int x2, int y2, int amount);
+	void drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, int amount);
 
 
+	// Render methods
 	//Scaling before translation, scale must be positive
 	void renderToSurface(Tmpl8::Surface* surface, int scale = 1, int xOffset = 0, int yOffset = 0) const; 
-
-
-	void drawBarDarken(int x1, int y1, int x2, int y2, int amount);
-
-	void drawBarDarkenWorldSpace(const Tmpl8::vec2& position1, const Tmpl8::vec2& position2, int amount);
 
 
 private:

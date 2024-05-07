@@ -5,10 +5,12 @@
 
 void ResourceBar::draw(Engine::Camera& camera, Tmpl8::vec2 screenPosition) const
 {
-
 	float progress = Tmpl8::Clamp(currentValue / maxValue, 0.f, 1.f);
 	
-	camera.getSurface()->Rectangle(screenPosition.x + barLeft, screenPosition.y + barTop, screenPosition.x + barLeft + (barRight - barLeft) * progress -1, screenPosition.y + barBottom, barColor, 0);
+	Tmpl8::vec2 topLeft(screenPosition.x + static_cast<float>(barLeft), screenPosition.y + static_cast<float>(barTop));
+	Tmpl8::vec2 buttomRight(screenPosition.x + static_cast<float>(barLeft + (barRight - barLeft) * progress) -1.f, screenPosition.y + static_cast<float>(barBottom));
 
-	barTexture->draw(camera.getSurface(), screenPosition.x, screenPosition.y);
+	camera.getSurface()->Rectangle(topLeft, buttomRight, barColor, 0);
+
+	barTexture->draw(camera.getSurface(), static_cast<int>(screenPosition.x), static_cast<int>(screenPosition.y));
 }

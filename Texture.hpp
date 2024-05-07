@@ -1,11 +1,15 @@
 #pragma once
+
 #include <memory>
 #include <string>
+
 #include "surface.h"
+
 
 namespace Engine {
 
 class Camera;
+
 
 class Texture
 {

@@ -91,6 +91,7 @@ public:
 	void Bar( int x1, int y1, int x2, int y2, Pixel color );	// Draws a rectangle that is filled
 
 	void Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width = 0); 
+	void Rectangle(const Tmpl8::vec2& topLeft, const Tmpl8::vec2& bottomRight, Pixel color, int width = 0);
 	// if width == 0, (default) fill the rectangle, else used for line thickness
 
 	void Circle(int x, int y, int radius, Pixel color, int width = 0); 

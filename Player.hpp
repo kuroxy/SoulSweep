@@ -1,4 +1,5 @@
 #pragma once
+
 #include "template.h"
 #include "aabb.hpp"
 #include "SpriteSheet.hpp"
@@ -6,29 +7,27 @@
 #include "ParticleSystem.hpp"
 #include "Config.hpp"
 
-//forward declaration
+// Forward declaration
 namespace Engine
 {
 	class Camera;
 	class InputManager;
 }
 
-
-
-
 class Level;
+
+
 
 class Player
 {
 public:
-	Player(const Engine::SpriteSheet& playerSheet, const Engine::SpriteSheet& soulCarrySprites, const Tmpl8::vec2& pos, float width, float height, float playerSpeed, float rechargeSpeed, float dashCost, float dashDuration, float dashSpeed)
+	Player(std::shared_ptr<Engine::SpriteSheet> playerSheet, std::shared_ptr<Engine::SpriteSheet> soulCarrySprites, const Tmpl8::vec2& pos, float width, float height, float playerSpeed, float rechargeSpeed, float dashCost, float dashDuration, float dashSpeed)
 		: sprites { playerSheet }
 		, anim { sprites }
 		, soulCarrySprites { soulCarrySprites }
-		, m_position{ pos }
-		, m_width{ width }
-		, m_height{ height }
-		, m_playerSpeed{ playerSpeed }
+		, position{ pos }
+		, playerCollider{ {0.f,0.f},{width,height} }
+		, playerSpeed{ playerSpeed }
 		, dashRechargeSpeed{ rechargeSpeed }
 		, dashCost{ dashCost}
 		, dashDuration{ dashDuration}
@@ -44,21 +43,19 @@ public:
 
 
 	const Tmpl8::vec2& getVelocity() const { return velocity; }
-	const Tmpl8::vec2& getPosition() const { return m_position; }
-	void setPosition(const Tmpl8::vec2& pos) { m_position = pos; updateAABB(); }
+	const Tmpl8::vec2& getPosition() const { return position; }
+	void setPosition(const Tmpl8::vec2& pos) { position = pos; updateAABB(); }
 
-	bool canCollectSoul() const { return m_currentSouls < m_maxSouls; }
-	void collectSoul() { m_currentSouls = Tmpl8::Min<int>(m_currentSouls + 1, m_maxSouls); }
-	void removeSoul() { m_currentSouls = Tmpl8::Max<int>(m_currentSouls - 1, 0); }
-	float getCollectRadius() const { return m_collectRadius; }
+	bool canCollectSoul() const { return currentSouls < maxSouls; }
+	void collectSoul() { currentSouls = Tmpl8::Min<int>(currentSouls + 1, maxSouls); }
+	void removeSoul() { currentSouls = Tmpl8::Max<int>(currentSouls - 1, 0); }
+	float getCollectRadius() const { return collectRadius; }
 
-	const Engine::AABB& getAABB() const { return m_collisionBox; }
-	float getWidth() const { return m_width; }
-	float getHeight() const { return m_height; }
-	const Tmpl8::vec2& getVacuumDirection() const { return m_vacuumDirection; }
-	bool isVacuumEnabled() const { return m_vacuumEnabled; }
+	const Engine::AABB& getAABB() const { return playerCollider; }
+	const Tmpl8::vec2& getVacuumDirection() const { return vacuumDirection; }
+	bool isVacuumEnabled() const { return vacuumEnabled; }
 
-	bool shouldDropSoul() const { return m_currentSouls > 0 && m_dropSoul; }
+	bool shouldDropSoul() const { return currentSouls > 0 && dropSoul; }
 
 	void handleInput(const Engine::InputManager& im);
 
@@ -82,63 +79,67 @@ private:
 	bool checkHorizontalCollisions(const Engine::AABB& collider, Engine::AABB& aabb, Tmpl8::vec2& vel) const;
 
 	// Player Sprite
-	Engine::SpriteSheet sprites;
+	std::shared_ptr<Engine::SpriteSheet> sprites;
 	Engine::Animator anim;
 	bool flipCharacter = false;
 
-	Engine::SpriteSheet soulCarrySprites;
+	std::shared_ptr<Engine::SpriteSheet> soulCarrySprites;
 
-	// Vacuum particles
-	Engine::BaseParticleSystem vacuumParticles{Config::vacuumParticles, 50};
-	float spawnTime = .2f;
-	float timeTillNextSpawn = 0.f;
+
+	// position and collider data
+
+	float playerSpeed{  100.f };		// px/s
+	Tmpl8::vec2 moveDirection{ 0.f };	
+
+	Tmpl8::vec2 velocity{ 0.f };
+	Tmpl8::vec2 position{ 0.f };
+
+
+	Engine::AABB playerCollider;
+	void updateAABB(); // Updates the aabb based on position
+
+
 
 
 	// dash Data
+
 	float dashResource = 1.f;
 	float dashRechargeSpeed = .2f;
 
 	float dashCost = .5f;
 
-	float dashDuration = .3f;
-	float currentDashDuration = 0.f;
-
-	Tmpl8::vec2 dashDirection{ 0.f };
 	float dashSpeed = 200.f;
+	float dashDuration = .3f;
 
-
-	// position and collider data
-	Tmpl8::vec2 moveDirection{ 0.f };
-
-	Tmpl8::vec2 velocity{ 0.f };
-	Tmpl8::vec2 m_position{ 0.f };
-
+	float currentDashDuration = 0.f;
+	Tmpl8::vec2 dashDirection{ 0.f };
 	
 	
-	float m_playerSpeed;
-	float m_width;
-	float m_height;
 
-	Engine::AABB m_collisionBox;
-	void updateAABB();
+	// Vacuum
 
-	
-	bool m_vacuumEnabled = false;
-	bool m_dropSoul = false;
-	Tmpl8::vec2 m_vacuumDirection{ 1,0 };
-	float m_vacuumCone = .86f; // cone angle you can calculate by cos(angle) 
+	bool vacuumEnabled = false;
+	bool dropSoul = false;
+	Tmpl8::vec2 vacuumDirection{ 1,0 };
+	float vacuumCone{ .86f }; // How large the cone angle is, you can calculate this angle by cos(angle) 
+
+	float maxVacuumDistance = 150.f;
+	float maxVacuumForce = 1500.f;
+
+	// Vacuum particles
+	Engine::BaseParticleSystem vacuumParticles{ Config::vacuumParticles, 50 };
+	float spawnTime = .2f;
+	float timeTillNextSpawn = 0.f;
+
 
 	// Collecting souls
-	float m_collectRadius{ 12.f };
-	int m_maxSouls{ 5 };
-	int m_currentSouls{ 0 };
-
-	float m_maxVacuumForce = 1500.f;
-	float m_maxVacuumDistance = 150.f;
-
+	float collectRadius{ 12.f };
+	int maxSouls{ 5 };
+	int currentSouls{ 0 };
+	
 
 	// for game state. 
-	// vdead = play the death animation. totalDead = animation has finished.
+	// dead = play the death animation. totalDead = animation has finished.
 
 	bool dead = false;
 	bool totalDead = false;

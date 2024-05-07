@@ -16,19 +16,18 @@ void Player::handleInput(const Engine::InputManager& im)
 		return;
 
 
-	m_vacuumEnabled = im.isActionHeld("vacuum") && !im.isActionHeld("dropsoul");
-	m_dropSoul = im.isActionPressed("dropsoul");
-	m_vacuumDirection = (im.getWorldMouse() - m_position).normalized();
+	vacuumEnabled = im.isActionHeld("vacuum") && !im.isActionHeld("dropsoul");
+	dropSoul = im.isActionPressed("dropsoul");
+	vacuumDirection = (im.getWorldMouse() - position).normalized();
 
 
-	
 
 	if (im.isActionPressed("dash") && dashResource >= dashCost && currentDashDuration <= 0.f)
 	{
 		dashResource -= dashCost;
 		currentDashDuration = dashDuration;
 
-		dashDirection = (im.getWorldMouse() - m_position).normalized();
+		dashDirection = (im.getWorldMouse() - position).normalized();
 		return;	// If we dash other info will be ignored so we can return
 	}
 
@@ -68,12 +67,12 @@ void Player::update(float deltaTime)
 
 	// Vacuum Particles
 
-	vacuumParticles.setPosition(m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance);
-	vacuumParticles.setAttractorPostion(m_collisionBox.center());
+	vacuumParticles.setPosition(playerCollider.center() + vacuumDirection * maxVacuumDistance);
+	vacuumParticles.setAttractorPostion(playerCollider.center());
 
 	vacuumParticles.setAttractorStrenth(0.f);
 	
-	if (m_vacuumEnabled)
+	if (vacuumEnabled)
 	{
 		vacuumParticles.setAttractorStrenth(30000.f);
 		timeTillNextSpawn -= deltaTime;
@@ -89,7 +88,7 @@ void Player::update(float deltaTime)
 		if (!p.enabled)
 			continue;
 
-		Tmpl8::vec2 direction = (m_collisionBox.center() - p.position);
+		Tmpl8::vec2 direction = (playerCollider.center() - p.position);
 
 		// if moves to far away from the 
 		if ((direction.normalized().dot(p.velocity.normalized()) < .5 && p.velocity.length() > 1.f) || direction.length() < 30.f)
@@ -109,9 +108,9 @@ void Player::update(float deltaTime)
 	if (currentDashDuration > 0.f)
 		velocity = dashDirection * dashSpeed;
 	else
-		velocity = moveDirection * m_playerSpeed;
+		velocity = moveDirection * playerSpeed;
 
-	m_position += velocity * deltaTime;
+	position += velocity * deltaTime;
 	updateAABB();
 
 
@@ -157,58 +156,58 @@ void Player::checkCollisions(std::vector<Engine::AABB> colliders)
 
 	}
 
-	setPosition(aabb.min+ vec2(m_width / 2, m_height / 2));
+	setPosition(aabb.min+ vec2(playerCollider.width() / 2.f, playerCollider.height() / 2.f));
 	velocity = vel;
 }
 
 
 bool Player::vacuumRange(const Tmpl8::vec2 pos) const
 {
-	vec2 difference = pos - m_position;
-	return (difference.normalized().dot(m_vacuumDirection) > m_vacuumCone && difference.length() < m_maxVacuumDistance);
+	vec2 difference = pos - position;
+	return (difference.normalized().dot(vacuumDirection) > vacuumCone && difference.length() < maxVacuumDistance);
 }
 
 const Tmpl8::vec2 Player::calculateVacuumForce(const Tmpl8::vec2 pos) const
 {
-	vec2 difference = m_position-pos;
+	vec2 difference = position-pos;
 	vec2 forceDirection = difference.normalized();
 	float length = difference.length();
 
 	// reversed bc it is soul->player instead of player->soul
-	if (m_vacuumEnabled == false || forceDirection.dot(-m_vacuumDirection) < m_vacuumCone || length > m_maxVacuumDistance)
+	if (vacuumEnabled == false || forceDirection.dot(-vacuumDirection) < vacuumCone || length > maxVacuumDistance)
 	{
 		return vec2(0);
 	}
 
 	// using linear for now easiest.
-	return forceDirection * (m_maxVacuumForce * (length - m_maxVacuumDistance) / -m_maxVacuumDistance);
+	return forceDirection * (maxVacuumForce * (length - maxVacuumDistance) / -maxVacuumDistance);
 
 }
 
 void Player::draw(Engine::Camera& camera)
 {	
-	anim.draw(camera, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f, sprites.getSpriteHeight() / 2.f+5.f), flipCharacter);
+	anim.draw(camera, position - Tmpl8::vec2(sprites->getSpriteWidth() / 2.f, sprites->getSpriteHeight() / 2.f+5.f), flipCharacter);
 	// +5 is offset for the sprite to align the feet with the bottom of the hitbox
 
-
-	soulCarrySprites.draw(camera, m_currentSouls, m_position - Tmpl8::vec2(sprites.getSpriteWidth() / 2.f - 8.f, sprites.getSpriteHeight() / 2.f + 12.f));
+	if (!dead)
+		soulCarrySprites->draw(camera, currentSouls, position - Tmpl8::vec2(sprites->getSpriteWidth() / 2.f - 8.f, sprites->getSpriteHeight() / 2.f + 12.f));
 
 	vacuumParticles.drawParticles(camera);
 }
 
 void Player::drawDebug(Engine::Camera& camera)
 {
-	m_collisionBox.draw(camera, 0xff00ff);
-	camera.drawCircle(m_position, m_collectRadius, 0xffffff, 1);
-	Tmpl8::Pixel vacuumLine = m_vacuumEnabled ? 0x00ff00 : m_dropSoul ? 0x0000ff : 0xff0000;
-	camera.drawLine(m_collisionBox.center(), m_collisionBox.center() + m_vacuumDirection * m_maxVacuumDistance, vacuumLine);
+	playerCollider.draw(camera, 0xff00ff);
+	camera.drawCircle(position, collectRadius, 0xffffff, 1);
+	Tmpl8::Pixel vacuumLine = vacuumEnabled ? 0x00ff00 : dropSoul ? 0x0000ff : 0xff0000;
+	camera.drawLine(playerCollider.center(), playerCollider.center() + vacuumDirection * maxVacuumDistance, vacuumLine);
 }
 
 bool Player::checkVerticalCollisions(const Engine::AABB& collider, Engine::AABB& aabb, Tmpl8::vec2& vel) const
 {
-	// Written by Jeremiah
+	
 	// https://github.com/jpvanoosten/tmpl8/blob/Physics_Test
-	// Explained in the discord events
+	
 
 	if (vel.y > 0) // Moving down...
 	{
@@ -241,9 +240,9 @@ bool Player::checkVerticalCollisions(const Engine::AABB& collider, Engine::AABB&
 
 bool Player::checkHorizontalCollisions(const Engine::AABB& collider, Engine::AABB& aabb, Tmpl8::vec2& vel) const
 {
-	// Written by Jeremiah
+
 	// https://github.com/jpvanoosten/tmpl8/blob/Physics_Test
-	// Explained in the discord events
+	
 
 	if (vel.x > 0) // Moving Right...
 	{
@@ -274,10 +273,9 @@ bool Player::checkHorizontalCollisions(const Engine::AABB& collider, Engine::AAB
 }
 
 
-
 void Player::updateAABB()
 {
-	vec2 half = vec2(m_width / 2, m_height / 2);
-	m_collisionBox.min = m_position - half;
-	m_collisionBox.max = m_position + half;
+	vec2 half = vec2(playerCollider.width() / 2.f, playerCollider.height() / 2.f);
+	playerCollider.min = position - half;
+	playerCollider.max = position + half;
 }

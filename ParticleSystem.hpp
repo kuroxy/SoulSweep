@@ -1,13 +1,20 @@
 #pragma once
+
+#include <vector>
+
 #include "template.h"
 #include "surface.h"
-#include <vector>
+
 
 namespace Engine
 {
 // Forward Decl
 class Camera; 
 
+
+// Resources used to create the particles system:
+// https://www.youtube.com/watch?v=GK0jHlv3e3w&t=678s
+// https://gameprogrammingpatterns.com/object-pool.html
 
 struct BaseParticleSystemParams
 {
@@ -92,8 +99,6 @@ public:
 
 	
 	
-
-		
 	// Public because this way it is easier to change the parameters 
 	// then a getters/setter. Since BaseParticleSystemParams is only here to hold data.
 	BaseParticleSystemParams parameters;

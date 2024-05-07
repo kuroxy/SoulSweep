@@ -1,11 +1,18 @@
 #pragma once
-#include "SpriteSheet.hpp"
+
 #include <vector>
 #include <unordered_map>
-#include "Camera.hpp"
+
+#include "SpriteSheet.hpp"
+
 
 namespace Engine
 {
+
+class Camera;
+
+
+
 
 struct animationData
 {
@@ -23,7 +30,7 @@ struct animationData
 class Animator
 {
 public:
-	Animator(SpriteSheet& spriteSheet)
+	Animator(std::shared_ptr<Engine::SpriteSheet> spriteSheet)
 		: sprites{ spriteSheet } {};
 
 	std::string getCurrentAnim() const { return currentAnimation; }
@@ -34,21 +41,26 @@ public:
 	void addAnimation(std::string_view animationName, animationData animation);
 	void addAnimation(std::string_view animationName, std::vector<int> frames,float animSpeed, bool loops);
 
-	void changeAnimation(std::string_view animationName);
+	// Does not reset the animation if you call with the same animation it is currently running, unless reset is true
+	void changeAnimation(std::string_view animationName, bool reset = false);
+
 
 	void update(float deltaTime);
+
+	// Can only handle horizontal flip
 	void draw(Camera& camera, const Tmpl8::vec2& worldPosition, bool flip=false);
 		
 
 private:
-	SpriteSheet sprites;
+	std::shared_ptr<Engine::SpriteSheet> sprites;
 
 	std::unordered_map<std::string, animationData> animations{};
 
 	std::string currentAnimation = "";
 	int currentFrame = 0;
 
-	float currentTime = 0.f;
+	// Counts down if this reaches 0 then next frame will show.
+	float timeUntilNextFrame = 0.f;
 
 };
 }

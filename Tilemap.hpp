@@ -1,5 +1,7 @@
 #pragma once
+
 #include <memory>
+
 #include "template.h"
 #include "SpriteSheet.hpp"
 
@@ -9,17 +11,17 @@ namespace Engine
 class Camera;
 
 
-class RawTilemap
+class Tilemap
 {
 public:
-	RawTilemap() = delete;
-	RawTilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight)
+	Tilemap() = delete;
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight)
 		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
 		, mapData{ std::make_unique<int[]>(width * height) } {}
 
-	RawTilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight, const Tmpl8::vec2& offset)
+	Tilemap(std::shared_ptr<Engine::SpriteSheet> terrainSpriteSheet, int mapWidth, int mapHeight, const Tmpl8::vec2& offset)
 		: spriteSheet{ terrainSpriteSheet }
 		, width{ mapWidth }
 		, height{ mapHeight }
@@ -27,9 +29,9 @@ public:
 		, mapData{ std::make_unique<int[]>(width * height) } {}
 
 
-
 	int getWidth() { return width; }
-	int getHeight() { return height; }
+	int getHeight() { return height; }\
+
 	int* getData() { return mapData.get(); }
 
 	const Tmpl8::vec2& getOffset() { return offset; }

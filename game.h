@@ -18,8 +18,7 @@ public:
 	bool done() const { return closeGame; }
 
 	void MouseMove(int x, int y) {
-		im.setMousePos
-		(x, y, mainCamera);
+		im.handleMouseMovement(x, y, mainCamera);
 	}
 
 	void MouseUp(int button) { im.handleMouseUp(button); }
@@ -45,7 +44,7 @@ private:
 	void deathScreenTick(float deltaTime);
 	void victoryScreenTick(float deltaTime);
 
-	Surface* screen;
+	Surface* screen{ nullptr };
 
 	Engine::InputManager im;
 	Engine::Camera mainCamera{ ScreenWidth, ScreenHeight};

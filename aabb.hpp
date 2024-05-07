@@ -1,9 +1,9 @@
 #pragma once
 
+#include <algorithm>
+
 #include "template.h"
 #include "surface.h"
-#include <algorithm>
-#include "Line.hpp"
 #include "Camera.hpp"
 
 
@@ -13,8 +13,27 @@ namespace Engine
     // forward declaration
     class Camera;
 
-    // AABB is based on what was made in the discord event
+    // Line is based on what was made in the discord event
+    struct Line
+    {
+        Line(const Tmpl8::vec2& p0, const Tmpl8::vec2& p1)
+            : p0{ p0 }
+            , p1{ p1 }
+        {}
 
+        Tmpl8::vec2 p0{ 0.0f };
+        Tmpl8::vec2 p1{ 0.0f };
+
+        // Shrink the both points of the line towards the center of the line.
+        Line shrink(float size) const
+        {
+            const Tmpl8::vec2 dir = (p1 - p0).normalized();
+            return { p0 + dir * size, p1 - dir * size };
+        }
+    };
+
+
+    // AABB is based on what was made in the discord event
     struct AABB
     {
         // Construct AABB from 2 points.

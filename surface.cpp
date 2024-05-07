@@ -303,7 +303,7 @@ void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 		if (y1 + i >= GetHeight()) // clipping check
 			break;
 
-		Line(x1, y1+ i, x2, y1+ i, color);
+		Line(static_cast<float>(x1), static_cast<float>(y1 + i), static_cast<float>(x2), static_cast<float>(y1 + i), color);
 	}
 
 	// bottom-side
@@ -313,7 +313,7 @@ void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 		if (y2 - width + i + 1 >= GetHeight()) // clipping check
 			break;
 
-		Line(x1, y2 - width + i + 1, x2, y2 - width + i + 1, color);
+		Line(static_cast<float>(x1), static_cast<float>(y2 - width + i + 1), static_cast<float>(x2), static_cast<float>(y2 - width + i + 1), color);
 	}
 
 
@@ -324,7 +324,7 @@ void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 			break;
 
 		// y1 + width... because this way we dont draw on pixels that already are drawn
-		Line(x1+i, y1 + width, x1+i, y2 - width, color);
+		Line(static_cast<float>(x1 + i), static_cast<float>(y1 + width), static_cast<float>(x1 + i), static_cast<float>(y2 - width), color);
 	}
 
 	// right-side
@@ -334,9 +334,15 @@ void Surface::Rectangle(int x1, int y1, int x2, int y2, Pixel color, int width)
 			break;
 
 		// y1 + width... because this way we dont draw on pixels that already are drawn
-		Line(x2 - width + i + 1, y1 + width, x2 - width + i + 1, y2 - width, color);
+		Line(static_cast<float>(x2 - width + i + 1), static_cast<float>(y1 + width), static_cast<float>(x2 - width + i + 1), static_cast<float>(y2 - width), color);
 	}
 
+}
+
+
+void Surface::Rectangle(const Tmpl8::vec2& topLeft, const Tmpl8::vec2& bottomRight, Pixel color, int width)
+{
+	Rectangle(static_cast<int>(topLeft.x), static_cast<int>(topLeft.y), static_cast<int>(bottomRight.x), static_cast<int>(bottomRight.y), color, width);
 }
 
 void Surface::Circle(int posX, int posY, int r, Pixel color, int width)

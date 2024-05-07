@@ -1,9 +1,11 @@
 #pragma once
+
 #include <memory>
 
 #include "Texture.hpp"
 
 
+// Forward decl
 namespace Engine
 {
 	class Camera;

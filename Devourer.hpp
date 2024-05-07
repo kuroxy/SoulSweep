@@ -1,12 +1,15 @@
 #pragma once
-#include "template.h"
-#include "SimpleMovement.hpp"
-#include "ParticleSystem.hpp"
+
 #include <vector>
 #include <memory>
 #include <string_view>
 
+#include "template.h"
+#include "SimpleMovement.hpp"
+#include "ParticleSystem.hpp"
 
+
+// Forward declaration
 class Player;
 class Soul;
 class Level;
@@ -37,17 +40,19 @@ public:
 		, particleSystem{ std::make_unique<Engine::BaseParticleSystem>(particleParams, 100) } {}
 
 
+	float getCollideRadius() const { return collideRadius; }
+
+	bool collidesWithSoul(const Soul& soul) const;
+
+	// Sets behavoir state based on environment
 	void chooseBehavior(const Level& level, const Player& player, std::vector<Soul>& soulList);
-
-	void actBehavior(float deltaTime);
-
-	bool collideWithSoul(const Soul& soul) const;
+	
+	void actBehavior(float deltaTime); // Acts based on the behaviour state
 
 	void update(float deltaTime);
 
-	void draw(Engine::Camera& camera, bool debug);
-
-	float getCollideRadius() const { return collideRadius; }
+	void draw(Engine::Camera& camera);
+	void drawDebug(Engine::Camera& camera);
 
 
 private:
@@ -59,13 +64,14 @@ private:
 		ChasingOldPlayer,
 		Wandering
 	};
+	
 
 	BehaviorState currentState = BehaviorState::Wandering;
 
 
 	// ConsumingSoul info
 	Soul* consumingSoulPtr{ nullptr };
-	const float consumingSoulTime{ 2.f }; // this is the time that it takes to consume the soul. In this time the Devourer nor the soul will move.
+	float consumingSoulTime{ 2.f }; // this is the time that it takes to consume the soul. In this time the Devourer nor the soul will move.
 	float consumingSoulProgress{ 0.f };
 
 	// ChasingOldSoul
@@ -76,13 +82,14 @@ private:
 	bool newPlayerPosition{ false };
 	Tmpl8::vec2 playerPosition{ 0.f }; // look at newSoulPosition comment
 
-	const float seekRadius{ 40.f }; // this is the distance to the position to considered it has been visited
-	const float maxPlayerDistance{ 400.f };
+
+	float seekRadius{ 40.f }; // this is the distance to the position to considered it has been visited
+	float maxPlayerDistance{ 400.f };
 
 
-	const float wanderStrength{ .5f };
+	float wanderStrength{ .5f };
 
-	const float collideRadius{ 10.f };
+	float collideRadius{ 10.f };
 
 
 	// visuals

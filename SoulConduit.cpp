@@ -3,16 +3,6 @@
 
 
 
-void SoulConduit::setPosition(const Tmpl8::vec2& position)
-{
-	conduitCollider.setPosition(position);
-
-	// magic numbers??!?!?!
-	fireParticles[0].setPosition(position + Tmpl8::vec2(47, 5));
-	fireParticles[1].setPosition(position + Tmpl8::vec2(86, 32));
-	fireParticles[2].setPosition(position + Tmpl8::vec2(47 , 59));
-	fireParticles[3].setPosition(position + Tmpl8::vec2(8, 32));
-}
 
 void SoulConduit::spawnCollectedSoul(const Tmpl8::vec2& position)
 {
@@ -21,12 +11,6 @@ void SoulConduit::spawnCollectedSoul(const Tmpl8::vec2& position)
 
 void SoulConduit::update(float deltaTime, const Tmpl8::vec2& playerPosition)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (fireParticlesUpdate[i])
-			fireParticles[i].update(deltaTime);
-	}
-
 
 	for (auto& soulParticle : suckedSouls)
 	{
@@ -54,16 +38,14 @@ void SoulConduit::update(float deltaTime, const Tmpl8::vec2& playerPosition)
 	conduitActivated = conduitCollider.contains(playerPosition);
 }
 
-void SoulConduit::draw(Engine::Camera& camera, bool debug) const
+
+
+void SoulConduit::draw(Engine::Camera& camera) const
 {
+	// If the conduit is activated we draw the second sprite which has an indicator
+	int spriteIndex = conduitActivated ? 1 : 0;
 
-	conduitSheet->draw(camera, 1, conduitCollider.min);
-
-
-	for (int i = 0; i < 4; i++)
-	{
-		fireParticles[i].render(camera);
-	}
+	conduitSheet->draw(camera, spriteIndex, conduitCollider.min);
 
 
 	for (auto& soulParticle : suckedSouls)
@@ -71,16 +53,12 @@ void SoulConduit::draw(Engine::Camera& camera, bool debug) const
 		soulParticle.render(camera);
 	}
 
-	
-	if (debug)
-	{
-		camera.drawRectangle(conduitCollider.min, conduitCollider.max, 0x00ff00, 1);
-	}
 
 }
 
-bool SoulConduit::contains(const Tmpl8::vec2& position) const
+void SoulConduit::drawDebug(Engine::Camera& camera) const
 {
-	return conduitCollider.contains(position);
+	camera.drawRectangle(conduitCollider.min, conduitCollider.max, 0x00ff00, 1);
 }
+
 

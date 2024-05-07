@@ -1,13 +1,14 @@
 #pragma once
+
 #include "template.h"
 #include "surface.h"
 #include "SimplexNoise.h"
 
+
+// Forward declaration
 namespace Engine {
 	class Camera;
 }
-
-
 
 
 class SimpleMovement {

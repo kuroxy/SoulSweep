@@ -6,7 +6,6 @@
 
 void Devourer::chooseBehavior(const Level& level , const Player& player, std::vector<Soul>& soulList)
 {
-	// prettify this <---------------------------------------------------------
 	// this will check if it is still consuming 
 	if (consumingSoulPtr != nullptr)
 	{
@@ -29,7 +28,7 @@ void Devourer::chooseBehavior(const Level& level , const Player& player, std::ve
 	for (auto& soul : soulList)
 	{
 		// collision detection
-		if (!soul.isEaten && collideWithSoul(soul))
+		if (!soul.isEaten && collidesWithSoul(soul))
 		{
 			currentState = BehaviorState::ConsumingSoul;
 			consumingSoulPtr = &soul;
@@ -153,12 +152,10 @@ void Devourer::actBehavior(float deltaTime)
 		break;
 	}
 
-
-	//printf("x: %f, y:%f. Vel x:%f y:%f\n", force.x, force.y, velocity.x, velocity.y);
 	SimpleMovement::addForce(force);
 }
 
-bool Devourer::collideWithSoul(const Soul& soul) const
+bool Devourer::collidesWithSoul(const Soul& soul) const
 {
 	float distsq = (position - soul.getPosition()).sqrLentgh();
 	return distsq < (collideRadius+soul.getCollisionRadius())*(collideRadius + soul.getCollisionRadius());
@@ -175,39 +172,33 @@ void Devourer::update(float deltaTime)
 
 }
 
-void Devourer::draw(Engine::Camera& camera, bool debug)
+
+void Devourer::draw(Engine::Camera& camera)
+{
+	particleSystem->drawParticles(camera);
+}
+
+
+void Devourer::drawDebug(Engine::Camera& camera)
 {
 
-	particleSystem->drawParticles(camera);
-
-	
-
-	if (debug)
-	{
-		Tmpl8::vec2 local = camera.worldToScreen(getPosition() + Tmpl8::vec2(-20, -20));
-		//camera.drawText(std::format("State: {} ", statesString[static_cast<int>(currentState)]), local.x, local.y, 0xffffff);
-
-		// collision circle
-		camera.drawCircle(position, collideRadius, 0x00ffff, 1); 
+	// collision circle
+	camera.drawCircle(position, collideRadius, 0x00ffff, 1);
 
 
-		Tmpl8::Pixel soulLineColor = newSoulPosition ? 0x00ff00 : 0xff0000;
-		Tmpl8::Pixel playerLineColor = newPlayerPosition ? 0x00ff00 : 0xff0000;
+	Tmpl8::Pixel soulLineColor = newSoulPosition ? 0x00ff00 : 0xff0000;
+	Tmpl8::Pixel playerLineColor = newPlayerPosition ? 0x00ff00 : 0xff0000;
 
-		camera.drawLine(position, soulPosition, soulLineColor);
-		camera.drawCircle(soulPosition, seekRadius, soulLineColor, 1);
+	camera.drawLine(position, soulPosition, soulLineColor);
+	camera.drawCircle(soulPosition, seekRadius, soulLineColor, 1);
 
-		camera.drawLine(position, playerPosition, playerLineColor);
-		camera.drawCircle(playerPosition, seekRadius, playerLineColor, 1);
-
-
-		camera.drawCircle(position, maxPlayerDistance, 0xffff00, 1);
+	camera.drawLine(position, playerPosition, playerLineColor);
+	camera.drawCircle(playerPosition, seekRadius, playerLineColor, 1);
 
 
-	}
-
-
+	camera.drawCircle(position, maxPlayerDistance, 0xffff00, 1);
 
 }
+
 
 

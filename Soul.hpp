@@ -1,4 +1,5 @@
 #pragma once
+
 #include "template.h"
 #include "surface.h"
 #include "Player.hpp"
@@ -7,6 +8,8 @@
 #include "Devourer.hpp"
 #include "aabb.hpp"
 
+
+// Forward declaration
 namespace Engine
 {
 	class Camera;

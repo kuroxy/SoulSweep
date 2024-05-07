@@ -44,7 +44,7 @@
     <ClCompile Include="SimplexNoise.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="RawTilemap.cpp">
+    <ClCompile Include="Tilemap.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Animator.cpp">
@@ -110,7 +110,7 @@
     <ClInclude Include="Level.hpp">
       <Filter>Headers\SoulSweep</Filter>
     </ClInclude>
-    <ClInclude Include="RawTilemap.hpp">
+    <ClInclude Include="Tilemap.hpp">
       <Filter>Headers\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Animator.hpp">
@@ -127,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="Radar.hpp">
       <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Line.hpp">
-      <Filter>Headers\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

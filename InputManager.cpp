@@ -101,7 +101,7 @@ void InputManager::handleKeyDown(int key)
 	}
 }
 
-void InputManager::setMousePos(int x, int y, const Camera& c)
+void InputManager::handleMouseMovement(int x, int y, const Camera& c)
 {
 	mousePositionX = x;
 	mousePositionY = y;
@@ -110,7 +110,9 @@ void InputManager::setMousePos(int x, int y, const Camera& c)
 
 void InputManager::update(const Camera& c)
 {
-	mouseWorldPosition = c.localToWorld(Tmpl8::vec2((float)mousePositionX, (float)mousePositionY)); // safety because camera can move without that mouseMove event is called, because the mouse didn't move. However the world mouse has.
+	// We need to update the worldposition, normally would be done in the handleMouseMovement,
+	// but camera can move so then worldspace position should be updates. 
+	mouseWorldPosition = c.localToWorld(Tmpl8::vec2((float)mousePositionX, (float)mousePositionY)); 
 
 	for (auto& action : actionPressed) {
 		action.second = false;

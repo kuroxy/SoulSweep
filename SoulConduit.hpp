@@ -1,4 +1,5 @@
 #pragma once
+
 #include "template.h"
 #include "aabb.hpp"
 #include <vector>
@@ -6,45 +7,12 @@
 #include "SpriteSheet.hpp"
 #include "Config.hpp"
 
+
+// Forward declaration
 namespace Engine
 {
 	class Camera;
 }
-
-
-
-struct blueFireParticles
-{
-	Engine::BaseParticleSystem flames;
-	Engine::BaseParticleSystem core;
-
-	blueFireParticles(Tmpl8::vec2 position)
-		: flames{Config::blueFlamesParameters, 50}
-		, core{Config::blueCoreParameters, 50}
-	{
-	
-	}
-
-	void setPosition(Tmpl8::vec2 position)
-	{
-		flames.setPosition(position);
-		core.setPosition(position);
-	}
-
-	void update(float deltaTime)
-	{
-		flames.updateParticles(deltaTime);
-		core.updateParticles(deltaTime);
-	}
-
-	void render(Engine::Camera& camera) const
-	{
-		flames.drawParticles(camera);
-		core.drawParticles(camera);
-	}
-
-};
-
 
 
 
@@ -119,30 +87,28 @@ public:
 	{
 		conduitSheet = colliderSheet;
 		conduitCollider = Engine::AABB(position, position + Tmpl8::vec2((float)colliderSheet->getSpriteWidth(), (float)colliderSheet->getSpriteHeight()));
-
-		setPosition(position); // sets the position for the paricles
 	}
 
 
-	
 	bool isConduitActive() const { return conduitActivated; }
 
-	void setPosition(const Tmpl8::vec2& position);
 	Tmpl8::vec2 getPosition() const { return conduitCollider.min; }
 	Tmpl8::vec2 getSize() const { return { conduitCollider.width() ,conduitCollider.height() }; }
 
 	float getWidth() const { return conduitCollider.width(); }
 	float getHeight() const { return conduitCollider.height(); }
 
-	void spawnCollectedSoul(const Tmpl8::vec2& position);
 	int getCollectedSouls() const { return collectedSouls; }
 
+	bool contains(const Tmpl8::vec2& position) const { return conduitCollider.contains(position); }
+
+	// This collects a soul, and spawns a visual soul that gets sucked into the center
+	void spawnCollectedSoul(const Tmpl8::vec2& position);
 
 	void update(float deltaTime, const Tmpl8::vec2& playerPosition);
 
-	void draw(Engine::Camera& camera, bool debug=false) const;
-
-	bool contains(const Tmpl8::vec2& position) const;
+	void draw(Engine::Camera& camera) const;
+	void drawDebug(Engine::Camera& camera) const;
 
 	
 
@@ -154,12 +120,7 @@ private:
 
 	int collectedSouls = 0;
 
-	// maybe make it an array or vector
-
-	blueFireParticles fireParticles[4] = { Tmpl8::vec2(0) ,Tmpl8::vec2(0) ,Tmpl8::vec2(0) ,Tmpl8::vec2(0) };
-	bool fireParticlesUpdate[4] = { false, false, false, false };
-
-
+	
 	std::vector<soulLerping> suckedSouls;
 
 };

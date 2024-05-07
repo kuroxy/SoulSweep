@@ -235,7 +235,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Radar.cpp" />
-    <ClCompile Include="RawTilemap.cpp" />
+    <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="ResourceBar.cpp" />
     <ClCompile Include="SimpleMovement.cpp" />
     <ClCompile Include="SimplexNoise.cpp" />
@@ -257,11 +257,10 @@
     <ClInclude Include="InputManager.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Level.hpp" />
-    <ClInclude Include="Line.hpp" />
     <ClInclude Include="ParticleSystem.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Radar.hpp" />
-    <ClInclude Include="RawTilemap.hpp" />
+    <ClInclude Include="Tilemap.hpp" />
     <ClInclude Include="ResourceBar.hpp" />
     <ClInclude Include="SimpleMovement.hpp" />
     <ClInclude Include="SimplexNoise.h" />

@@ -1,11 +1,15 @@
 #pragma once
-#include "Texture.hpp"
+
 #include <memory>
+
+#include "Texture.hpp"
+
 
 namespace Engine
 {
-
+// Forward decl
 class Camera;
+
 
 class SpriteSheet
 {

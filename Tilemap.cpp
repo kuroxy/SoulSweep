@@ -1,8 +1,8 @@
-#include "RawTilemap.hpp"
+#include "Tilemap.hpp"
 #include <iostream>
 #include "Camera.hpp"
 
-void Engine::RawTilemap::setTile(int x, int y, int tilemapIndex)
+void Engine::Tilemap::setTile(int x, int y, int tilemapIndex)
 {
 	if (x < 0 || x >= width || y < 0 || y >= height)
 	{
@@ -14,7 +14,7 @@ void Engine::RawTilemap::setTile(int x, int y, int tilemapIndex)
 	mapData[index] = tilemapIndex;
 }
 
-void Engine::RawTilemap::draw(Engine::Camera& camera) const
+void Engine::Tilemap::draw(Engine::Camera& camera) const
 {
 	if (spriteSheet == nullptr)
 	{
