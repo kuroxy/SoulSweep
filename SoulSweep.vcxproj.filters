@@ -1,135 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteSheet.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="template.cpp">
-      <Filter>Source\Tmpl8</Filter>
-    </ClCompile>
-    <ClCompile Include="surface.cpp">
-      <Filter>Source\Tmpl8</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="Soul.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="SoulSweep.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="SoulConduit.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Devourer.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleMovement.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="SimplexNoise.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Tilemap.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>Source\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Level.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceBar.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-    <ClCompile Include="Radar.cpp">
-      <Filter>Source\SoulSweep</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="game.h" />
-    <ClInclude Include="Texture.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteSheet.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="aabb.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Devourer.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleMovement.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Soul.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="SoulConduit.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="SoulSweep.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="template.h">
-      <Filter>Headers\Tmpl8</Filter>
-    </ClInclude>
-    <ClInclude Include="surface.h">
-      <Filter>Headers\Tmpl8</Filter>
-    </ClInclude>
-    <ClInclude Include="SimplexNoise.h">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Level.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Tilemap.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Animator.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.hpp">
-      <Filter>Headers\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceBar.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-    <ClInclude Include="Radar.hpp">
-      <Filter>Headers\SoulSweep</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="_readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -157,5 +28,134 @@
     <Filter Include="Source\Engine">
       <UniqueIdentifier>{43161c7d-34b5-48e8-92e7-6587ce2d2329}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animator.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Devourer.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Level.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystem.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Radar.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceBar.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimpleMovement.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Soul.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoulConduit.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tilemap.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteSheet.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SoulSweep.cpp">
+      <Filter>Source\SoulSweep</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surface.cpp">
+      <Filter>Source\Tmpl8</Filter>
+    </ClCompile>
+    <ClCompile Include="src\template.cpp">
+      <Filter>Source\Tmpl8</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\SimplexNoise.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Animator.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\aabb.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputManager.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ParticleSystem.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tilemap.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Config.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\template.h">
+      <Filter>Headers\Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Devourer.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\Level.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Radar.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ResourceBar.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleMovement.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Soul.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\surface.h">
+      <Filter>Headers\Tmpl8</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SpriteSheet.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoulSweep.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoulConduit.hpp">
+      <Filter>Headers\SoulSweep</Filter>
+    </ClInclude>
+    <ClInclude Include="include\json.hpp">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimplexNoise.h">
+      <Filter>Headers\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

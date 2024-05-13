@@ -124,7 +124,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -141,7 +141,7 @@
     <Link>
       <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>include;src;lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -195,7 +195,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -212,7 +212,7 @@
     <Link>
       <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>include;src;lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -226,54 +226,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="Devourer.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Radar.cpp" />
-    <ClCompile Include="Tilemap.cpp" />
-    <ClCompile Include="ResourceBar.cpp" />
-    <ClCompile Include="SimpleMovement.cpp" />
-    <ClCompile Include="SimplexNoise.cpp" />
-    <ClCompile Include="Soul.cpp" />
-    <ClCompile Include="SoulConduit.cpp" />
-    <ClCompile Include="SoulSweep.cpp" />
-    <ClCompile Include="SpriteSheet.cpp" />
-    <ClCompile Include="surface.cpp" />
-    <ClCompile Include="template.cpp" />
-    <ClCompile Include="Texture.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="aabb.hpp" />
-    <ClInclude Include="Animator.hpp" />
-    <ClInclude Include="Config.hpp" />
-    <ClInclude Include="Devourer.hpp" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="Camera.hpp" />
-    <ClInclude Include="InputManager.hpp" />
-    <ClInclude Include="json.hpp" />
-    <ClInclude Include="Level.hpp" />
-    <ClInclude Include="ParticleSystem.hpp" />
-    <ClInclude Include="Player.hpp" />
-    <ClInclude Include="Radar.hpp" />
-    <ClInclude Include="Tilemap.hpp" />
-    <ClInclude Include="ResourceBar.hpp" />
-    <ClInclude Include="SimpleMovement.hpp" />
-    <ClInclude Include="SimplexNoise.h" />
-    <ClInclude Include="Soul.hpp" />
-    <ClInclude Include="SoulConduit.hpp" />
-    <ClInclude Include="SoulSweep.hpp" />
-    <ClInclude Include="SpriteSheet.hpp" />
-    <ClInclude Include="surface.h" />
-    <ClInclude Include="template.h" />
-    <ClInclude Include="Texture.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="_readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animator.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Devourer.cpp" />
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\Level.cpp" />
+    <ClCompile Include="src\ParticleSystem.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Radar.cpp" />
+    <ClCompile Include="src\ResourceBar.cpp" />
+    <ClCompile Include="src\SimpleMovement.cpp" />
+    <ClCompile Include="src\SimplexNoise.cpp" />
+    <ClCompile Include="src\Soul.cpp" />
+    <ClCompile Include="src\SoulConduit.cpp" />
+    <ClCompile Include="src\SoulSweep.cpp" />
+    <ClCompile Include="src\SpriteSheet.cpp" />
+    <ClCompile Include="src\surface.cpp" />
+    <ClCompile Include="src\template.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Tilemap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\aabb.hpp" />
+    <ClInclude Include="include\Animator.hpp" />
+    <ClInclude Include="include\Camera.hpp" />
+    <ClInclude Include="include\Config.hpp" />
+    <ClInclude Include="include\Devourer.hpp" />
+    <ClInclude Include="include\game.h" />
+    <ClInclude Include="include\InputManager.hpp" />
+    <ClInclude Include="include\json.hpp" />
+    <ClInclude Include="include\Level.hpp" />
+    <ClInclude Include="include\ParticleSystem.hpp" />
+    <ClInclude Include="include\Player.hpp" />
+    <ClInclude Include="include\Radar.hpp" />
+    <ClInclude Include="include\ResourceBar.hpp" />
+    <ClInclude Include="include\SimpleMovement.hpp" />
+    <ClInclude Include="include\SimplexNoise.h" />
+    <ClInclude Include="include\Soul.hpp" />
+    <ClInclude Include="include\SoulConduit.hpp" />
+    <ClInclude Include="include\SoulSweep.hpp" />
+    <ClInclude Include="include\SpriteSheet.hpp" />
+    <ClInclude Include="include\surface.h" />
+    <ClInclude Include="include\template.h" />
+    <ClInclude Include="include\Texture.hpp" />
+    <ClInclude Include="include\Tilemap.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
